@@ -1,0 +1,630 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-08 20:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\bloodbankmanagement\settings.py:116
+msgid "English"
+msgstr ""
+
+#: .\bloodbankmanagement\settings.py:117
+msgid "French"
+msgstr ""
+
+#: .\bloodbankmanagement\settings.py:118
+msgid "Arabic"
+msgstr ""
+
+#: .\donor\forms.py:23
+msgid "Nothing"
+msgstr "Aucune maladie"
+
+#: .\templates\blood\admin_blood.html:129
+msgid "Update Blood Unit"
+msgstr "Mettre à jour les unités de sang"
+
+#: .\templates\blood\admin_blood.html:137
+msgid "Choose Blood Group"
+msgstr "Choisir le groupe sanguin"
+
+#: .\templates\blood\admin_blood.html:150
+#: .\templates\blood\admin_donation.html:29
+#: .\templates\donor\donation_history.html:32
+#: .\templates\donor\request_history.html:33
+#: .\templates\patient\my_request.html:33
+msgid "Unit"
+msgstr "Quantité"
+
+#: .\templates\blood\admin_blood.html:153
+#: .\templates\blood\update_donor.html:111
+#: .\templates\blood\update_patient.html:138
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: .\templates\blood\admin_dashboard.html:119
+msgid "Total Donors"
+msgstr "Nombre total de donneurs"
+
+#: .\templates\blood\admin_dashboard.html:133
+msgid "Total Requests"
+msgstr "Nombre total de demandes"
+
+#: .\templates\blood\admin_dashboard.html:147
+msgid "Approved Requests"
+msgstr "Demandes approuvées"
+
+#: .\templates\blood\admin_dashboard.html:161
+msgid "Total Blood Unit (in ml)"
+msgstr "Quantité totale de sang (en ml)"
+
+#: .\templates\blood\admin_donation.html:20
+msgid "BLOOD DONATION DETAILS"
+msgstr "Détails du don de sang"
+
+#: .\templates\blood\admin_donation.html:25
+msgid "Donor Name"
+msgstr "Nom du donneur"
+
+#: .\templates\blood\admin_donation.html:26
+#: .\templates\blood\admin_patient.html:18
+#: .\templates\patient\patientsignup.html:103
+msgid "Disease"
+msgstr "Maladie"
+
+#: .\templates\blood\admin_donation.html:27
+#: .\templates\blood\admin_patient.html:17
+#: .\templates\blood\admin_request.html:20
+#: .\templates\blood\admin_request_history.html:33
+#: .\templates\blood\update_patient.html:62
+#: .\templates\donor\donate_blood.html:68
+#: .\templates\patient\patientsignup.html:72
+msgid "Age"
+msgstr "Âge"
+
+#: .\templates\blood\admin_donation.html:28
+#: .\templates\blood\admin_donor.html:16
+#: .\templates\blood\admin_patient.html:16
+#: .\templates\blood\admin_request.html:22
+#: .\templates\blood\admin_request_history.html:35
+#: .\templates\blood\update_donor.html:62
+#: .\templates\blood\update_patient.html:71
+#: .\templates\donor\donate_blood.html:28
+#: .\templates\donor\donation_history.html:31
+#: .\templates\donor\donorsignup.html:69 .\templates\donor\makerequest.html:55
+#: .\templates\donor\request_history.html:32
+#: .\templates\patient\makerequest.html:54
+#: .\templates\patient\my_request.html:32
+#: .\templates\patient\patientsignup.html:81
+msgid "Blood Group"
+msgstr "Groupe sanguin"
+
+#: .\templates\blood\admin_donation.html:30
+msgid "Request Date"
+msgstr "Date de la demande"
+
+#: .\templates\blood\admin_donation.html:31
+#: .\templates\blood\admin_request.html:25
+#: .\templates\blood\admin_request_history.html:38
+#: .\templates\donor\donation_history.html:34
+#: .\templates\donor\request_history.html:35
+#: .\templates\patient\my_request.html:35
+msgid "Status"
+msgstr "Statut"
+
+#: .\templates\blood\admin_donation.html:32
+#: .\templates\blood\admin_donor.html:19
+#: .\templates\blood\admin_patient.html:20
+#: .\templates\blood\admin_request.html:26
+msgid "Action"
+msgstr "Action"
+
+#: .\templates\blood\admin_donation.html:49
+#: .\templates\donor\donation_history.html:52
+#: .\templates\donor\request_history.html:54
+#: .\templates\patient\my_request.html:54
+msgid "Pending"
+msgstr "En attente"
+
+#: .\templates\blood\admin_donation.html:51
+#: .\templates\blood\admin_request_history.html:54
+#: .\templates\donor\donation_history.html:48
+#: .\templates\donor\request_history.html:50
+#: .\templates\patient\my_request.html:50
+msgid "Approved"
+msgstr "Approuvée"
+
+#: .\templates\blood\admin_donation.html:53
+#: .\templates\blood\admin_request_history.html:61
+#: .\templates\donor\donation_history.html:50
+#: .\templates\donor\request_history.html:52
+#: .\templates\patient\my_request.html:52
+msgid "Rejected"
+msgstr "Rejetée"
+
+#: .\templates\blood\admin_donation.html:63
+msgid "APPROVE"
+msgstr "Approuver"
+
+#: .\templates\blood\admin_donation.html:68
+msgid "REJECT"
+msgstr "Rejeter"
+
+#: .\templates\blood\admin_donation.html:76
+#, python-format
+msgid "%(unit)s Unit Added To Stock"
+msgstr "%(unit)s unité(s) ajoutée(s) au stock"
+
+#: .\templates\blood\admin_donation.html:83
+msgid "0 Unit Added To Stock"
+msgstr "Aucune unité ajoutée au stock"
+
+#: .\templates\blood\admin_donor.html:9
+msgid "DONOR DETAILS"
+msgstr "Détails des donneurs"
+
+#: .\templates\blood\admin_donor.html:14
+#: .\templates\blood\admin_patient.html:14
+msgid "Name"
+msgstr "Nom"
+
+#: .\templates\blood\admin_donor.html:15
+#: .\templates\blood\admin_patient.html:15
+msgid "Profile"
+msgstr "Profil"
+
+#: .\templates\blood\admin_donor.html:17 .\templates\blood\update_donor.html:84
+#: .\templates\blood\update_patient.html:111
+#: .\templates\donor\donorsignup.html:91
+#: .\templates\patient\patientsignup.html:121
+msgid "Address"
+msgstr "Adresse"
+
+#: .\templates\blood\admin_donor.html:18
+#: .\templates\blood\admin_patient.html:19
+#: .\templates\blood\update_donor.html:93
+#: .\templates\blood\update_patient.html:120
+#: .\templates\donor\donorsignup.html:100
+#: .\templates\patient\patientsignup.html:130
+msgid "Mobile"
+msgstr "Téléphone"
+
+#: .\templates\blood\admin_donor.html:28
+#: .\templates\blood\admin_patient.html:29
+#: .\templates\blood\update_donor.html:102
+#: .\templates\blood\update_patient.html:129
+#: .\templates\donor\donorsignup.html:109
+#: .\templates\patient\patientsignup.html:139
+msgid "Profile Pic"
+msgstr "Photo de profil"
+
+#: .\templates\blood\admin_donor.html:37
+#: .\templates\blood\admin_patient.html:39
+msgid "EDIT"
+msgstr "Détails des donneurs"
+
+#: .\templates\blood\admin_donor.html:42
+#: .\templates\blood\admin_patient.html:44
+msgid "DELETE"
+msgstr "Supprimer"
+
+#: .\templates\blood\admin_patient.html:9
+msgid "PATIENT DETAILS"
+msgstr "Détails des patients"
+
+#: .\templates\blood\admin_request.html:10
+msgid "Blood Requested"
+msgstr "Demandes de sang"
+
+#: .\templates\blood\admin_request.html:19
+#: .\templates\blood\admin_request_history.html:32
+#: .\templates\donor\makerequest.html:28
+#: .\templates\donor\request_history.html:29
+#: .\templates\patient\makerequest.html:27
+#: .\templates\patient\my_request.html:29
+msgid "Patient Name"
+msgstr "Nom du patient"
+
+#: .\templates\blood\admin_request.html:21
+#: .\templates\blood\admin_request_history.html:34
+#: .\templates\donor\makerequest.html:46
+#: .\templates\donor\request_history.html:31
+#: .\templates\patient\makerequest.html:45
+#: .\templates\patient\my_request.html:31
+msgid "Reason"
+msgstr "Raison"
+
+#: .\templates\blood\admin_request.html:23
+#: .\templates\blood\admin_request_history.html:36
+#: .\templates\donor\donate_blood.html:50 .\templates\donor\makerequest.html:77
+#: .\templates\patient\makerequest.html:76
+msgid "Unit (in ml)"
+msgstr "Quantité (en ml)"
+
+#: .\templates\blood\admin_request.html:24
+#: .\templates\blood\admin_request_history.html:37
+#: .\templates\donor\donation_history.html:33
+#: .\templates\donor\request_history.html:34
+#: .\templates\patient\my_request.html:34
+msgid "Date"
+msgstr "Date"
+
+#: .\templates\blood\admin_request.html:44
+msgid "Approve"
+msgstr "Approuvée"
+
+#: .\templates\blood\admin_request.html:49
+msgid "Reject"
+msgstr "Rejetée"
+
+#: .\templates\blood\admin_request.html:59
+msgid "No Blood Request By Patient / Donor !"
+msgstr "Aucune demande de sang par le patient / le donneur !"
+
+#: .\templates\blood\admin_request_history.html:23
+msgid "Blood Request History"
+msgstr "Historique des demandes de sang"
+
+#: .\templates\blood\admin_request_history.html:39
+msgid "Stock Status"
+msgstr "État du stock"
+
+#: .\templates\blood\admin_request_history.html:57
+msgid "Unit Deducted From Stock"
+msgstr "Unité déduite du stock"
+
+#: .\templates\blood\admin_request_history.html:64
+msgid "0 Unit Deducted From Stock"
+msgstr "Aucune unité déduite du stock"
+
+#: .\templates\blood\adminbase.html:7
+msgid "ADMIN"
+msgstr "ADMINISTRATEUR"
+
+#: .\templates\blood\adminbase.html:117 .\templates\donor\donorbase.html:160
+#: .\templates\patient\patientbase.html:85
+msgid "Blood Bank Management System"
+msgstr "Système de gestion de banque de sang"
+
+#: .\templates\blood\adminbase.html:124 .\templates\donor\donorbase.html:167
+#: .\templates\patient\patientbase.html:92
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: .\templates\blood\adminbase.html:135 .\templates\blood\navbar.html:33
+#: .\templates\donor\donorbase.html:179
+#: .\templates\patient\patientbase.html:106
+msgid "Home"
+msgstr "Accueil"
+
+#: .\templates\blood\adminbase.html:136 .\templates\blood\navbar.html:45
+msgid "Donor"
+msgstr "Donneur"
+
+#: .\templates\blood\adminbase.html:137 .\templates\blood\navbar.html:39
+msgid "Patient"
+msgstr "Patient"
+
+#: .\templates\blood\adminbase.html:138
+msgid "Donations"
+msgstr "Dons"
+
+#: .\templates\blood\adminbase.html:139
+msgid "Blood Requests"
+msgstr "Demandes de sang"
+
+#: .\templates\blood\adminbase.html:140 .\templates\donor\donorbase.html:183
+#: .\templates\patient\patientbase.html:116
+msgid "Request History"
+msgstr "Historique des demandes"
+
+#: .\templates\blood\adminbase.html:141
+msgid "Blood Stock"
+msgstr "Stock de sang"
+
+#: .\templates\blood\adminlogin.html:21
+msgid "Admin Login"
+msgstr "Connexion administration"
+
+#: .\templates\blood\adminlogin.html:29 .\templates\blood\update_donor.html:44
+#: .\templates\blood\update_patient.html:44
+#: .\templates\donor\donorlogin.html:33 .\templates\donor\donorsignup.html:51
+#: .\templates\patient\patientlogin.html:36
+#: .\templates\patient\patientsignup.html:54
+msgid "Username"
+msgstr "Nom d’utilisateur"
+
+#: .\templates\blood\adminlogin.html:38 .\templates\blood\update_donor.html:53
+#: .\templates\blood\update_patient.html:53
+#: .\templates\donor\donorlogin.html:42 .\templates\donor\donorsignup.html:60
+#: .\templates\patient\patientlogin.html:45
+#: .\templates\patient\patientsignup.html:63
+msgid "Password"
+msgstr "Mot de passe"
+
+#: .\templates\blood\adminlogin.html:48 .\templates\donor\donorlogin.html:52
+#: .\templates\patient\patientlogin.html:54
+msgid "Login"
+msgstr "Connexion"
+
+#: .\templates\blood\footer.html:26
+msgid "Blood Bank Management System © 2026"
+msgstr "Système de gestion de banque de sang © 2026"
+
+#: .\templates\blood\index.html:9
+msgid "Blood Bank"
+msgstr "Banque de sang"
+
+#: .\templates\blood\index.html:236
+msgid "Donating blood saves lives"
+msgstr "Donner du sang sauve des vies"
+
+#: .\templates\blood\index.html:238
+msgid ""
+"\n"
+"            A few minutes of your time can give someone a new chance at "
+"life. Be a source of hope and help save lives.\n"
+"            "
+msgstr ""
+"\n"
+"            Quelques minutes de votre temps peuvent donner à quelqu’un une "
+"nouvelle chance de vivre. Soyez une source d’espoir et aidez à sauver des "
+"vies.\n"
+"            "
+
+#: .\templates\blood\index.html:248
+msgid "A Blood Bank Services You Can Trust"
+msgstr "Les services de banque de sang dignes de confiance"
+
+#: .\templates\blood\index.html:256
+msgid "🩸 Blood Type Compatibility"
+msgstr "🩸 Compatibilité des groupes sanguins"
+
+#: .\templates\blood\index.html:258
+msgid ""
+"\n"
+"        Understanding blood type compatibility helps speed up donations and "
+"save lives safely.\n"
+"        "
+msgstr ""
+"\n"
+"        Comprendre la compatibilité des groupes sanguins aide à accélérer "
+"les dons et à sauver des vies en toute sécurité.\n"
+"        "
+
+#: .\templates\blood\index.html:267
+msgid "Blood Type"
+msgstr "Groupe sanguin"
+
+#: .\templates\blood\index.html:268
+msgid "Can Donate To"
+msgstr "Peut donner à"
+
+#: .\templates\blood\index.html:269
+msgid "Can Receive From"
+msgstr "Peut recevoir de"
+
+#: .\templates\blood\index.html:275 .\templates\blood\index.html:311
+msgid "Everyone"
+msgstr "Tout le monde"
+
+#: .\templates\blood\index.html:276
+msgid "O- only"
+msgstr "O- uniquement"
+
+#: .\templates\blood\index.html:310
+msgid "AB+ only"
+msgstr "AB+ uniquement"
+
+#: .\templates\blood\index.html:318
+msgid ""
+"\n"
+"        ⚠️ This information is for awareness purposes only. Full medical "
+"compatibility must always be confirmed.\n"
+"        "
+msgstr ""
+"\n"
+"        ⚠️ Ces informations sont uniquement à titre de sensibilisation. La "
+"compatibilité médicale complète doit toujours être confirmée.\n"
+"        "
+
+#: .\templates\blood\logout.html:8
+msgid "Logged Out"
+msgstr "Déconnecté"
+
+#: .\templates\blood\logout.html:67
+msgid "You Have Been Logged Out"
+msgstr "Vous avez été déconnecté"
+
+#: .\templates\blood\logout.html:68
+msgid "Thank you for using our website"
+msgstr "Merci d’avoir utilisé notre site web"
+
+#: .\templates\blood\navbar.html:19
+msgid "Blood Bank Management"
+msgstr "Gestion de la banque de sang"
+
+#: .\templates\blood\navbar.html:51
+msgid "Admin"
+msgstr "Admin"
+
+#: .\templates\blood\update_donor.html:18
+#, fuzzy
+#| msgid "Update"
+msgid "Update Donor"
+msgstr "Mettre à jour le donneur"
+
+#: .\templates\blood\update_donor.html:26
+#: .\templates\blood\update_patient.html:26
+#: .\templates\donor\donorsignup.html:33
+#: .\templates\patient\patientsignup.html:36
+msgid "First Name"
+msgstr "Prénom"
+
+#: .\templates\blood\update_donor.html:35
+#: .\templates\blood\update_patient.html:35
+#: .\templates\donor\donorsignup.html:42
+#: .\templates\patient\patientsignup.html:45
+msgid "Last Name"
+msgstr "Nom"
+
+#: .\templates\blood\update_donor.html:67
+#: .\templates\blood\update_patient.html:76
+#: .\templates\donor\donate_blood.html:33 .\templates\donor\donorsignup.html:74
+#: .\templates\donor\makerequest.html:60
+#: .\templates\patient\makerequest.html:59
+#: .\templates\patient\patientsignup.html:86
+msgid "Choose option"
+msgstr "Choisir une option"
+
+#: .\templates\blood\update_patient.html:18
+msgid "Update Patient"
+msgstr "Mettre à jour le patient"
+
+#: .\templates\blood\update_patient.html:93
+#: .\templates\donor\donate_blood.html:59
+#: .\templates\donor\donation_history.html:30
+msgid "Disease (if any)"
+msgstr "Maladie (s'il y en a)"
+
+#: .\templates\blood\update_patient.html:102
+#: .\templates\patient\patientsignup.html:112
+msgid "Doctor Name"
+msgstr "Nom du médecin"
+
+#: .\templates\donor\donate_blood.html:20
+msgid "DONATE BLOOD"
+msgstr "Don de sang"
+
+#: .\templates\donor\donate_blood.html:77
+msgid "DONATE"
+msgstr "Donner"
+
+#: .\templates\donor\donation_history.html:24
+msgid "My Donation History"
+msgstr "Mon historique des dons"
+
+#: .\templates\donor\donation_history.html:29
+msgid "Donor Age"
+msgstr "Âge du donneur"
+
+#: .\templates\donor\donor_dashboard.html:16
+#: .\templates\patient\patient_dashboard.html:25
+msgid "Request Made"
+msgstr "Demandes effectuées"
+
+#: .\templates\donor\donor_dashboard.html:30
+#: .\templates\patient\patient_dashboard.html:39
+msgid "Pending Request"
+msgstr "Demandes en attente"
+
+#: .\templates\donor\donor_dashboard.html:44
+#: .\templates\patient\patient_dashboard.html:53
+msgid "Approved Request"
+msgstr "Demandes approuvées"
+
+#: .\templates\donor\donor_dashboard.html:58
+#: .\templates\patient\patient_dashboard.html:67
+msgid "Rejected Request"
+msgstr "Demandes rejetées"
+
+#: .\templates\donor\donorbase.html:7
+msgid "DONOR"
+msgstr "DONNEUR"
+
+#: .\templates\donor\donorbase.html:180
+msgid "Donate Blood"
+msgstr "Donner du sang"
+
+#: .\templates\donor\donorbase.html:181
+msgid "Donation History"
+msgstr "Historique des dons"
+
+#: .\templates\donor\donorbase.html:182
+msgid "Blood Request"
+msgstr "Demande de sang"
+
+#: .\templates\donor\donorlogin.html:25
+msgid "Donor Login"
+msgstr "Connexion donneur"
+
+#: .\templates\donor\donorlogin.html:60
+#: .\templates\patient\patientlogin.html:61
+msgid "Does not have an account ?"
+msgstr "Vous n’avez pas de compte ?"
+
+#: .\templates\donor\donorlogin.html:61
+#: .\templates\patient\patientlogin.html:63
+msgid "Click here to register"
+msgstr "Cliquez ici pour vous inscrire"
+
+#: .\templates\donor\donorsignup.html:25
+msgid "Donor Signup"
+msgstr "Inscription donneur"
+
+#: .\templates\donor\donorsignup.html:119
+#: .\templates\patient\patientsignup.html:148
+msgid "Register"
+msgstr "S’inscrire"
+
+#: .\templates\donor\donorsignup.html:127
+#: .\templates\patient\patientsignup.html:155
+msgid "Already have an account ?"
+msgstr "Vous avez déjà un compte ?"
+
+#: .\templates\donor\donorsignup.html:128
+#: .\templates\patient\patientsignup.html:157
+msgid "Click here to login"
+msgstr "Cliquez ici pour vous connecter"
+
+#: .\templates\donor\makerequest.html:20
+#: .\templates\patient\makerequest.html:19
+msgid "MAKE BLOOD REQUEST"
+msgstr "Faire une demande de sang"
+
+#: .\templates\donor\makerequest.html:37
+#: .\templates\donor\request_history.html:30
+#: .\templates\patient\makerequest.html:36
+#: .\templates\patient\my_request.html:30
+msgid "Patient Age"
+msgstr "Âge du patient"
+
+#: .\templates\donor\makerequest.html:87
+#: .\templates\patient\makerequest.html:85
+msgid "REQUEST"
+msgstr "Envoyer la demande"
+
+#: .\templates\donor\request_history.html:24
+#: .\templates\patient\my_request.html:24
+msgid "My Blood Request"
+msgstr "Mes demandes de sang"
+
+#: .\templates\patient\patientbase.html:7
+msgid "PATIENT"
+msgstr "PATIENT"
+
+#: .\templates\patient\patientbase.html:111
+msgid "Make Request"
+msgstr "Faire une demande"
+
+#: .\templates\patient\patientlogin.html:28
+msgid "Patient Login"
+msgstr "Connexion patient"
+
+#: .\templates\patient\patientsignup.html:28
+msgid "Patient Signup"
+msgstr "Inscription patient"

@@ -1,0 +1,60 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+</head>
+
+<body>
+{% include "blood/navbar.html" %}
+
+<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+  <div class="wrapper wrapper--w790">
+    <br><br><br>
+    <div class="card card-5">
+      <div class="card-heading">
+        <h2 class="title">{% trans "Admin Login" %}</h2>
+      </div>
+
+      <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="form-row">
+            <div class="name">{% trans "Username" %}</div>
+            <div class="value">
+              <div class="input-group">
+                {% render_field form.username class="input--style-5" %}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="name">{% trans "Password" %}</div>
+            <div class="value">
+              <div class="input-group">
+                {% render_field form.password class="input--style-5" %}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn--radius-2 btn-danger" type="submit">
+              {% trans "Login" %}
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include "blood/footer.html" %}
+</body>
+</html>

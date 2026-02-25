@@ -1,0 +1,80 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>{% trans "Logged Out" %}</title>
+
+  <!-- Bootstrap 4 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+  <style>
+    body{
+      padding-top: 70px; /* بسبب navbar fixed */
+      background: #f8f9fa;
+    }
+
+    .logout-wrap{
+      min-height: calc(100vh - 140px); /* navbar + footer */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .logout-box{
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 8px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .logout-box img{
+      max-width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .logout-box h1{
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .logout-box h4{
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  {% include "blood/navbar.html" %}
+
+  <div class="logout-wrap">
+    <div class="logout-box">
+      <img src="{% static 'image/logout.png' %}" alt="logout">
+
+      <div class="mb-3">
+        <i class="fas fa-sign-out-alt fa-3x text-danger"></i>
+      </div>
+
+      <h1>{% trans "You Have Been Logged Out" %}</h1>
+      <h4>{% trans "Thank you for using our website" %}</h4>
+    </div>
+  </div>
+
+  {% include "blood/footer.html" %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

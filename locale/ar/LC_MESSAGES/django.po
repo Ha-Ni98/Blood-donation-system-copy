@@ -1,0 +1,629 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-08 20:40+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: .\bloodbankmanagement\settings.py:116
+msgid "English"
+msgstr ""
+
+#: .\bloodbankmanagement\settings.py:117
+msgid "French"
+msgstr ""
+
+#: .\bloodbankmanagement\settings.py:118
+msgid "Arabic"
+msgstr ""
+
+#: .\donor\forms.py:23
+msgid "Nothing"
+msgstr "لا يوجد مرض"
+
+#: .\templates\blood\admin_blood.html:129
+msgid "Update Blood Unit"
+msgstr "تحديث كمية الدم"
+
+#: .\templates\blood\admin_blood.html:137
+msgid "Choose Blood Group"
+msgstr "اختر فصيلة الدم"
+
+#: .\templates\blood\admin_blood.html:150
+#: .\templates\blood\admin_donation.html:29
+#: .\templates\donor\donation_history.html:32
+#: .\templates\donor\request_history.html:33
+#: .\templates\patient\my_request.html:33
+msgid "Unit"
+msgstr "الكمية"
+
+#: .\templates\blood\admin_blood.html:153
+#: .\templates\blood\update_donor.html:111
+#: .\templates\blood\update_patient.html:138
+msgid "Update"
+msgstr "تحديث"
+
+#: .\templates\blood\admin_dashboard.html:119
+msgid "Total Donors"
+msgstr "إجمالي المتبرعين"
+
+#: .\templates\blood\admin_dashboard.html:133
+msgid "Total Requests"
+msgstr "إجمالي الطلبات"
+
+#: .\templates\blood\admin_dashboard.html:147
+msgid "Approved Requests"
+msgstr "الطلبات المقبولة"
+
+#: .\templates\blood\admin_dashboard.html:161
+msgid "Total Blood Unit (in ml)"
+msgstr "إجمالي كمية الدم (بالمل)"
+
+#: .\templates\blood\admin_donation.html:20
+msgid "BLOOD DONATION DETAILS"
+msgstr "تفاصيل التبرع بالدم"
+
+#: .\templates\blood\admin_donation.html:25
+msgid "Donor Name"
+msgstr "اسم المتبرع"
+
+#: .\templates\blood\admin_donation.html:26
+#: .\templates\blood\admin_patient.html:18
+#: .\templates\patient\patientsignup.html:103
+msgid "Disease"
+msgstr "المرض"
+
+#: .\templates\blood\admin_donation.html:27
+#: .\templates\blood\admin_patient.html:17
+#: .\templates\blood\admin_request.html:20
+#: .\templates\blood\admin_request_history.html:33
+#: .\templates\blood\update_patient.html:62
+#: .\templates\donor\donate_blood.html:68
+#: .\templates\patient\patientsignup.html:72
+msgid "Age"
+msgstr "العمر"
+
+#: .\templates\blood\admin_donation.html:28
+#: .\templates\blood\admin_donor.html:16
+#: .\templates\blood\admin_patient.html:16
+#: .\templates\blood\admin_request.html:22
+#: .\templates\blood\admin_request_history.html:35
+#: .\templates\blood\update_donor.html:62
+#: .\templates\blood\update_patient.html:71
+#: .\templates\donor\donate_blood.html:28
+#: .\templates\donor\donation_history.html:31
+#: .\templates\donor\donorsignup.html:69 .\templates\donor\makerequest.html:55
+#: .\templates\donor\request_history.html:32
+#: .\templates\patient\makerequest.html:54
+#: .\templates\patient\my_request.html:32
+#: .\templates\patient\patientsignup.html:81
+msgid "Blood Group"
+msgstr "فصيلة الدم"
+
+#: .\templates\blood\admin_donation.html:30
+msgid "Request Date"
+msgstr "تاريخ الطلب"
+
+#: .\templates\blood\admin_donation.html:31
+#: .\templates\blood\admin_request.html:25
+#: .\templates\blood\admin_request_history.html:38
+#: .\templates\donor\donation_history.html:34
+#: .\templates\donor\request_history.html:35
+#: .\templates\patient\my_request.html:35
+msgid "Status"
+msgstr "الحالة"
+
+#: .\templates\blood\admin_donation.html:32
+#: .\templates\blood\admin_donor.html:19
+#: .\templates\blood\admin_patient.html:20
+#: .\templates\blood\admin_request.html:26
+msgid "Action"
+msgstr "الإجراء"
+
+#: .\templates\blood\admin_donation.html:49
+#: .\templates\donor\donation_history.html:52
+#: .\templates\donor\request_history.html:54
+#: .\templates\patient\my_request.html:54
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: .\templates\blood\admin_donation.html:51
+#: .\templates\blood\admin_request_history.html:54
+#: .\templates\donor\donation_history.html:48
+#: .\templates\donor\request_history.html:50
+#: .\templates\patient\my_request.html:50
+msgid "Approved"
+msgstr "مقبول"
+
+#: .\templates\blood\admin_donation.html:53
+#: .\templates\blood\admin_request_history.html:61
+#: .\templates\donor\donation_history.html:50
+#: .\templates\donor\request_history.html:52
+#: .\templates\patient\my_request.html:52
+msgid "Rejected"
+msgstr "مرفوض"
+
+#: .\templates\blood\admin_donation.html:63
+msgid "APPROVE"
+msgstr "قبول"
+
+#: .\templates\blood\admin_donation.html:68
+msgid "REJECT"
+msgstr "رفض"
+
+#: .\templates\blood\admin_donation.html:76
+#, python-format
+msgid "%(unit)s Unit Added To Stock"
+msgstr "تمت إضافة %(unit)s وحدة إلى المخزون"
+
+#: .\templates\blood\admin_donation.html:83
+msgid "0 Unit Added To Stock"
+msgstr "لم تتم إضافة أي وحدة إلى المخزون"
+
+#: .\templates\blood\admin_donor.html:9
+msgid "DONOR DETAILS"
+msgstr "تفاصيل المتبرعين"
+
+#: .\templates\blood\admin_donor.html:14
+#: .\templates\blood\admin_patient.html:14
+msgid "Name"
+msgstr "الاسم"
+
+#: .\templates\blood\admin_donor.html:15
+#: .\templates\blood\admin_patient.html:15
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: .\templates\blood\admin_donor.html:17 .\templates\blood\update_donor.html:84
+#: .\templates\blood\update_patient.html:111
+#: .\templates\donor\donorsignup.html:91
+#: .\templates\patient\patientsignup.html:121
+msgid "Address"
+msgstr "العنوان"
+
+#: .\templates\blood\admin_donor.html:18
+#: .\templates\blood\admin_patient.html:19
+#: .\templates\blood\update_donor.html:93
+#: .\templates\blood\update_patient.html:120
+#: .\templates\donor\donorsignup.html:100
+#: .\templates\patient\patientsignup.html:130
+msgid "Mobile"
+msgstr "رقم الهاتف"
+
+#: .\templates\blood\admin_donor.html:28
+#: .\templates\blood\admin_patient.html:29
+#: .\templates\blood\update_donor.html:102
+#: .\templates\blood\update_patient.html:129
+#: .\templates\donor\donorsignup.html:109
+#: .\templates\patient\patientsignup.html:139
+msgid "Profile Pic"
+msgstr "الصورة الشخصية"
+
+#: .\templates\blood\admin_donor.html:37
+#: .\templates\blood\admin_patient.html:39
+msgid "EDIT"
+msgstr "تعديل"
+
+#: .\templates\blood\admin_donor.html:42
+#: .\templates\blood\admin_patient.html:44
+msgid "DELETE"
+msgstr "حذف"
+
+#: .\templates\blood\admin_patient.html:9
+msgid "PATIENT DETAILS"
+msgstr "تفاصيل المرضى"
+
+#: .\templates\blood\admin_request.html:10
+msgid "Blood Requested"
+msgstr "طلبات الدم"
+
+#: .\templates\blood\admin_request.html:19
+#: .\templates\blood\admin_request_history.html:32
+#: .\templates\donor\makerequest.html:28
+#: .\templates\donor\request_history.html:29
+#: .\templates\patient\makerequest.html:27
+#: .\templates\patient\my_request.html:29
+msgid "Patient Name"
+msgstr "اسم المريض"
+
+#: .\templates\blood\admin_request.html:21
+#: .\templates\blood\admin_request_history.html:34
+#: .\templates\donor\makerequest.html:46
+#: .\templates\donor\request_history.html:31
+#: .\templates\patient\makerequest.html:45
+#: .\templates\patient\my_request.html:31
+msgid "Reason"
+msgstr "السبب"
+
+#: .\templates\blood\admin_request.html:23
+#: .\templates\blood\admin_request_history.html:36
+#: .\templates\donor\donate_blood.html:50 .\templates\donor\makerequest.html:77
+#: .\templates\patient\makerequest.html:76
+msgid "Unit (in ml)"
+msgstr "الكمية (بالمل)"
+
+#: .\templates\blood\admin_request.html:24
+#: .\templates\blood\admin_request_history.html:37
+#: .\templates\donor\donation_history.html:33
+#: .\templates\donor\request_history.html:34
+#: .\templates\patient\my_request.html:34
+msgid "Date"
+msgstr "التاريخ"
+
+#: .\templates\blood\admin_request.html:44
+msgid "Approve"
+msgstr "مقبول"
+
+#: .\templates\blood\admin_request.html:49
+msgid "Reject"
+msgstr "مرفوض"
+
+#: .\templates\blood\admin_request.html:59
+msgid "No Blood Request By Patient / Donor !"
+msgstr "لا توجد طلبات دم من المريض / المتبرع!"
+
+#: .\templates\blood\admin_request_history.html:23
+msgid "Blood Request History"
+msgstr "سجل طلبات الدم"
+
+#: .\templates\blood\admin_request_history.html:39
+msgid "Stock Status"
+msgstr " حالة المخزون"
+
+#: .\templates\blood\admin_request_history.html:57
+msgid "Unit Deducted From Stock"
+msgstr "وحدة خُصمت من المخزون"
+
+#: .\templates\blood\admin_request_history.html:64
+msgid "0 Unit Deducted From Stock"
+msgstr "لم يتم خصم أي وحدة من المخزون"
+
+#: .\templates\blood\adminbase.html:7
+msgid "ADMIN"
+msgstr "المسؤول"
+
+#: .\templates\blood\adminbase.html:117 .\templates\donor\donorbase.html:160
+#: .\templates\patient\patientbase.html:85
+msgid "Blood Bank Management System"
+msgstr "نظام إدارة بنك الدم"
+
+#: .\templates\blood\adminbase.html:124 .\templates\donor\donorbase.html:167
+#: .\templates\patient\patientbase.html:92
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: .\templates\blood\adminbase.html:135 .\templates\blood\navbar.html:33
+#: .\templates\donor\donorbase.html:179
+#: .\templates\patient\patientbase.html:106
+msgid "Home"
+msgstr "الواجهة الرئيسية"
+
+#: .\templates\blood\adminbase.html:136 .\templates\blood\navbar.html:45
+msgid "Donor"
+msgstr "المتبرع"
+
+#: .\templates\blood\adminbase.html:137 .\templates\blood\navbar.html:39
+msgid "Patient"
+msgstr "المريض"
+
+#: .\templates\blood\adminbase.html:138
+msgid "Donations"
+msgstr "التبرعات"
+
+#: .\templates\blood\adminbase.html:139
+msgid "Blood Requests"
+msgstr "طلبات الدم"
+
+#: .\templates\blood\adminbase.html:140 .\templates\donor\donorbase.html:183
+#: .\templates\patient\patientbase.html:116
+msgid "Request History"
+msgstr "سجل الطلبات"
+
+#: .\templates\blood\adminbase.html:141
+msgid "Blood Stock"
+msgstr "مخزون الدم"
+
+#: .\templates\blood\adminlogin.html:21
+msgid "Admin Login"
+msgstr "تسجيل دخول المسؤول"
+
+#: .\templates\blood\adminlogin.html:29 .\templates\blood\update_donor.html:44
+#: .\templates\blood\update_patient.html:44
+#: .\templates\donor\donorlogin.html:33 .\templates\donor\donorsignup.html:51
+#: .\templates\patient\patientlogin.html:36
+#: .\templates\patient\patientsignup.html:54
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: .\templates\blood\adminlogin.html:38 .\templates\blood\update_donor.html:53
+#: .\templates\blood\update_patient.html:53
+#: .\templates\donor\donorlogin.html:42 .\templates\donor\donorsignup.html:60
+#: .\templates\patient\patientlogin.html:45
+#: .\templates\patient\patientsignup.html:63
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: .\templates\blood\adminlogin.html:48 .\templates\donor\donorlogin.html:52
+#: .\templates\patient\patientlogin.html:54
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: .\templates\blood\footer.html:26
+msgid "Blood Bank Management System © 2026"
+msgstr "نظام إدارة بنك الدم © 2026"
+
+#: .\templates\blood\index.html:9
+msgid "Blood Bank"
+msgstr "بنك الدم"
+
+#: .\templates\blood\index.html:236
+msgid "Donating blood saves lives"
+msgstr "التبرع بالدم ينقذ الأرواح"
+
+#: .\templates\blood\index.html:238
+msgid ""
+"\n"
+"            A few minutes of your time can give someone a new chance at "
+"life. Be a source of hope and help save lives.\n"
+"            "
+msgstr ""
+"\n"
+"            بضع دقائق من وقتك يمكن أن تمنح شخصًا فرصة جديدة للحياة. كن مصدر "
+"أمل وساهم في إنقاذ الأرواح.\n"
+"            "
+
+#: .\templates\blood\index.html:248
+msgid "A Blood Bank Services You Can Trust"
+msgstr "خدمات بنك الدم التي يمكنك الوثوق بها"
+
+#: .\templates\blood\index.html:256
+msgid "🩸 Blood Type Compatibility"
+msgstr "🩸 توافق فصائل الدم"
+
+#: .\templates\blood\index.html:258
+msgid ""
+"\n"
+"        Understanding blood type compatibility helps speed up donations and "
+"save lives safely.\n"
+"        "
+msgstr ""
+"\n"
+"        فهم توافق فصائل الدم يساعد على تسريع عمليات التبرع وإنقاذ الأرواح "
+"بأمان.\n"
+"        "
+
+#: .\templates\blood\index.html:267
+msgid "Blood Type"
+msgstr "فصيلة الدم"
+
+#: .\templates\blood\index.html:268
+msgid "Can Donate To"
+msgstr "يمكنه التبرع لـ"
+
+#: .\templates\blood\index.html:269
+msgid "Can Receive From"
+msgstr "يمكنه الاستقبال من"
+
+#: .\templates\blood\index.html:275 .\templates\blood\index.html:311
+msgid "Everyone"
+msgstr "الجميع"
+
+#: .\templates\blood\index.html:276
+msgid "O- only"
+msgstr "O- فقط"
+
+#: .\templates\blood\index.html:310
+msgid "AB+ only"
+msgstr "AB+ فقط"
+
+#: .\templates\blood\index.html:318
+msgid ""
+"\n"
+"        ⚠️ This information is for awareness purposes only. Full medical "
+"compatibility must always be confirmed.\n"
+"        "
+msgstr ""
+"\n"
+"        ⚠️ هذه المعلومات للتوعية فقط. يجب دائمًا تأكيد التوافق الطبي الكامل.\n"
+"        "
+
+#: .\templates\blood\logout.html:8
+msgid "Logged Out"
+msgstr "تم تسجيل الخروج"
+
+#: .\templates\blood\logout.html:67
+msgid "You Have Been Logged Out"
+msgstr "لقد تم تسجيل خروجك"
+
+#: .\templates\blood\logout.html:68
+msgid "Thank you for using our website"
+msgstr "شكرًا لاستخدامك موقعنا"
+
+#: .\templates\blood\navbar.html:19
+msgid "Blood Bank Management"
+msgstr "إدارة بنك الدم"
+
+#: .\templates\blood\navbar.html:51
+msgid "Admin"
+msgstr "المسؤول"
+
+#: .\templates\blood\update_donor.html:18
+#, fuzzy
+#| msgid "Update"
+msgid "Update Donor"
+msgstr "تحديث بيانات المتبرع"
+
+#: .\templates\blood\update_donor.html:26
+#: .\templates\blood\update_patient.html:26
+#: .\templates\donor\donorsignup.html:33
+#: .\templates\patient\patientsignup.html:36
+msgid "First Name"
+msgstr "الاسم"
+
+#: .\templates\blood\update_donor.html:35
+#: .\templates\blood\update_patient.html:35
+#: .\templates\donor\donorsignup.html:42
+#: .\templates\patient\patientsignup.html:45
+msgid "Last Name"
+msgstr "اللقب"
+
+#: .\templates\blood\update_donor.html:67
+#: .\templates\blood\update_patient.html:76
+#: .\templates\donor\donate_blood.html:33 .\templates\donor\donorsignup.html:74
+#: .\templates\donor\makerequest.html:60
+#: .\templates\patient\makerequest.html:59
+#: .\templates\patient\patientsignup.html:86
+msgid "Choose option"
+msgstr "اختر خيارًا"
+
+#: .\templates\blood\update_patient.html:18
+msgid "Update Patient"
+msgstr "تحديث بيانات المريض"
+
+#: .\templates\blood\update_patient.html:93
+#: .\templates\donor\donate_blood.html:59
+#: .\templates\donor\donation_history.html:30
+msgid "Disease (if any)"
+msgstr "المرض (إن وجد)"
+
+#: .\templates\blood\update_patient.html:102
+#: .\templates\patient\patientsignup.html:112
+msgid "Doctor Name"
+msgstr "اسم الطبيب"
+
+#: .\templates\donor\donate_blood.html:20
+msgid "DONATE BLOOD"
+msgstr "التبرع بالدم"
+
+#: .\templates\donor\donate_blood.html:77
+msgid "DONATE"
+msgstr "تبرع"
+
+#: .\templates\donor\donation_history.html:24
+msgid "My Donation History"
+msgstr "سجل تبرعاتي"
+
+#: .\templates\donor\donation_history.html:29
+msgid "Donor Age"
+msgstr "عمر المتبرع"
+
+#: .\templates\donor\donor_dashboard.html:16
+#: .\templates\patient\patient_dashboard.html:25
+msgid "Request Made"
+msgstr "الطلبات المقدّمة"
+
+#: .\templates\donor\donor_dashboard.html:30
+#: .\templates\patient\patient_dashboard.html:39
+msgid "Pending Request"
+msgstr "طلبات قيد الانتظار"
+
+#: .\templates\donor\donor_dashboard.html:44
+#: .\templates\patient\patient_dashboard.html:53
+msgid "Approved Request"
+msgstr "طلبات مقبولة"
+
+#: .\templates\donor\donor_dashboard.html:58
+#: .\templates\patient\patient_dashboard.html:67
+msgid "Rejected Request"
+msgstr "طلبات مرفوضة"
+
+#: .\templates\donor\donorbase.html:7
+msgid "DONOR"
+msgstr "المتبرع"
+
+#: .\templates\donor\donorbase.html:180
+msgid "Donate Blood"
+msgstr "التبرع بالدم"
+
+#: .\templates\donor\donorbase.html:181
+msgid "Donation History"
+msgstr "سجل التبرعات"
+
+#: .\templates\donor\donorbase.html:182
+msgid "Blood Request"
+msgstr "طلب دم"
+
+#: .\templates\donor\donorlogin.html:25
+msgid "Donor Login"
+msgstr "دخول المتبرع"
+
+#: .\templates\donor\donorlogin.html:60
+#: .\templates\patient\patientlogin.html:61
+msgid "Does not have an account ?"
+msgstr "ليس لديك حساب؟"
+
+#: .\templates\donor\donorlogin.html:61
+#: .\templates\patient\patientlogin.html:63
+msgid "Click here to register"
+msgstr "اضغط هنا للتسجيل"
+
+#: .\templates\donor\donorsignup.html:25
+msgid "Donor Signup"
+msgstr "تسجيل المتبرع"
+
+#: .\templates\donor\donorsignup.html:119
+#: .\templates\patient\patientsignup.html:148
+msgid "Register"
+msgstr "تسجيل"
+
+#: .\templates\donor\donorsignup.html:127
+#: .\templates\patient\patientsignup.html:155
+msgid "Already have an account ?"
+msgstr "لديك حساب بالفعل؟"
+
+#: .\templates\donor\donorsignup.html:128
+#: .\templates\patient\patientsignup.html:157
+msgid "Click here to login"
+msgstr "اضغط هنا لتسجيل الدخول"
+
+#: .\templates\donor\makerequest.html:20
+#: .\templates\patient\makerequest.html:19
+msgid "MAKE BLOOD REQUEST"
+msgstr "طلب دم"
+
+#: .\templates\donor\makerequest.html:37
+#: .\templates\donor\request_history.html:30
+#: .\templates\patient\makerequest.html:36
+#: .\templates\patient\my_request.html:30
+msgid "Patient Age"
+msgstr "عمر المريض"
+
+#: .\templates\donor\makerequest.html:87
+#: .\templates\patient\makerequest.html:85
+msgid "REQUEST"
+msgstr "إرسال الطلب"
+
+#: .\templates\donor\request_history.html:24
+#: .\templates\patient\my_request.html:24
+msgid "My Blood Request"
+msgstr "طلباتي للدم"
+
+#: .\templates\patient\patientbase.html:7
+msgid "PATIENT"
+msgstr "المريض"
+
+#: .\templates\patient\patientbase.html:111
+msgid "Make Request"
+msgstr "طلب دم"
+
+#: .\templates\patient\patientlogin.html:28
+msgid "Patient Login"
+msgstr "دخول المريض"
+
+#: .\templates\patient\patientsignup.html:28
+msgid "Patient Signup"
+msgstr "تسجيل المريض"
