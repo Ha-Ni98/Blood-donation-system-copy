@@ -188,3 +188,123 @@ class BloodRequest(models.Model):
 
     def __str__(self):
         return f"BloodRequest #{self.pk} - {self.get_status_display()}"
+
+
+# ---------------------------------------------------------------------------
+# Notification
+# ---------------------------------------------------------------------------
+
+class Notification(models.Model):
+    """
+    In-app notification for an AppUser (patient or donor).
+    Auto-expires 60 days after creation (cleaned by Celery — Sprint 9).
+    """
+    recipient = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name='notifications'
+    )
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # Computed on first save: created_at + 60 days (Spec §8.3)
+    expires_at = models.DateTimeField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new and self.expires_at is None:
+            self.expires_at = self.created_at + timedelta(days=60)
+            Notification.objects.filter(pk=self.pk).update(expires_at=self.expires_at)
+
+    def __str__(self):
+        return f"Notification → {self.recipient} — {self.title}"
+
+
+# ---------------------------------------------------------------------------
+# TransfusionSafetyPeriod
+# ---------------------------------------------------------------------------
+
+class TransfusionSafetyPeriod(models.Model):
+    """
+    Created when a BloodRequest is marked Completed and the patient also has
+    a DonorProfile. Blocks that donor from donating for 6 months (Spec §7.2).
+    """
+    # OneToOne: one donor can only have one active safety period at a time
+    donor = models.OneToOneField(
+        DonorProfile, on_delete=models.CASCADE, related_name='transfusion_safety_period'
+    )
+    blood_request = models.ForeignKey(
+        BloodRequest, on_delete=models.CASCADE, related_name='safety_periods'
+    )
+    started_at = models.DateTimeField()
+    # Computed on save: started_at + 6 months
+    ends_at = models.DateTimeField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.ends_at and self.started_at:
+            # 6 months approximated as 183 days (Spec §7.2)
+            self.ends_at = self.started_at + timedelta(days=183)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"SafetyPeriod: {self.donor} until {self.ends_at}"
+
+
+# ---------------------------------------------------------------------------
+# DonationRequest (stub — donor-facing views built in Phase C)
+# ---------------------------------------------------------------------------
+
+DONATION_REQUEST_STATUS_CHOICES = [
+    ('pending', 'Pending'),
+    ('approved', 'Approved'),
+    ('completed', 'Completed'),
+    ('rejected', 'Rejected'),
+    ('cancelled_by_user', 'Cancelled by User'),
+    ('cancelled_by_admin', 'Cancelled by Admin'),
+]
+
+
+class DonationRequest(models.Model):
+    """
+    A donor's offer to donate blood, optionally linked to a BloodRequest.
+    The donor-facing form and views for creating DonationRequests are Phase C scope.
+    Only the model is created here so that BloodRequest.save() can reference it
+    (via the OneToOne) and admin can link them.
+    """
+    donor = models.ForeignKey(
+        DonorProfile, on_delete=models.CASCADE, related_name='donation_requests'
+    )
+    # Nullable — admin links this to a BloodRequest (Phase C/D admin action)
+    blood_request = models.OneToOneField(
+        BloodRequest,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='donation_request',
+    )
+
+    # --- Health screening fields (Spec §9.1) ---
+    donated_last_3_months = models.BooleanField(default=False)
+    transfusion_last_6_months = models.BooleanField(default=False)
+    surgery_last_6_months = models.BooleanField(default=False)
+    has_fever = models.BooleanField(default=False)
+    on_medication = models.BooleanField(default=False)
+    has_anemia = models.BooleanField(default=False)
+    # Female-only fields — nullable for male donors
+    is_pregnant = models.BooleanField(null=True, blank=True)
+    is_breastfeeding = models.BooleanField(null=True, blank=True)
+
+    # --- Confirmation checkboxes (Spec §9.2) ---
+    confirmed_accurate = models.BooleanField(default=False)
+    confirmed_understands = models.BooleanField(default=False)
+
+    status = models.CharField(
+        max_length=20,
+        choices=DONATION_REQUEST_STATUS_CHOICES,
+        default='pending',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"DonationRequest #{self.pk} by {self.donor} — {self.get_status_display()}"
