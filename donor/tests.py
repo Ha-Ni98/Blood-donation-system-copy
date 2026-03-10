@@ -159,3 +159,23 @@ class DonorViewsTests(TestCase):
         
         dr.refresh_from_db()
         self.assertEqual(dr.status, 'completed')
+
+    def test_donation_history_loads(self):
+        url = reverse('donation-history')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'donor/donation_history.html')
+
+    def test_donor_notifications_loads(self):
+        url = reverse('donor-notifications')
+        # Create a notification
+        Notification.objects.create(
+            recipient=self.app_user_m, # Changed from self.app_user to self.app_user_m to match existing setup
+            title="Test notification",
+            message="Test message"
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'donor/notifications.html')
+        # Verify it marks as read
+        self.assertFalse(Notification.objects.filter(recipient=self.app_user_m, is_read=False).exists()) # Changed from self.app_user to self.app_user_m
