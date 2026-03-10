@@ -150,5 +150,15 @@ def cancel_donation_request_view(request, pk):
 
 @login_required
 def donation_history_view(request):
-    # Stubbed in Sprint 1 — will be fully implemented in a later Sprint
-    return redirect('donor-dashboard')
+    try:
+        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
+    except bmodels.DonorProfile.DoesNotExist:
+        return redirect('/')
+
+    donations = bmodels.DonationRequest.objects.filter(donor=donor_profile).order_by('-created_at')
+    
+    context = {
+        'donations': donations,
+        'app_user': donor_profile.app_user
+    }
+    return render(request, 'donor/donation_history.html', context)
