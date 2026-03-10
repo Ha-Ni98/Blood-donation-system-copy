@@ -1,14 +1,6 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from . import forms, models
-from django.db.models import Sum, Q
-from django.contrib.auth.models import Group
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.conf import settings
-from datetime import date, timedelta
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
-from blood import forms as bforms
+from django.contrib.auth.decorators import login_required
 from blood import models as bmodels
 
 # Donor signup has been moved to the unified signup flow in blood/views.py
@@ -16,47 +8,39 @@ from blood import models as bmodels
 
 def donor_dashboard_view(request):
     donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    dict={
-        'requestpending': bmodels.BloodRequest.objects.filter(request_by_donor=donor_profile, status='Pending').count(),
-        'requestapproved': bmodels.BloodRequest.objects.filter(request_by_donor=donor_profile, status='Approved').count(),
-        'requestmade': bmodels.BloodRequest.objects.filter(request_by_donor=donor_profile).count(),
-        'requestrejected': bmodels.BloodRequest.objects.filter(request_by_donor=donor_profile, status='Rejected').count(),
+    # Stubbed — donor dashboard stats will be refactored in Phase C.
+    # BloodRequest no longer has request_by_donor FK; donors use DonationRequest.
+    dict = {
+        'requestpending': 0,
+        'requestapproved': 0,
+        'requestmade': 0,
+        'requestrejected': 0,
     }
-    return render(request,'donor/donor_dashboard.html',context=dict)
+    return render(request, 'donor/donor_dashboard.html', context=dict)
 
 
 def donate_blood_view(request):
-    donation_form=forms.DonationForm()
-    if request.method=='POST':
-        donation_form=forms.DonationForm(request.POST)
+    donation_form = forms.DonationForm()
+    if request.method == 'POST':
+        donation_form = forms.DonationForm(request.POST)
         if donation_form.is_valid():
-            blood_donate=donation_form.save(commit=False)
-            blood_donate.bloodgroup=donation_form.cleaned_data['bloodgroup']
+            blood_donate = donation_form.save(commit=False)
+            blood_donate.bloodgroup = donation_form.cleaned_data['bloodgroup']
             donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-            blood_donate.donor=donor_profile
+            blood_donate.donor = donor_profile
             blood_donate.save()
-            return HttpResponseRedirect('donation-history')  
-    return render(request,'donor/donate_blood.html',{'donation_form':donation_form})
+            return redirect('donation-history')
+    return render(request, 'donor/donate_blood.html', {'donation_form': donation_form})
+
 
 def donation_history_view(request):
     donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    donations=models.BloodDonate.objects.filter(donor=donor_profile)
-    return render(request,'donor/donation_history.html',{'donations':donations})
+    donations = models.BloodDonate.objects.filter(donor=donor_profile)
+    return render(request, 'donor/donation_history.html', {'donations': donations})
 
-def make_request_view(request):
-    request_form=bforms.RequestForm()
-    if request.method=='POST':
-        request_form=bforms.RequestForm(request.POST)
-        if request_form.is_valid():
-            blood_request=request_form.save(commit=False)
-            blood_request.bloodgroup=request_form.cleaned_data['bloodgroup']
-            donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-            blood_request.request_by_donor=donor_profile
-            blood_request.save()
-            return HttpResponseRedirect('request-history')  
-    return render(request,'donor/makerequest.html',{'request_form':request_form})
 
-def request_history_view(request):
-    donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    blood_request=bmodels.BloodRequest.objects.filter(request_by_donor=donor_profile)
-    return render(request,'donor/request_history.html',{'blood_request':blood_request})
+# make_request_view REMOVED — donors do not submit BloodRequests.
+# DonationRequest views will be built in Phase C.
+
+# request_history_view REMOVED — donors do not have BloodRequest history.
+# DonationRequest history will be built in Phase C.

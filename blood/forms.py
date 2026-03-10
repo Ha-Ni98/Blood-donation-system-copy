@@ -9,10 +9,9 @@ class BloodForm(forms.ModelForm):
         model=models.Stock
         fields=['bloodgroup','unit']
 
-class RequestForm(forms.ModelForm):
-    class Meta:
-        model=models.BloodRequest
-        fields=['patient_name','patient_age','reason','bloodgroup','unit']
+# RequestForm removed — legacy BloodRequest fields no longer exist.
+# BloodRequestForm will be created in Sprint 3.
+
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

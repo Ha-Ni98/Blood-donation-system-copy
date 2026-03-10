@@ -324,7 +324,7 @@ def admin_dashboard_view(request):
         'totaldonors':models.DonorProfile.objects.all().count(),
         'totalbloodunit':totalunit['unit__sum'],
         'totalrequest':models.BloodRequest.objects.all().count(),
-        'totalapprovedrequest':models.BloodRequest.objects.all().filter(status='Approved').count()
+        'totalapprovedrequest':models.BloodRequest.objects.all().filter(status='approved').count()
     }
     return render(request,'blood/admin_dashboard.html',context=dict)
 
@@ -393,63 +393,45 @@ def delete_patient_view(request,pk):
 
 @login_required(login_url='adminlogin')
 def admin_request_view(request):
-    requests=models.BloodRequest.objects.all().filter(status='Pending')
+    requests=models.BloodRequest.objects.all().filter(status='pending')
     return render(request,'blood/admin_request.html',{'requests':requests})
 
 @login_required(login_url='adminlogin')
 def admin_request_history_view(request):
-    requests=models.BloodRequest.objects.all().exclude(status='Pending')
+    requests=models.BloodRequest.objects.all().exclude(status='pending')
     return render(request,'blood/admin_request_history.html',{'requests':requests})
 
 @login_required(login_url='adminlogin')
 def admin_donation_view(request):
-    donations=dmodels.BloodDonate.objects.all()
-    return render(request,'blood/admin_donation.html',{'donations':donations})
+    # Stubbed — legacy BloodDonate model references removed.
+    # Will be rebuilt when DonationRequest views are implemented (Phase C).
+    return render(request,'blood/admin_donation.html',{'donations': []})
 
 @login_required(login_url='adminlogin')
 def update_approve_status_view(request,pk):
+    # Stubbed — legacy stock deduction logic removed.
+    # Full status transition logic will be implemented in Sprint 8.
     req=models.BloodRequest.objects.get(id=pk)
-    message=None
-    bloodgroup=req.bloodgroup
-    unit=req.unit
-    stock=models.Stock.objects.get(bloodgroup=bloodgroup)
-    if stock.unit >= unit:
-        stock.unit=stock.unit-unit
-        stock.save()
-        req.status="Approved"
-        
-    else:
-        message="Stock Doest Not Have Enough Blood To Approve This Request, Only "+str(stock.unit)+" Unit Available"
+    req.status='approved'
     req.save()
-
-    requests=models.BloodRequest.objects.all().filter(status='Pending')
-    return render(request,'blood/admin_request.html',{'requests':requests,'message':message})
+    return HttpResponseRedirect('/admin-request')
 
 @login_required(login_url='adminlogin')
 def update_reject_status_view(request,pk):
+    # Stubbed — will be properly implemented in Sprint 8.
     req=models.BloodRequest.objects.get(id=pk)
-    req.status="Rejected"
+    req.status='rejected'
     req.save()
     return HttpResponseRedirect('/admin-request')
 
 @login_required(login_url='adminlogin')
 def approve_donation_view(request,pk):
-    donation=dmodels.BloodDonate.objects.get(id=pk)
-    donation_blood_group=donation.bloodgroup
-    donation_blood_unit=donation.unit
-
-    stock=models.Stock.objects.get(bloodgroup=donation_blood_group)
-    stock.unit=stock.unit+donation_blood_unit
-    stock.save()
-
-    donation.status='Approved'
-    donation.save()
+    # Stubbed — legacy BloodDonate model references removed.
+    # Will be rebuilt when DonationRequest views are implemented (Phase C).
     return HttpResponseRedirect('/admin-donation')
-
 
 @login_required(login_url='adminlogin')
 def reject_donation_view(request,pk):
-    donation=dmodels.BloodDonate.objects.get(id=pk)
-    donation.status='Rejected'
-    donation.save()
+    # Stubbed — legacy BloodDonate model references removed.
+    # Will be rebuilt when DonationRequest views are implemented (Phase C).
     return HttpResponseRedirect('/admin-donation')
