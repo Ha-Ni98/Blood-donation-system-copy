@@ -9,6 +9,7 @@ urlpatterns = [
     path('submit-donation', views.submit_donation_request_view, name='submit-donation'),
     path('cancel-donation/<int:pk>', views.cancel_donation_request_view, name='cancel-donation'),
     path('donation-history', views.donation_history_view, name='donation-history'),
+    path('notifications', views.donor_notifications_view, name='donor-notifications'),
     # make-request and request-history REMOVED — donors do not submit BloodRequests.
     # DonationRequest URLs will be added in Phase C.
 ]

@@ -162,3 +162,22 @@ def donation_history_view(request):
         'app_user': donor_profile.app_user
     }
     return render(request, 'donor/donation_history.html', context)
+
+@login_required
+def donor_notifications_view(request):
+    try:
+        app_user = bmodels.AppUser.objects.get(user=request.user)
+    except bmodels.AppUser.DoesNotExist:
+        return redirect('/')
+
+    # Mark all unread notifications as read
+    bmodels.Notification.objects.filter(recipient=app_user, is_read=False).update(is_read=True)
+
+    # Fetch all notifications for the user
+    notifications = bmodels.Notification.objects.filter(recipient=app_user).order_by('-created_at')
+
+    context = {
+        'notifications': notifications,
+        'app_user': app_user
+    }
+    return render(request, 'donor/notifications.html', context)
