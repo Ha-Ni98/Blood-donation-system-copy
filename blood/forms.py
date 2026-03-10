@@ -10,7 +10,41 @@ class BloodForm(forms.ModelForm):
         fields=['bloodgroup','unit']
 
 # RequestForm removed — legacy BloodRequest fields no longer exist.
-# BloodRequestForm will be created in Sprint 3.
+
+class BloodRequestForm(forms.ModelForm):
+    # Confirmation checkbox — not a model field, required by Spec §4.1
+    confirmation = forms.BooleanField(
+        required=True,
+        label="I confirm the accuracy of this information",
+        error_messages={'required': 'You must confirm the accuracy of this information.'},
+    )
+
+    class Meta:
+        model = models.BloodRequest
+        fields = [
+            'blood_type', 'blood_sign', 'units_needed', 'urgency',
+            'required_date', 'reason', 'recent_surgery', 'wilaya', 'commune',
+        ]
+        widgets = {
+            'required_date': forms.DateInput(attrs={'type': 'date'}),
+            'reason': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def clean_units_needed(self):
+        value = self.cleaned_data.get('units_needed')
+        if value is not None and value < 1:
+            raise forms.ValidationError("Units needed must be at least 1.")
+        return value
+
+    def clean(self):
+        cleaned_data = super().clean()
+        wilaya = cleaned_data.get('wilaya')
+        commune = cleaned_data.get('commune')
+        # Ensure commune belongs to the chosen wilaya
+        if wilaya and commune and commune.wilaya != wilaya:
+            self.add_error('commune', 'Selected commune does not belong to the chosen wilaya.')
+        return cleaned_data
+
 
 
 class LoginForm(AuthenticationForm):
