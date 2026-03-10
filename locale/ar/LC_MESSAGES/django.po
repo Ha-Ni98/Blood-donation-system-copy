@@ -2590,3 +2590,64 @@ msgstr "طلب دم"
 
 #~ msgid "Patient Signup"
 #~ msgstr "تسجيل المريض"
+
+msgid "Submit Donation Request"
+msgstr "تقديم طلب تبرع"
+
+msgid "Donated blood in the last 3 months?"
+msgstr "هل تبرعت بالدم في آخر 3 أشهر؟"
+
+msgid "Received a blood transfusion in the last 6 months?"
+msgstr "هل تلقيت نقل دم في آخر 6 أشهر؟"
+
+msgid "Had surgery in the last 6 months?"
+msgstr "هل أجريت عملية جراحية في آخر 6 أشهر؟"
+
+msgid "Currently have fever, infection, or flu?"
+msgstr "هل تعاني حاليا من حمى أو عدوى أو إنفلونزا؟"
+
+msgid "Currently taking medication?"
+msgstr "هل تتناول حاليا أدوية؟"
+
+msgid "Suffer from anemia?"
+msgstr "هل تعاني من فقر الدم؟"
+
+msgid "Are you pregnant?"
+msgstr "هل أنت حامل؟"
+
+msgid "Are you breastfeeding?"
+msgstr "هل ترضعين طبيعياً؟"
+
+msgid "I understand that providing false information may disqualify me"
+msgstr "أفهم أن تقديم معلومات كاذبة قد يؤدي إلى استبعادي"
+
+msgid "Last Donation Date"
+msgstr "تاريخ آخر تبرع"
+
+msgid "Health Screening"
+msgstr "الفحص الصحي"
+
+msgid "Your donation request has been submitted."
+msgstr "تم تقديم طلب التبرع الخاص بك."
+
+msgid "You already have an active donation request."
+msgstr "لديك بالفعل طلب تبرع نشط."
+
+msgid "You cannot donate because you have an active blood request."
+msgstr "لا يمكنك التبرع لأن لديك طلب دم نشط."
+
+msgid "You cannot donate because you received a transfusion less than 6 months ago."
+msgstr "لا يمكنك التبرع لأنك تلقيت نقل دم منذ أقل من 6 أشهر."
+
+msgid "You are currently not eligible to donate blood."
+msgstr "أنت غير مؤهل حاليا للتبرع بالدم."
+
+msgid "You must confirm the accuracy of this information."
+msgstr "يجب عليك تأكيد صحة هذه المعلومات."
+
+msgid "You must acknowledge this before submitting."
+msgstr "يجب عليك الإقرار بهذا قبل التقديم."
+
+msgid "You must confirm both checkboxes at the bottom."
+msgstr "يجب عليك تأكيد كلا المربعين في الأسفل."
+

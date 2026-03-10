@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from blood import models as bmodels
+from . import forms
 
 # Donor signup has been moved to the unified signup flow in blood/views.py
 
@@ -17,9 +21,65 @@ def donor_dashboard_view(request):
     return render(request, 'donor/donor_dashboard.html', context=dict)
 
 @login_required
-def donate_blood_view(request):
-    # Stubbed in Sprint 1 — will be fully implemented as submit_donation_request_view in Sprint 2
-    return redirect('donor-dashboard')
+def submit_donation_request_view(request):
+    try:
+        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
+    except bmodels.DonorProfile.DoesNotExist:
+        return redirect('/')
+
+    app_user = donor_profile.app_user
+
+    # Eligibility Checks
+    if not donor_profile.is_eligible:
+        messages.warning(request, _("You are currently not eligible to donate blood."))
+        return redirect('donor-dashboard')
+
+    if hasattr(app_user, 'patientprofile'):
+        has_active_br = bmodels.BloodRequest.objects.filter(
+            patient=app_user.patientprofile,
+            status__in=['pending', 'approved']
+        ).exists()
+        if has_active_br:
+            messages.warning(request, _("You cannot donate because you have an active blood request."))
+            return redirect('donor-dashboard')
+
+    has_active_dr = bmodels.DonationRequest.objects.filter(
+        donor=donor_profile,
+        status__in=['pending', 'approved']
+    ).exists()
+    if has_active_dr:
+        messages.warning(request, _("You already have an active donation request."))
+        return redirect('donor-dashboard')
+
+    has_active_tsp = bmodels.TransfusionSafetyPeriod.objects.filter(
+        donor=donor_profile,
+        ends_at__gt=timezone.now()
+    ).exists()
+    if has_active_tsp:
+        messages.warning(request, _("You cannot donate because you received a transfusion less than 6 months ago."))
+        return redirect('donor-dashboard')
+
+    if request.method == 'POST':
+        form = forms.DonationRequestForm(request.POST, gender=app_user.gender)
+        if form.is_valid():
+            donation_request = form.save(commit=False)
+            donation_request.donor = donor_profile
+            donation_request.status = 'pending'
+            donation_request.save()
+            messages.success(request, _("Your donation request has been submitted."))
+            return redirect('donor-dashboard')
+    else:
+        form = forms.DonationRequestForm(gender=app_user.gender)
+
+    context = {
+        'form': form,
+        'full_name': f"{app_user.first_name} {app_user.last_name}",
+        'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'age': app_user.age,
+        'last_donation_date': donor_profile.last_donation_date,
+        'is_female': app_user.gender == 'F'
+    }
+    return render(request, 'donor/donation_request_form.html', context)
 
 @login_required
 def donation_history_view(request):

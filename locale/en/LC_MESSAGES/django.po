@@ -2379,3 +2379,64 @@ msgstr ""
 #: templates/patient/patientbase.html:125
 msgid "Make Request"
 msgstr ""
+
+msgid "Submit Donation Request"
+msgstr "Submit Donation Request"
+
+msgid "Donated blood in the last 3 months?"
+msgstr "Donated blood in the last 3 months?"
+
+msgid "Received a blood transfusion in the last 6 months?"
+msgstr "Received a blood transfusion in the last 6 months?"
+
+msgid "Had surgery in the last 6 months?"
+msgstr "Had surgery in the last 6 months?"
+
+msgid "Currently have fever, infection, or flu?"
+msgstr "Currently have fever, infection, or flu?"
+
+msgid "Currently taking medication?"
+msgstr "Currently taking medication?"
+
+msgid "Suffer from anemia?"
+msgstr "Suffer from anemia?"
+
+msgid "Are you pregnant?"
+msgstr "Are you pregnant?"
+
+msgid "Are you breastfeeding?"
+msgstr "Are you breastfeeding?"
+
+msgid "I understand that providing false information may disqualify me"
+msgstr "I understand that providing false information may disqualify me"
+
+msgid "Last Donation Date"
+msgstr "Last Donation Date"
+
+msgid "Health Screening"
+msgstr "Health Screening"
+
+msgid "Your donation request has been submitted."
+msgstr "Your donation request has been submitted."
+
+msgid "You already have an active donation request."
+msgstr "You already have an active donation request."
+
+msgid "You cannot donate because you have an active blood request."
+msgstr "You cannot donate because you have an active blood request."
+
+msgid "You cannot donate because you received a transfusion less than 6 months ago."
+msgstr "You cannot donate because you received a transfusion less than 6 months ago."
+
+msgid "You are currently not eligible to donate blood."
+msgstr "You are currently not eligible to donate blood."
+
+msgid "You must confirm the accuracy of this information."
+msgstr "You must confirm the accuracy of this information."
+
+msgid "You must acknowledge this before submitting."
+msgstr "You must acknowledge this before submitting."
+
+msgid "You must confirm both checkboxes at the bottom."
+msgstr "You must confirm both checkboxes at the bottom."
+

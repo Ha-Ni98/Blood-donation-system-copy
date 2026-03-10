@@ -2503,3 +2503,64 @@ msgstr "Faire une demande"
 
 #~ msgid "Patient Signup"
 #~ msgstr "Inscription patient"
+
+msgid "Submit Donation Request"
+msgstr "Soumettre une demande de don"
+
+msgid "Donated blood in the last 3 months?"
+msgstr "Avez-vous donné du sang au cours des 3 derniers mois ?"
+
+msgid "Received a blood transfusion in the last 6 months?"
+msgstr "Avez-vous reçu une transfusion sanguine au cours des 6 derniers mois ?"
+
+msgid "Had surgery in the last 6 months?"
+msgstr "Avez-vous subi une intervention chirurgicale au cours des 6 derniers mois ?"
+
+msgid "Currently have fever, infection, or flu?"
+msgstr "Avez-vous actuellement de la fièvre, une infection ou la grippe ?"
+
+msgid "Currently taking medication?"
+msgstr "Prenez-vous actuellement des médicaments ?"
+
+msgid "Suffer from anemia?"
+msgstr "Souffrez-vous d'anémie ?"
+
+msgid "Are you pregnant?"
+msgstr "Êtes-vous enceinte ?"
+
+msgid "Are you breastfeeding?"
+msgstr "Allaitez-vous ?"
+
+msgid "I understand that providing false information may disqualify me"
+msgstr "Je comprends que fournir de fausses informations peut me disqualifier"
+
+msgid "Last Donation Date"
+msgstr "Date du dernier don"
+
+msgid "Health Screening"
+msgstr "Dépistage de santé"
+
+msgid "Your donation request has been submitted."
+msgstr "Votre demande de don a été soumise."
+
+msgid "You already have an active donation request."
+msgstr "Vous avez déjà une demande de don active."
+
+msgid "You cannot donate because you have an active blood request."
+msgstr "Vous ne pouvez pas donner car vous avez une demande de sang active."
+
+msgid "You cannot donate because you received a transfusion less than 6 months ago."
+msgstr "Vous ne pouvez pas donner car vous avez reçu une transfusion il y a moins de 6 mois."
+
+msgid "You are currently not eligible to donate blood."
+msgstr "Vous n'êtes actuellement pas éligible pour donner du sang."
+
+msgid "You must confirm the accuracy of this information."
+msgstr "Vous devez confirmer l'exactitude de ces informations."
+
+msgid "You must acknowledge this before submitting."
+msgstr "Vous devez reconnaître cela avant de soumettre."
+
+msgid "You must confirm both checkboxes at the bottom."
+msgstr "Vous devez confirmer les deux cases en bas."
+
