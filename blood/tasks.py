@@ -49,15 +49,13 @@ def expire_blood_requests():
 @shared_task
 def expire_safety_periods():
     """
-    Checks for TransfusionSafetyPeriods older than 90 days.
-    Restores donor eligibility, notifies donor, and deletes the record. (Spec §4.6)
+    Checks for TransfusionSafetyPeriods older than 6 months.
+    Restores donor eligibility, notifies donor. (Spec §7.2)
     Runs daily.
     """
-    today = date.today()
-    ninety_days_ago = today - timedelta(days=90)
-    
     expired_periods = TransfusionSafetyPeriod.objects.filter(
-        started_at__lte=ninety_days_ago
+        ends_at__lte=timezone.now(),
+        donor__is_eligible=False
     )
     
     count = 0
@@ -70,10 +68,20 @@ def expire_safety_periods():
         Notification.objects.create(
             recipient=donor.app_user,
             title='You can donate again!',
-            message='Your 90-day transfusion safety period has passed. You are now eligible to donate blood again.'
+            message='Your 6-month transfusion safety period has passed. You are now eligible to donate blood again.'
         )
         
-        period.delete()
         count += 1
 
     return f"Expired {count} transfusion safety periods."
+
+
+@shared_task
+def delete_old_notifications():
+    """
+    Deletes notifications older than their expiry date.
+    Runs daily.
+    """
+    old_notifications = Notification.objects.filter(expires_at__lte=timezone.now())
+    count, _ = old_notifications.delete()
+    return f"Deleted {count} old notifications."
