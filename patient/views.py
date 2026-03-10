@@ -170,3 +170,26 @@ def cancel_request_view(request, pk):
     messages.success(request, 'Your request has been cancelled.')
     return redirect('my-request')
 
+
+@login_required(login_url='login')
+def notifications_view(request):
+    """
+    Displays all notifications for the current patient.
+    Marks all unread notifications as read on page load (Spec §8.3).
+    """
+    try:
+        patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
+    except bmodels.PatientProfile.DoesNotExist:
+        messages.error(request, 'Patient profile not found.')
+        return redirect('home')
+
+    app_user = patient_profile.app_user
+
+    # Bulk-mark unread as read before fetching (single UPDATE — efficient)
+    bmodels.Notification.objects.filter(recipient=app_user, is_read=False).update(is_read=True)
+
+    notifications = bmodels.Notification.objects.filter(
+        recipient=app_user
+    ).order_by('-created_at')
+
+    return render(request, 'patient/notifications.html', {'notifications': notifications})

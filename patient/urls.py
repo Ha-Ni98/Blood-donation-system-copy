@@ -9,4 +9,5 @@ urlpatterns = [
     path('make-request', views.make_request_view, name='make-request'),
     path('my-request', views.my_request_view, name='my-request'),
     path('cancel-request/<int:pk>', views.cancel_request_view, name='cancel-request'),
+    path('notifications', views.notifications_view, name='patient-notifications'),
 ]
