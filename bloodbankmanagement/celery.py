@@ -25,6 +25,10 @@ app.conf.beat_schedule = {
         'task': 'blood.tasks.expire_safety_periods',
         'schedule': crontab(minute=0, hour=0),
     },
+    'delete_old_notifications_daily': {
+        'task': 'blood.tasks.delete_old_notifications',
+        'schedule': crontab(minute=0, hour=1),
+    },
 }
 
 app.conf.timezone = 'UTC'
