@@ -115,3 +115,58 @@ def my_request_view(request):
         patient=patient_profile
     ).order_by('-created_at')
     return render(request, 'patient/my_request.html', {'blood_request': blood_request})
+
+
+@login_required(login_url='login')
+def cancel_request_view(request, pk):
+    """
+    Patient cancels their own blood request.
+    - POST only (CSRF protected)
+    - Ownership enforced: patient must own the request
+    - Only Pending or Approved statuses can be cancelled (Spec §4.4)
+    - If Approved + linked DonationRequest exists: cascade cancel + notify donor
+    """
+    if request.method != 'POST':
+        return redirect('my-request')
+
+    try:
+        patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
+    except bmodels.PatientProfile.DoesNotExist:
+        messages.error(request, 'Patient profile not found.')
+        return redirect('home')
+
+    try:
+        blood_request = bmodels.BloodRequest.objects.get(pk=pk, patient=patient_profile)
+    except bmodels.BloodRequest.DoesNotExist:
+        messages.error(request, 'Blood request not found.')
+        return redirect('my-request')
+
+    # Only Pending or Approved can be cancelled (Spec §4.4)
+    if blood_request.status not in list(ACTIVE_STATUSES):
+        messages.error(request, 'This request cannot be cancelled.')
+        return redirect('my-request')
+
+    # Cascade: if Approved and linked DonationRequest exists — Spec §4.4
+    if blood_request.status == 'approved':
+        try:
+            donation_req = blood_request.donation_request
+            donation_req.status = 'cancelled_by_admin'
+            donation_req.save()
+            # Notify the donor
+            bmodels.Notification.objects.create(
+                recipient=donation_req.donor.app_user,
+                title='Donation Request Cancelled',
+                message=(
+                    f'The blood request you were matched with has been cancelled by the patient. '
+                    f'Your donation request has been cancelled.'
+                ),
+            )
+        except bmodels.DonationRequest.DoesNotExist:
+            pass  # No linked DonationRequest — nothing to cascade
+
+    blood_request.status = 'cancelled_by_user'
+    blood_request.save()
+
+    messages.success(request, 'Your request has been cancelled.')
+    return redirect('my-request')
+
