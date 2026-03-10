@@ -127,6 +127,8 @@ def submit_donation_request_view(request):
     }
     return render(request, 'donor/donation_request_form.html', context)
 
+from django.db import transaction
+
 @login_required
 def cancel_donation_request_view(request, pk):
     try:
@@ -137,12 +139,30 @@ def cancel_donation_request_view(request, pk):
         return redirect('donor-dashboard')
 
     if request.method == 'POST':
-        if donation_request.status == 'pending':
-            donation_request.status = 'cancelled_by_user'
-            donation_request.save()
-            messages.success(request, _("Your donation request has been cancelled."))
+        if donation_request.status in ['pending', 'approved']:
+            with transaction.atomic():
+                donation_request.status = 'cancelled_by_user'
+                
+                # Handle cascade if linked to a BloodRequest
+                if donation_request.blood_request:
+                    blood_req = donation_request.blood_request
+                    blood_req.status = 'pending'
+                    blood_req.save()
+                    
+                    # Unlink
+                    donation_request.blood_request = None
+                    
+                    # Notify patient
+                    bmodels.Notification.objects.create(
+                        recipient=blood_req.patient.app_user,
+                        title=_("Donation Cancelled"),
+                        message=_("A donor cancelled their donation. Your blood request is now pending again.")
+                    )
+                    
+                donation_request.save()
+                messages.success(request, _("Your donation request has been cancelled."))
         else:
-            messages.error(request, _("Only pending requests can be cancelled."))
+            messages.error(request, _("Only pending or approved requests can be cancelled."))
     else:
         messages.error(request, _("Invalid request method."))
         
