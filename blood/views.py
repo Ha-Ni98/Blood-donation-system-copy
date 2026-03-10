@@ -7,11 +7,12 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from datetime import date, timedelta
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
-from donor import models as dmodels
-from patient import models as pmodels
-from donor import forms as dforms
-from patient import forms as pforms
+from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.db import transaction
+from django.http import JsonResponse
+from . import forms, models
 
 def home_view(request):
     x=models.Stock.objects.all()
@@ -53,21 +54,259 @@ def home_view(request):
         return HttpResponseRedirect('afterlogin')  
     return render(request,'blood/index.html')
 
-def is_donor(user):
-    return user.groups.filter(name='DONOR').exists()
-
-def is_patient(user):
-    return user.groups.filter(name='PATIENT').exists()
-
-
 def afterlogin_view(request):
-    if is_donor(request.user):      
-        return redirect('donor/donor-dashboard')
-                
-    elif is_patient(request.user):
-        return redirect('patient/patient-dashboard')
+    if hasattr(request.user, 'app_user'):
+        app_user = request.user.app_user
+        if hasattr(app_user, 'donorprofile') and hasattr(app_user, 'patientprofile'):
+            return redirect('donor-dashboard')
+        elif hasattr(app_user, 'donorprofile'):
+            return redirect('donor-dashboard')
+        elif hasattr(app_user, 'patientprofile'):
+            return redirect('patient-dashboard')
+        else:
+            return redirect('admin-dashboard')
     else:
         return redirect('admin-dashboard')
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('afterlogin')
+        
+    if request.method == 'POST':
+        form = forms.LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'Welcome back!')
+                return redirect('afterlogin')
+            else:
+                messages.error(request, 'Invalid email or password.')
+        else:
+            messages.error(request, 'Invalid email or password.')
+    else:
+        form = forms.LoginForm()
+    return render(request, 'blood/login.html', {'form': form})
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('afterlogin')
+
+    user_form = forms.SignupUserForm()
+    app_user_form = forms.SignupAppUserForm()
+
+    if request.method == 'POST':
+        user_form = forms.SignupUserForm(request.POST)
+        app_user_form = forms.SignupAppUserForm(request.POST)
+
+        if user_form.is_valid() and app_user_form.is_valid():
+            request.session['pending_registration'] = {
+                'user': user_form.cleaned_data,
+                'app_user': app_user_form.cleaned_data
+            }
+            # Add wilaya/commune IDs for reconstruction logic
+            request.session['pending_registration']['app_user']['wilaya_id'] = app_user_form.cleaned_data['wilaya'].id
+            request.session['pending_registration']['app_user']['commune_id'] = app_user_form.cleaned_data['commune'].id
+            
+            # Form cleaned_data contains unserializable Model instances, let's clean them out 
+            del request.session['pending_registration']['app_user']['wilaya']
+            del request.session['pending_registration']['app_user']['commune']
+
+            return redirect('choose-profile') # View built in next sprint
+
+    return render(request, 'blood/signup.html', {
+        'user_form': user_form,
+        'app_user_form': app_user_form
+    })
+
+def communes_api(request):
+    wilaya_id = request.GET.get('wilaya_id')
+    communes = models.Commune.objects.filter(wilaya_id=wilaya_id).order_by('name')
+    return JsonResponse(list(communes.values('id', 'name')), safe=False)
+
+def choose_profile_view(request):
+    # If not logged in and no pending registration, redirect to home
+    if not request.user.is_authenticated and 'pending_registration' not in request.session:
+        return redirect('home')
+    return render(request, 'blood/choose_profile.html')
+
+def create_patient_profile_view(request):
+    if request.method == 'POST':
+        form = forms.PatientProfileForm(request.POST)
+        if form.is_valid():
+            if 'pending_registration' in request.session:
+                # Flow: New User Registration
+                session_data = request.session['pending_registration']
+                
+                try:
+                    with transaction.atomic():
+                        # Create User
+                        user = User.objects.create_user(
+                            username=session_data['user']['username'],
+                            password=session_data['user']['password']
+                        )
+                        
+                        # Reconstruct Wilaya and Commune
+                        wilaya = models.Wilaya.objects.get(id=session_data['app_user']['wilaya_id'])
+                        commune = models.Commune.objects.get(id=session_data['app_user']['commune_id'])
+                        
+                        # Create AppUser
+                        app_user_data = session_data['app_user'].copy()
+                        del app_user_data['wilaya_id']
+                        del app_user_data['commune_id']
+                        app_user_data.pop('terms', None)
+                        
+                        app_user = models.AppUser.objects.create(
+                            user=user,
+                            wilaya=wilaya,
+                            commune=commune,
+                            **app_user_data
+                        )
+                        
+                        # Create PatientProfile
+                        patient_profile = form.save(commit=False)
+                        patient_profile.app_user = app_user
+                        patient_profile.save()
+                        
+                        # Set Groups
+                        my_patient_group = Group.objects.get_or_create(name='PATIENT')
+                        my_patient_group[0].user_set.add(user)
+                        
+                    # Clean session and login
+                    if 'pending_registration' in request.session:
+                        del request.session['pending_registration']
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    messages.success(request, 'Account created successfully.')
+                    messages.success(request, 'Patient Profile created successfully.')
+                    return redirect('patient-dashboard')
+                        
+                except Exception as e:
+                    messages.error(request, f'An error occurred: {str(e)}')
+            else:
+                messages.error(request, 'No pending registration found.')
+                return redirect('signup')
+    else:
+        form = forms.PatientProfileForm()
+        
+    return render(request, 'blood/create_patient_profile.html', {'form': form})
+
+def create_donor_profile_view(request):
+    if request.method == 'POST':
+        form = forms.DonorProfileForm(request.POST)
+        if form.is_valid():
+            if 'pending_registration' in request.session:
+                # Flow: New User Registration
+                session_data = request.session['pending_registration']
+                
+                try:
+                    with transaction.atomic():
+                        # Create User
+                        user = User.objects.create_user(
+                            username=session_data['user']['username'],
+                            password=session_data['user']['password']
+                        )
+                        
+                        # Reconstruct Wilaya and Commune
+                        wilaya = models.Wilaya.objects.get(id=session_data['app_user']['wilaya_id'])
+                        commune = models.Commune.objects.get(id=session_data['app_user']['commune_id'])
+                        
+                        # Create AppUser
+                        app_user_data = session_data['app_user'].copy()
+                        del app_user_data['wilaya_id']
+                        del app_user_data['commune_id']
+                        app_user_data.pop('terms', None)
+                        
+                        app_user = models.AppUser.objects.create(
+                            user=user,
+                            wilaya=wilaya,
+                            commune=commune,
+                            **app_user_data
+                        )
+                        
+                        # Create DonorProfile
+                        donor_profile = form.save(commit=False)
+                        donor_profile.app_user = app_user
+                        donor_profile.save()
+                        
+                        # Set Groups
+                        my_donor_group = Group.objects.get_or_create(name='DONOR')
+                        my_donor_group[0].user_set.add(user)
+                        
+                    # Clean session and login
+                    if 'pending_registration' in request.session:
+                        del request.session['pending_registration']
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    messages.success(request, 'Account created successfully.')
+                    messages.success(request, 'Donor Profile created successfully.')
+                    return redirect('donor-dashboard')
+                        
+                except Exception as e:
+                    messages.error(request, f'An error occurred: {str(e)}')
+            else:
+                messages.error(request, 'No pending registration found.')
+                return redirect('signup')
+    else:
+        form = forms.DonorProfileForm()
+        
+    return render(request, 'blood/create_donor_profile.html', {'form': form})
+
+@login_required(login_url='adminlogin')
+def create_donor_profile_from_patient_view(request):
+    app_user = getattr(request.user, 'app_user', None)
+    if not app_user:
+        return redirect('home')
+
+    if hasattr(app_user, 'donorprofile'):
+        messages.info(request, "You already have a Donor profile.")
+        return redirect('donor-dashboard')
+
+    if request.method == 'POST':
+        form = forms.DonorProfileForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                donor_profile = form.save(commit=False)
+                donor_profile.app_user = app_user
+                donor_profile.save()
+
+                donor_group, _ = Group.objects.get_or_create(name='DONOR')
+                donor_group.user_set.add(request.user)
+
+            messages.success(request, "Donor profile created successfully.")
+            return redirect('donor-dashboard')
+    else:
+        form = forms.DonorProfileForm()
+
+    return render(request, 'blood/create_donor_profile.html', {'form': form})
+
+@login_required(login_url='adminlogin')
+def create_patient_profile_from_donor_view(request):
+    app_user = getattr(request.user, 'app_user', None)
+    if not app_user:
+        return redirect('home')
+
+    if hasattr(app_user, 'patientprofile'):
+        messages.info(request, "You already have a Patient profile.")
+        return redirect('patient-dashboard')
+
+    if request.method == 'POST':
+        form = forms.PatientProfileForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                patient_profile = form.save(commit=False)
+                patient_profile.app_user = app_user
+                patient_profile.save()
+
+                patient_group, _ = Group.objects.get_or_create(name='PATIENT')
+                patient_group.user_set.add(request.user)
+
+            messages.success(request, "Patient profile created successfully.")
+            return redirect('patient-dashboard')
+    else:
+        form = forms.PatientProfileForm()
+
+    return render(request, 'blood/create_patient_profile.html', {'form': form})
 
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
@@ -82,7 +321,7 @@ def admin_dashboard_view(request):
         'AB2':models.Stock.objects.get(bloodgroup="AB-"),
         'O1':models.Stock.objects.get(bloodgroup="O+"),
         'O2':models.Stock.objects.get(bloodgroup="O-"),
-        'totaldonors':dmodels.Donor.objects.all().count(),
+        'totaldonors':models.DonorProfile.objects.all().count(),
         'totalbloodunit':totalunit['unit__sum'],
         'totalrequest':models.BloodRequest.objects.all().count(),
         'totalapprovedrequest':models.BloodRequest.objects.all().filter(status='Approved').count()
@@ -115,73 +354,41 @@ def admin_blood_view(request):
 
 @login_required(login_url='adminlogin')
 def admin_donor_view(request):
-    donors=dmodels.Donor.objects.all()
+    donors=models.DonorProfile.objects.all()
     return render(request,'blood/admin_donor.html',{'donors':donors})
 
 @login_required(login_url='adminlogin')
 def update_donor_view(request,pk):
-    donor=dmodels.Donor.objects.get(id=pk)
-    user=dmodels.User.objects.get(id=donor.user_id)
-    userForm=dforms.DonorUserForm(instance=user)
-    donorForm=dforms.DonorForm(request.FILES,instance=donor)
-    mydict={'userForm':userForm,'donorForm':donorForm}
-    if request.method=='POST':
-        userForm=dforms.DonorUserForm(request.POST,instance=user)
-        donorForm=dforms.DonorForm(request.POST,request.FILES,instance=donor)
-        if userForm.is_valid() and donorForm.is_valid():
-            user=userForm.save()
-            user.set_password(user.password)
-            user.save()
-            donor=donorForm.save(commit=False)
-            donor.user=user
-            donor.bloodgroup=donorForm.cleaned_data['bloodgroup']
-            donor.save()
-            return redirect('admin-donor')
-    return render(request,'blood/update_donor.html',context=mydict)
-
+    # This view will be rebuilt or disabled as part of the phase since
+    # donor updates must go through AppUser unifying views. 
+    # For now, redirecting to admin-donor to prevent errors.
+    return redirect('admin-donor')
 
 @login_required(login_url='adminlogin')
 def delete_donor_view(request,pk):
-    donor=dmodels.Donor.objects.get(id=pk)
-    user=User.objects.get(id=donor.user_id)
+    donor=models.DonorProfile.objects.get(id=pk)
+    user=donor.app_user.user
     user.delete()
-    donor.delete()
     return HttpResponseRedirect('/admin-donor')
 
 @login_required(login_url='adminlogin')
 def admin_patient_view(request):
-    patients=pmodels.Patient.objects.all()
+    patients=models.PatientProfile.objects.all()
     return render(request,'blood/admin_patient.html',{'patients':patients})
 
 
 @login_required(login_url='adminlogin')
 def update_patient_view(request,pk):
-    patient=pmodels.Patient.objects.get(id=pk)
-    user=pmodels.User.objects.get(id=patient.user_id)
-    userForm=pforms.PatientUserForm(instance=user)
-    patientForm=pforms.PatientForm(request.FILES,instance=patient)
-    mydict={'userForm':userForm,'patientForm':patientForm}
-    if request.method=='POST':
-        userForm=pforms.PatientUserForm(request.POST,instance=user)
-        patientForm=pforms.PatientForm(request.POST,request.FILES,instance=patient)
-        if userForm.is_valid() and patientForm.is_valid():
-            user=userForm.save()
-            user.set_password(user.password)
-            user.save()
-            patient=patientForm.save(commit=False)
-            patient.user=user
-            patient.bloodgroup=patientForm.cleaned_data['bloodgroup']
-            patient.save()
-            return redirect('admin-patient')
-    return render(request,'blood/update_patient.html',context=mydict)
-
+    # This view will be rebuilt or disabled as part of the phase since
+    # patient updates must go through AppUser unifying views. 
+    # For now, redirecting to admin-patient to prevent errors.
+    return redirect('admin-patient')
 
 @login_required(login_url='adminlogin')
 def delete_patient_view(request,pk):
-    patient=pmodels.Patient.objects.get(id=pk)
-    user=User.objects.get(id=patient.user_id)
+    patient=models.PatientProfile.objects.get(id=pk)
+    user=patient.app_user.user
     user.delete()
-    patient.delete()
     return HttpResponseRedirect('/admin-patient')
 
 @login_required(login_url='adminlogin')
