@@ -34,23 +34,37 @@
         </a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" style="color: white;" href="/patient/patientlogin">
-          <i class="fas fa-procedures"></i>&nbsp; {% trans "Patient" %}
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" style="color: white;" href="/donor/donorlogin">
-          <i class="fas fa-user"></i>&nbsp; {% trans "Donor" %}
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" style="color: white;" href="/adminlogin">
-          <i class="fas fa-user-shield"></i>&nbsp; {% trans "Admin" %}
-        </a>
-      </li>
+      {% if request.user.is_authenticated %}
+          {% if request.user.is_superuser %}
+              <li class="nav-item">
+                  <a class="nav-link" style="color: white;" href="/admin-dashboard">
+                      <i class="fas fa-user-shield"></i>&nbsp; {% trans "Admin Dashboard" %}
+                  </a>
+              </li>
+          {% else %}
+              <li class="nav-item">
+                  <a class="nav-link" style="color: white;" href="{% url 'afterlogin' %}">
+                      <i class="fas fa-tachometer-alt"></i>&nbsp; {% trans "Dashboard" %}
+                  </a>
+              </li>
+          {% endif %}
+          <li class="nav-item">
+              <a class="nav-link" style="color: white;" href="/logout">
+                  <i class="fas fa-sign-out-alt"></i>&nbsp; {% trans "Logout" %}
+              </a>
+          </li>
+      {% else %}
+          <li class="nav-item">
+            <a class="nav-link" style="color: white;" href="/login">
+              <i class="fas fa-sign-in-alt"></i>&nbsp; {% trans "Login" %}
+            </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" style="color: white;" href="/signup">
+                  <i class="fas fa-user-plus"></i>&nbsp; {% trans "Register" %}
+              </a>
+          </li>
+      {% endif %}
 
       <!-- 🌐 Language Selector -->
       <li class="nav-item ml-md-2 mt-2 mt-md-0">
