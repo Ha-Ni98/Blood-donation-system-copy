@@ -1,0 +1,208 @@
+{% extends 'patient/patientbase.html' %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+</head>
+
+<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+    <div class="wrapper wrapper--w790">
+        <div style="margin-left: 70px;" class="card card-5">
+            <div class="card-heading">
+                <h2 class="title">{% trans "Submit Blood Request" %}</h2>
+            </div>
+
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+
+                    {# ── Read-only auto-filled patient info (Spec §4.1) ── #}
+                    <h5 class="mb-3" style="color:#555;">{% trans "Your Information" %}</h5>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Full Name" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ full_name }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Your Blood Group" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ blood_group }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Age" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ age }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Blood needed ── #}
+                    <h5 class="mt-4 mb-3" style="color:#555;">{% trans "Blood Needed" %}</h5>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Blood Type Needed" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <div class="row w-100 m-0">
+                                    <div class="col-8 pl-0">
+                                        {% render_field form.blood_type class="input--style-5" %}
+                                    </div>
+                                    <div class="col-4 pr-0">
+                                        {% render_field form.blood_sign class="input--style-5" %}
+                                    </div>
+                                </div>
+                                <div class="text-danger mt-1">{{ form.blood_type.errors }}{{ form.blood_sign.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Number of Units" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.units_needed class="input--style-5" min="1" %}
+                                <div class="text-danger mt-1">{{ form.units_needed.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Urgency Level" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.urgency class="input--style-5" %}
+                                <div class="text-danger mt-1">{{ form.urgency.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Required Date" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.required_date class="input--style-5" %}
+                                <div class="text-danger mt-1">{{ form.required_date.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Reason for Request" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.reason class="input--style-5" %}
+                                <div class="text-danger mt-1">{{ form.reason.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Recent Surgery" %}</div>
+                        <div class="value">
+                            <div class="input-group" style="padding-top: 8px;">
+                                {% render_field form.recent_surgery %}
+                                <span class="ml-2" style="font-size: 0.9em; color: #666;">{% trans "Check if you had surgery in the last 6 months" %}</span>
+                                <div class="text-danger mt-1">{{ form.recent_surgery.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Location (pre-filled, editable) ── #}
+                    <h5 class="mt-4 mb-3" style="color:#555;">{% trans "Location" %}</h5>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Wilaya" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.wilaya class="input--style-5" id="id_wilaya" %}
+                                <div class="text-danger mt-1">{{ form.wilaya.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Commune" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                {% render_field form.commune class="input--style-5" id="id_commune" %}
+                                <div class="text-danger mt-1">{{ form.commune.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Confirmation checkbox (Spec §4.1) ── #}
+                    <div class="form-row p-t-20">
+                        <div class="input-group">
+                            <label class="checkbox-container m-b-20">
+                                {% render_field form.confirmation %}
+                                <span class="checkmark"></span>
+                                {% trans "I confirm the accuracy of this information" %}
+                            </label>
+                            <div class="text-danger">{{ form.confirmation.errors }}</div>
+                        </div>
+                    </div>
+
+                    {# ── Non-field errors (e.g. wilaya/commune mismatch) ── #}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <button class="btn btn--radius-2 btn-danger" type="submit">
+                            {% trans "Submit Blood Request" %}
+                        </button>
+                    </div>
+
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var wilayaDropdown = $('#id_wilaya');
+        var communeDropdown = $('#id_commune');
+
+        wilayaDropdown.change(function() {
+            var wilayaId = $(this).val();
+            communeDropdown.empty();
+            if (wilayaId) {
+                $.ajax({
+                    url: "{% url 'api-communes' %}",
+                    data: { 'wilaya_id': wilayaId },
+                    success: function(data) {
+                        communeDropdown.append('<option value="">---------</option>');
+                        $.each(data, function(key, value) {
+                            communeDropdown.append(
+                                '<option value="' + value.id + '">' + value.name + '</option>'
+                            );
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{% endblock content %}
