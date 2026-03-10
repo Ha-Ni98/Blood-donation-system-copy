@@ -11,18 +11,31 @@ from blood.models import ACTIVE_STATUSES
 @login_required(login_url='login')
 def patient_dashboard_view(request):
     patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
-    # Stubbed — full dashboard redesign in Sprint 5.
+    app_user = patient_profile.app_user
+
+    # Active request: first Pending or Approved request (at most one exists per spec §4.5)
+    active_request = bmodels.BloodRequest.objects.filter(
+        patient=patient_profile, status__in=list(ACTIVE_STATUSES)
+    ).first()
+
     context = {
-        'requestpending': bmodels.BloodRequest.objects.filter(
-            patient=patient_profile, status='pending').count(),
-        'requestapproved': bmodels.BloodRequest.objects.filter(
-            patient=patient_profile, status='approved').count(),
-        'requestmade': bmodels.BloodRequest.objects.filter(
-            patient=patient_profile).count(),
-        'requestrejected': bmodels.BloodRequest.objects.filter(
-            patient=patient_profile, status='rejected').count(),
+        'app_user': app_user,
+        'patient_profile': patient_profile,
+        'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'active_request': active_request,
+        # Stat counts for all relevant statuses
+        'requestmade': bmodels.BloodRequest.objects.filter(patient=patient_profile).count(),
+        'requestpending': bmodels.BloodRequest.objects.filter(patient=patient_profile, status='pending').count(),
+        'requestapproved': bmodels.BloodRequest.objects.filter(patient=patient_profile, status='approved').count(),
+        'requestcompleted': bmodels.BloodRequest.objects.filter(patient=patient_profile, status='completed').count(),
+        'requestrejected': bmodels.BloodRequest.objects.filter(patient=patient_profile, status='rejected').count(),
+        'requestcancelled': bmodels.BloodRequest.objects.filter(
+            patient=patient_profile, status__in=['cancelled_by_user', 'cancelled_by_admin']
+        ).count(),
+        'requestexpired': bmodels.BloodRequest.objects.filter(patient=patient_profile, status='expired').count(),
     }
     return render(request, 'patient/patient_dashboard.html', context=context)
+
 
 
 @login_required(login_url='login')
