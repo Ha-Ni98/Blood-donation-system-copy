@@ -128,6 +128,27 @@ def submit_donation_request_view(request):
     return render(request, 'donor/donation_request_form.html', context)
 
 @login_required
+def cancel_donation_request_view(request, pk):
+    try:
+        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
+        donation_request = bmodels.DonationRequest.objects.get(id=pk, donor=donor_profile)
+    except (bmodels.DonorProfile.DoesNotExist, bmodels.DonationRequest.DoesNotExist):
+        messages.error(request, _("Donation request not found or unauthorized."))
+        return redirect('donor-dashboard')
+
+    if request.method == 'POST':
+        if donation_request.status == 'pending':
+            donation_request.status = 'cancelled_by_user'
+            donation_request.save()
+            messages.success(request, _("Your donation request has been cancelled."))
+        else:
+            messages.error(request, _("Only pending requests can be cancelled."))
+    else:
+        messages.error(request, _("Invalid request method."))
+        
+    return redirect('donor-dashboard')
+
+@login_required
 def donation_history_view(request):
     # Stubbed in Sprint 1 — will be fully implemented in a later Sprint
     return redirect('donor-dashboard')

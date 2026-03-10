@@ -53,10 +53,16 @@
                             </p>
                         </div>
                         <div class="text-right">
+                            {% if active_request.status == 'pending' %}
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancelDonationModal{{ active_request.id }}">
+                                <i class="fas fa-times"></i> {% trans "Cancel Request" %}
+                            </button>
+                            {% else %}
                             <button class="btn btn-outline-danger btn-sm" disabled>
                                 <i class="fas fa-times"></i> {% trans "Cancel Request" %}
                             </button>
-                            <small class="d-block text-muted mt-1" style="font-size:0.7em;">{% trans "(Cancellation coming soon)" %}</small>
+                            <small class="d-block text-muted mt-1" style="font-size:0.7em;">{% trans "Only pending requests can be cancelled" %}</small>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -167,6 +173,32 @@
                             {% trans "Create Patient Profile" %}
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# ── Cancel Donation Modal ── #}
+    {% if active_request and active_request.status == 'pending' %}
+    <div class="modal fade" id="cancelDonationModal{{ active_request.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">{% trans "Cancel Donation Request" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "Are you sure you want to cancel your donation request? This action cannot be undone." %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
+                    <form method="POST" action="{% url 'cancel-donation' active_request.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">{% trans "Yes, Cancel Request" %}</button>
+                    </form>
                 </div>
             </div>
         </div>
