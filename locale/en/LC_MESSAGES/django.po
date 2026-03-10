@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 15:30+0000\n"
+"POT-Creation-Date: 2026-03-10 15:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,23 +130,25 @@ msgstr ""
 msgid "Your donation request has been submitted."
 msgstr "Your donation request has been submitted."
 
-#: donor/views.py:136
 msgid "Donation request not found or unauthorized."
-msgstr ""
+msgstr "Donation request not found or unauthorized."
 
-#: donor/views.py:143
-#, fuzzy
-#| msgid "Your donation request has been submitted."
+msgid "Donation Cancelled"
+msgstr "Donation Cancelled"
+
+msgid ""
+"A donor cancelled their donation. Your blood request is now pending again."
+msgstr ""
+"A donor cancelled their donation. Your blood request is now pending again."
+
 msgid "Your donation request has been cancelled."
-msgstr "Your donation request has been submitted."
+msgstr "Your donation request has been cancelled."
 
-#: donor/views.py:145
-msgid "Only pending requests can be cancelled."
-msgstr ""
+msgid "Only pending or approved requests can be cancelled."
+msgstr "Only pending or approved requests can be cancelled."
 
-#: donor/views.py:147
 msgid "Invalid request method."
-msgstr ""
+msgstr "Invalid request method."
 
 #: envWeb/lib/python3.10/site-packages/click/_termui_impl.py:613
 #, python-brace-format
@@ -1639,7 +1641,6 @@ msgid "Choose Blood Group"
 msgstr ""
 
 #: templates/blood/admin_blood.html:150 templates/blood/admin_donation.html:29
-#: templates/donor/donation_history.html:32
 msgid "Unit"
 msgstr ""
 
@@ -1688,7 +1689,7 @@ msgstr ""
 #: templates/blood/admin_donation.html:28 templates/blood/admin_donor.html:16
 #: templates/blood/admin_patient.html:16 templates/blood/update_donor.html:62
 #: templates/blood/update_patient.html:71 templates/donor/donate_blood.html:28
-#: templates/donor/donation_history.html:31
+#: templates/donor/donation_history.html:20
 #: templates/donor/donation_request_form.html:40
 #: templates/donor/donor_dashboard.html:17
 #: templates/patient/patient_dashboard.html:17
@@ -1701,7 +1702,7 @@ msgstr ""
 
 #: templates/blood/admin_donation.html:31 templates/blood/admin_request.html:23
 #: templates/blood/admin_request_history.html:20
-#: templates/donor/donation_history.html:34
+#: templates/donor/donation_history.html:22
 #: templates/donor/donor_dashboard.html:44 templates/patient/my_request.html:26
 msgid "Status"
 msgstr ""
@@ -1709,12 +1710,13 @@ msgstr ""
 #: templates/blood/admin_donation.html:32 templates/blood/admin_donor.html:19
 #: templates/blood/admin_patient.html:20 templates/blood/admin_request.html:24
 #: templates/blood/admin_request_history.html:21
+#: templates/donor/donation_history.html:23
 #: templates/patient/my_request.html:27
 msgid "Action"
 msgstr ""
 
 #: templates/blood/admin_donation.html:49 templates/blood/admin_request.html:47
-#: templates/donor/donation_history.html:52
+#: templates/donor/donation_history.html:33
 #: templates/donor/donor_dashboard.html:48
 #: templates/donor/donor_dashboard.html:120
 #: templates/patient/my_request.html:50
@@ -1725,7 +1727,7 @@ msgstr ""
 
 #: templates/blood/admin_donation.html:51
 #: templates/blood/admin_request_history.html:46
-#: templates/donor/donation_history.html:48
+#: templates/donor/donation_history.html:35
 #: templates/donor/donor_dashboard.html:46
 #: templates/donor/donor_dashboard.html:128
 #: templates/patient/my_request.html:52
@@ -1736,7 +1738,7 @@ msgstr ""
 
 #: templates/blood/admin_donation.html:53
 #: templates/blood/admin_request_history.html:50
-#: templates/donor/donation_history.html:50
+#: templates/donor/donation_history.html:39
 #: templates/donor/donor_dashboard.html:147
 #: templates/patient/my_request.html:56
 #: templates/patient/patient_dashboard.html:136
@@ -1845,6 +1847,7 @@ msgstr ""
 
 #: templates/blood/admin_request.html:22
 #: templates/blood/admin_request_history.html:19
+#: templates/donor/donation_history.html:21
 #: templates/patient/my_request.html:25
 msgid "Submitted"
 msgstr ""
@@ -1880,6 +1883,7 @@ msgstr ""
 
 #: templates/blood/admin_request.html:60
 #: templates/blood/admin_request_history.html:71
+#: templates/donor/donation_history.html:53
 #: templates/patient/my_request.html:74
 msgid "Cancel"
 msgstr ""
@@ -1893,6 +1897,7 @@ msgid "Blood Request History"
 msgstr ""
 
 #: templates/blood/admin_request_history.html:48
+#: templates/donor/donation_history.html:37
 #: templates/donor/donor_dashboard.html:139
 #: templates/patient/my_request.html:54
 #: templates/patient/patient_dashboard.html:123
@@ -1904,6 +1909,7 @@ msgid "Cancelled by Patient"
 msgstr ""
 
 #: templates/blood/admin_request_history.html:54
+#: templates/donor/donation_history.html:43
 #: templates/patient/my_request.html:60
 msgid "Cancelled by Admin"
 msgstr ""
@@ -1928,12 +1934,12 @@ msgid "Blood Bank Management System"
 msgstr ""
 
 #: templates/blood/adminbase.html:127 templates/blood/navbar.html:53
-#: templates/donor/donorbase.html:170 templates/patient/patientbase.html:106
+#: templates/donor/donorbase.html:180 templates/patient/patientbase.html:106
 msgid "Logout"
 msgstr ""
 
 #: templates/blood/adminbase.html:138 templates/blood/navbar.html:33
-#: templates/donor/donorbase.html:182 templates/patient/patientbase.html:120
+#: templates/donor/donorbase.html:192 templates/patient/patientbase.html:120
 msgid "Home"
 msgstr ""
 
@@ -2269,7 +2275,6 @@ msgid "Update Patient"
 msgstr ""
 
 #: templates/blood/update_patient.html:93 templates/donor/donate_blood.html:59
-#: templates/donor/donation_history.html:30
 msgid "Disease (if any)"
 msgstr ""
 
@@ -2289,17 +2294,60 @@ msgstr ""
 msgid "DONATE"
 msgstr ""
 
-#: templates/donor/donation_history.html:24
-msgid "My Donation History"
+#: templates/donor/donation_history.html:9 templates/donor/donorbase.html:194
+msgid "Donation History"
 msgstr ""
 
-#: templates/donor/donation_history.html:29
-msgid "Donor Age"
+#: templates/donor/donation_history.html:11
+#: templates/donor/donor_dashboard.html:26 templates/donor/donorbase.html:193
+#, fuzzy
+#| msgid "Submit Donation Request"
+msgid "Submit Donation"
+msgstr "Submit Donation Request"
+
+#: templates/donor/donation_history.html:41
+#: templates/donor/donor_dashboard.html:155
+#: templates/patient/my_request.html:58
+#: templates/patient/patient_dashboard.html:145
+msgid "Cancelled"
 msgstr ""
 
-#: templates/donor/donation_history.html:33
-msgid "Date"
+#: templates/donor/donation_history.html:61
+#: templates/donor/donor_dashboard.html:188
+#, fuzzy
+#| msgid "Submit Donation Request"
+msgid "Cancel Donation Request"
+msgstr "Submit Donation Request"
+
+#: templates/donor/donation_history.html:67
+#: templates/donor/donor_dashboard.html:194
+msgid ""
+"Are you sure you want to cancel your donation request? This action cannot be "
+"undone."
 msgstr ""
+
+#: templates/donor/donation_history.html:70
+#: templates/donor/donor_dashboard.html:197
+msgid "Close"
+msgstr ""
+
+#: templates/donor/donation_history.html:73
+#: templates/donor/donor_dashboard.html:200
+#: templates/patient/cancel_request_modal.html:34
+msgid "Yes, Cancel Request"
+msgstr ""
+
+#: templates/donor/donation_history.html:91
+#, fuzzy
+#| msgid "You already have an active donation request."
+msgid "You have no donation history."
+msgstr "You already have an active donation request."
+
+#: templates/donor/donation_history.html:92
+#, fuzzy
+#| msgid "Submit Donation Request"
+msgid "Submit your first donation"
+msgstr "Submit Donation Request"
 
 #: templates/donor/donation_request_form.html:20
 #: templates/donor/donation_request_form.html:197
@@ -2323,12 +2371,6 @@ msgstr "Last Donation Date"
 #: templates/donor/donation_request_form.html:67
 msgid "Health Screening"
 msgstr "Health Screening"
-
-#: templates/donor/donor_dashboard.html:26
-#, fuzzy
-#| msgid "Submit Donation Request"
-msgid "Submit Donation"
-msgstr "Submit Donation Request"
 
 #: templates/donor/donor_dashboard.html:40
 #, fuzzy
@@ -2380,12 +2422,6 @@ msgstr ""
 msgid "Total Donations"
 msgstr "Last Donation Date"
 
-#: templates/donor/donor_dashboard.html:155
-#: templates/patient/my_request.html:58
-#: templates/patient/patient_dashboard.html:145
-msgid "Cancelled"
-msgstr ""
-
 #: templates/donor/donor_dashboard.html:168
 msgid "Become a Patient"
 msgstr ""
@@ -2400,37 +2436,18 @@ msgstr ""
 msgid "Create Patient Profile"
 msgstr ""
 
-#: templates/donor/donor_dashboard.html:188
-#, fuzzy
-#| msgid "Submit Donation Request"
-msgid "Cancel Donation Request"
-msgstr "Submit Donation Request"
-
-#: templates/donor/donor_dashboard.html:194
-msgid ""
-"Are you sure you want to cancel your donation request? This action cannot be "
-"undone."
-msgstr ""
-
-#: templates/donor/donor_dashboard.html:197
-msgid "Close"
-msgstr ""
-
-#: templates/donor/donor_dashboard.html:200
-#: templates/patient/cancel_request_modal.html:34
-msgid "Yes, Cancel Request"
-msgstr ""
-
 #: templates/donor/donorbase.html:8
 msgid "DONOR"
 msgstr ""
 
-#: templates/donor/donorbase.html:183
-msgid "Donate Blood"
+#: templates/donor/donorbase.html:195 templates/donor/notifications.html:10
+#: templates/patient/notifications.html:10
+msgid "Notifications"
 msgstr ""
 
-#: templates/donor/donorbase.html:184
-msgid "Donation History"
+#: templates/donor/notifications.html:32
+#: templates/patient/notifications.html:32
+msgid "You have no notifications."
 msgstr ""
 
 #: templates/patient/blood_request_form.html:16
@@ -2508,14 +2525,6 @@ msgstr ""
 
 #: templates/patient/my_request.html:89
 msgid "Submit your first request"
-msgstr ""
-
-#: templates/patient/notifications.html:10
-msgid "Notifications"
-msgstr ""
-
-#: templates/patient/notifications.html:32
-msgid "You have no notifications."
 msgstr ""
 
 #: templates/patient/patient_dashboard.html:40
