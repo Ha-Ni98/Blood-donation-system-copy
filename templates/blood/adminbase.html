@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
 
     <style>
     .row{ padding: 5px; }
@@ -110,6 +112,7 @@
 </head>
 
 <body>
+{% include "blood/toast.html" %}
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger">
         <a style="color:white;" class="navbar-brand" href="/">
