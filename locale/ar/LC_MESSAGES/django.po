@@ -627,3 +627,111 @@ msgstr "دخول المريض"
 #: .\templates\patient\patientsignup.html:28
 msgid "Patient Signup"
 msgstr "تسجيل المريض"
+
+msgid "Register"
+msgstr "إنشاء حساب"
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+msgid "Admin Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Blood Bank Management System"
+msgstr "نظام إدارة بنك الدم"
+
+msgid "Blood Bank Management"
+msgstr "نظام إدارة بنك الدم"
+
+msgid "Create Patient Profile"
+msgstr "إنشاء ملف مريض"
+
+msgid "Create Donor Profile"
+msgstr "إنشاء ملف متبرع"
+
+msgid "Become a Patient"
+msgstr "كن مريضاً"
+
+msgid "Become a Donor"
+msgstr "كن متبرعاً"
+
+msgid "Admin"
+msgstr "مـشـرف"
+
+msgid "Select Patient"
+msgstr "اختر مريض"
+
+msgid "Select Donor"
+msgstr "اختر متبرع"
+
+msgid "I am a Patient"
+msgstr "أنا مريض"
+
+msgid "I am a Donor"
+msgstr "أنا متبرع"
+
+msgid "Choose Your Profile Type"
+msgstr "اختر نوع ملفك"
+
+msgid "Submit & Finalize"
+msgstr "تأكيد"
+
+msgid "Next Step"
+msgstr "الخطوة التالية"
+
+msgid "Please specify"
+msgstr "يرجى التوضيح"
+
+msgid "Do you have any chronic diseases?"
+msgstr "هل تعاني من أمراض مزمنة؟"
+
+msgid "Are you on regular medication?"
+msgstr "هل تتناول أدوية بانتظام؟"
+
+msgid "Do you have anemia?"
+msgstr "هل تعاني من فقر دم؟"
+
+msgid "Have you received a blood transfusion before?"
+msgstr "هل تلقيت نقل دم من قبل؟"
+
+msgid "Have you donated blood before?"
+msgstr "هل تبرعت بالدم من قبل؟"
+
+msgid "When was your last donation?"
+msgstr "متى كانت آخر مرة تبرعت فيها بالدم؟"
+
+msgid "Do you have any allergies?"
+msgstr "هل تعاني من اي حساسية؟"
+
+msgid "Have you had previous surgeries?"
+msgstr "هل خضعت لعمليات جراحية سابقة؟"
+
+msgid "Contact Name"
+msgstr "اسم جهة الاتصال"
+
+msgid "Contact Phone"
+msgstr "رقم هاتف جهة الاتصال"
+
+msgid "Medical Information"
+msgstr "معلومات طبية"
+
+msgid "Emergency Contact"
+msgstr "جهة اتصال للطوارئ"
+
+msgid "Account Credentials"
+msgstr "بيانات الحساب"
+
+msgid "Personal Information"
+msgstr "معلومات شخصية"
+
+msgid "Location Details"
+msgstr "تفاصيل الموقع"
+
+msgid "National Identity Number (NIN)"
+msgstr "رقم التعريف الوطني (NIN)"

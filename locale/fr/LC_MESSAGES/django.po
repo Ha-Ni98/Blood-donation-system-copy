@@ -628,3 +628,111 @@ msgstr "Connexion patient"
 #: .\templates\patient\patientsignup.html:28
 msgid "Patient Signup"
 msgstr "Inscription patient"
+
+msgid "Register"
+msgstr "S'inscrire"
+
+msgid "Login"
+msgstr "Se connecter"
+
+msgid "Logout"
+msgstr "Se déconnecter"
+
+msgid "Dashboard"
+msgstr "Tableau de Bord"
+
+msgid "Admin Dashboard"
+msgstr "Admin Dashboard"
+
+msgid "Blood Bank Management System"
+msgstr "Système de Gestion de Banque de Sang"
+
+msgid "Blood Bank Management"
+msgstr "Système de Gestion de Banque de Sang"
+
+msgid "Create Patient Profile"
+msgstr "Créer un profil de patient"
+
+msgid "Create Donor Profile"
+msgstr "Créer un profil de donneur"
+
+msgid "Become a Patient"
+msgstr "Devenir Patient"
+
+msgid "Become a Donor"
+msgstr "Devenir Donneur"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Select Patient"
+msgstr "Choisir Patient"
+
+msgid "Select Donor"
+msgstr "Choisir Donneur"
+
+msgid "I am a Patient"
+msgstr "Je suis un Patient"
+
+msgid "I am a Donor"
+msgstr "Je suis un Donneur"
+
+msgid "Choose Your Profile Type"
+msgstr "Choisissez votre type de profil"
+
+msgid "Submit & Finalize"
+msgstr "Soumettre & Finaliser"
+
+msgid "Next Step"
+msgstr "Étape suivante"
+
+msgid "Please specify"
+msgstr "Veuillez préciser"
+
+msgid "Do you have any chronic diseases?"
+msgstr "Avez-vous des maladies chroniques?"
+
+msgid "Are you on regular medication?"
+msgstr "Prenez-vous des médicaments?"
+
+msgid "Do you have anemia?"
+msgstr "Avez-vous de l'anémie?"
+
+msgid "Have you received a blood transfusion before?"
+msgstr "Avez-vous déjà reçu une transfusion sanguine?"
+
+msgid "Have you donated blood before?"
+msgstr "Avez-vous déjà donné du sang?"
+
+msgid "When was your last donation?"
+msgstr "A quand remonte votre dernier don?"
+
+msgid "Do you have any allergies?"
+msgstr "Avez-vous des allergies?"
+
+msgid "Have you had previous surgeries?"
+msgstr "Avez-vous subi des chirurgies antérieures?"
+
+msgid "Contact Name"
+msgstr "Nom du contact"
+
+msgid "Contact Phone"
+msgstr "Téléphone du contact"
+
+msgid "Medical Information"
+msgstr "Informations médicales"
+
+msgid "Emergency Contact"
+msgstr "Contact d'urgence"
+
+msgid "Account Credentials"
+msgstr "Identifiants du compte"
+
+msgid "Personal Information"
+msgstr "Informations personnelles"
+
+msgid "Location Details"
+msgstr "Détails de l'emplacement"
+
+msgid "National Identity Number (NIN)"
+msgstr "Numéro d'identité national (NIN)"
