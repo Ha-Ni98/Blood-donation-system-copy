@@ -16,23 +16,22 @@
         {% for notif in notifications %}
         {% with border_color=notif.is_read|yesno:"#dee2e6,#dc3545" %}
         <div class="list-group-item list-group-item-action flex-column align-items-start mb-2"
-            style="border-left: 4px solid {{ border_color }};">
+             style="border-left: 4px solid {{ border_color }};">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ notif.title }}</h6>
+                <small class="text-muted">{{ notif.created_at|date:"d/m/Y H:i" }}</small>
+            </div>
+            <p class="mb-1">{{ notif.message }}</p>
         </div>
         {% endwith %}
-        <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ notif.title }}</h6>
-            <small class="text-muted">{{ notif.created_at|date:"d/m/Y H:i" }}</small>
-        </div>
-        <p class="mb-1">{{ notif.message }}</p>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
-{% else %}
-<div class="text-center text-muted py-5">
-    <i class="fas fa-bell-slash fa-3x mb-3"></i>
-    <p>{% trans "You have no notifications." %}</p>
-</div>
-{% endif %}
+    {% else %}
+    <div class="text-center text-muted py-5">
+        <i class="fas fa-bell-slash fa-3x mb-3"></i>
+        <p>{% trans "You have no notifications." %}</p>
+    </div>
+    {% endif %}
 
 </div>
 {% endblock content %}
