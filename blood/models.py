@@ -64,6 +64,11 @@ class AppUser(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def get_full_blood_group(self):
+        """Returns the full blood group string (e.g., A+)"""
+        return f"{self.blood_type}{self.blood_sign}"
+
+    @property
     def masked_nin(self):
         """Returns the NIN masked, resolving to *************XXXXX"""
         if not self.nin or len(self.nin) != 18:
@@ -263,6 +268,9 @@ DONATION_REQUEST_STATUS_CHOICES = [
     ('cancelled_by_admin', 'Cancelled by Admin'),
 ]
 
+DONATION_TERMINAL_STATUSES = frozenset([
+    'completed', 'rejected', 'cancelled_by_user', 'cancelled_by_admin'
+])
 
 class DonationRequest(models.Model):
     """
