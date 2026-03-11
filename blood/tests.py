@@ -83,3 +83,227 @@ class BloodRequestLogicTests(TestCase):
         self.assertFalse(self.donor.is_eligible)
         self.assertEqual(TransfusionSafetyPeriod.objects.count(), 1)
         self.assertEqual(TransfusionSafetyPeriod.objects.first().donor, self.donor)
+
+from django.urls import reverse
+from blood.tasks import expire_blood_requests
+from blood.admin import AppUserAdmin
+from django.contrib.admin.sites import site
+
+class AdminAccessGuardTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='normal@a.com', password='pw')
+        self.admin = User.objects.create_superuser(username='admin@a.com', password='pw')
+
+    def test_non_staff_redirect(self):
+        self.client.login(username='normal@a.com', password='pw')
+        response = self.client.get(reverse('admin-dashboard'))
+        self.assertRedirects(response, reverse('adminlogin') + f"?next={reverse('admin-dashboard')}")
+
+    def test_staff_access(self):
+        self.client.login(username='admin@a.com', password='pw')
+        response = self.client.get(reverse('admin-dashboard'))
+        self.assertEqual(response.status_code, 200)
+
+class AdminBloodRequestActionTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin2@a.com', password='pw')
+        self.client.login(username='admin2@a.com', password='pw')
+        self.w1 = Wilaya.objects.create(id=2, name='W2')
+        self.c1 = Commune.objects.create(id=2, wilaya=self.w1, name='C2')
+        self.patient_user = AppUser.objects.create(
+            user=User.objects.create_user(username='p2@a.com', password='pw'),
+            first_name='P', last_name='L', gender='M', age=30, phone_number='12', 
+            nin='12', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        self.patient = PatientProfile.objects.create(app_user=self.patient_user)
+        self.req = BloodRequest.objects.create(
+            patient=self.patient, blood_type='A', blood_sign='+', units_needed=1,
+            urgency='normal', required_date=date.today()+timedelta(days=10),
+            wilaya=self.w1, commune=self.c1, status='pending'
+        )
+
+    def test_reject_blood_request(self):
+        response = self.client.get(reverse('update-reject-status', args=[self.req.id]))
+        self.req.refresh_from_db()
+        self.assertEqual(self.req.status, 'rejected')
+        self.assertRedirects(response, reverse('admin-dashboard'))
+        self.assertTrue(Notification.objects.filter(recipient=self.patient_user, title='Blood Request Rejected').exists())
+
+    def test_cancel_blood_request(self):
+        response = self.client.get(reverse('admin-cancel-blood-request', args=[self.req.id]))
+        self.req.refresh_from_db()
+        self.assertEqual(self.req.status, 'cancelled_by_admin')
+        self.assertTrue(Notification.objects.filter(recipient=self.patient_user, title='Blood Request Cancelled').exists())
+
+    def test_approve_blood_request_with_donor_linking(self):
+        donor_user = AppUser.objects.create(
+            user=User.objects.create_user(username='d2@a.com', password='pw'),
+            first_name='D', last_name='L', gender='M', age=30, phone_number='22', 
+            nin='22', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        donor = DonorProfile.objects.create(app_user=donor_user)
+        donation_req = DonationRequest.objects.create(donor=donor, status='pending')
+
+        response = self.client.post(reverse('update-approve-status', args=[self.req.id]), {'donation_id': donation_req.id})
+        self.req.refresh_from_db()
+        donation_req.refresh_from_db()
+        
+        self.assertEqual(self.req.status, 'approved')
+        self.assertEqual(donation_req.status, 'approved')
+        self.assertEqual(donation_req.blood_request, self.req)
+
+    def test_complete_blood_request(self):
+        self.req.status = 'approved'
+        self.req.save()
+        donor_user = AppUser.objects.create(
+            user=User.objects.create_user(username='d3@a.com', password='pw'),
+            first_name='D', last_name='L', gender='M', age=30, phone_number='32', 
+            nin='32', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        donor = DonorProfile.objects.create(app_user=donor_user)
+        donation_req = DonationRequest.objects.create(donor=donor, blood_request=self.req, status='approved')
+
+        response = self.client.get(reverse('complete-blood-request', args=[self.req.id]))
+        
+        self.req.refresh_from_db()
+        donation_req.refresh_from_db()
+        donor.refresh_from_db()
+        
+        self.assertEqual(self.req.status, 'completed')
+        self.assertEqual(donation_req.status, 'completed')
+        self.assertFalse(donor.is_eligible)
+        self.assertTrue(TransfusionSafetyPeriod.objects.filter(donor=donor, blood_request=self.req).exists())
+
+class AdminDonationRequestActionTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin3@a.com', password='pw')
+        self.client.login(username='admin3@a.com', password='pw')
+        self.w1 = Wilaya.objects.create(id=3, name='W3')
+        self.c1 = Commune.objects.create(id=3, wilaya=self.w1, name='C3')
+        self.donor_user = AppUser.objects.create(
+            user=User.objects.create_user(username='d4@a.com', password='pw'),
+            first_name='D', last_name='L', gender='M', age=30, phone_number='14', 
+            nin='14', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        self.donor = DonorProfile.objects.create(app_user=self.donor_user)
+        self.donation_req = DonationRequest.objects.create(donor=self.donor, status='pending')
+
+    def test_reject_donation_request(self):
+        response = self.client.get(reverse('reject-donation', args=[self.donation_req.id]))
+        self.donation_req.refresh_from_db()
+        self.assertEqual(self.donation_req.status, 'rejected')
+        self.assertRedirects(response, reverse('admin-dashboard'))
+
+    def test_cancel_donation_request(self):
+        self.donation_req.status = 'approved'
+        blood_req = BloodRequest.objects.create(
+            patient=PatientProfile.objects.create(app_user=self.donor_user),
+            blood_type='A', blood_sign='+', units_needed=1,
+            urgency='normal', required_date=date.today()+timedelta(days=10),
+            wilaya=self.w1, commune=self.c1, status='approved'
+        )
+        self.donation_req.blood_request = blood_req
+        self.donation_req.save()
+
+        response = self.client.get(reverse('admin-cancel-donation-request', args=[self.donation_req.id]))
+        self.donation_req.refresh_from_db()
+        blood_req.refresh_from_db()
+
+        self.assertEqual(self.donation_req.status, 'cancelled_by_admin')
+        self.assertIsNone(self.donation_req.blood_request)
+        self.assertEqual(blood_req.status, 'pending')
+
+    def test_complete_donation_request(self):
+        self.donation_req.status = 'approved'
+        self.donation_req.save()
+        response = self.client.get(reverse('complete-donation-request', args=[self.donation_req.id]))
+        self.donation_req.refresh_from_db()
+        self.assertEqual(self.donation_req.status, 'completed')
+
+class TerminalStatusGuardTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin4@a.com', password='pw')
+        self.client.login(username='admin4@a.com', password='pw')
+        self.w1 = Wilaya.objects.create(id=4, name='W4')
+        self.c1 = Commune.objects.create(id=4, wilaya=self.w1, name='C4')
+        self.patient_user = AppUser.objects.create(
+            user=User.objects.create_user(username='p4@a.com', password='pw'),
+            first_name='P', last_name='L', gender='M', age=30, phone_number='15', nin='15',
+            blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        self.req = BloodRequest.objects.create(
+            patient=PatientProfile.objects.create(app_user=self.patient_user),
+            blood_type='A', blood_sign='+', units_needed=1, urgency='normal',
+            required_date=date.today()+timedelta(days=10), wilaya=self.w1, commune=self.c1, 
+            status='completed'
+        )
+
+    def test_cannot_reject_terminal_status(self):
+        response = self.client.get(reverse('update-reject-status', args=[self.req.id]))
+        self.req.refresh_from_db()
+        self.assertEqual(self.req.status, 'completed')
+
+class NINAuditTests(TestCase):
+    def test_appuser_admin_nin_hidden(self):
+        admin_class = site._registry.get(AppUser)
+        self.assertIsNotNone(admin_class)
+        self.assertNotIn('nin', admin_class.search_fields)
+        self.assertIn('masked_nin', getattr(admin_class, 'readonly_fields', []))
+        self.assertIn('nin', getattr(admin_class, 'exclude', []))
+
+class UserManagementTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin5@a.com', password='pw')
+        self.client.login(username='admin5@a.com', password='pw')
+        self.user_to_toggle = User.objects.create_user(username='toggle@a.com', password='pw', is_active=True)
+
+    def test_deactivate_user(self):
+        response = self.client.post(reverse('admin-user-management'), {'user_id': self.user_to_toggle.id, 'action': 'deactivate'})
+        self.user_to_toggle.refresh_from_db()
+        self.assertFalse(self.user_to_toggle.is_active)
+        self.assertRedirects(response, reverse('admin-user-management'))
+
+    def test_activate_user(self):
+        self.user_to_toggle.is_active = False
+        self.user_to_toggle.save()
+        response = self.client.post(reverse('admin-user-management'), {'user_id': self.user_to_toggle.id, 'action': 'activate'})
+        self.user_to_toggle.refresh_from_db()
+        self.assertTrue(self.user_to_toggle.is_active)
+
+    def test_cannot_deactivate_self(self):
+        response = self.client.post(reverse('admin-user-management'), {'user_id': self.admin.id, 'action': 'deactivate'})
+        self.admin.refresh_from_db()
+        self.assertTrue(self.admin.is_active)
+
+class CeleryTaskTests(TestCase):
+    def setUp(self):
+        self.w1 = Wilaya.objects.create(id=5, name='W5')
+        self.c1 = Commune.objects.create(id=5, wilaya=self.w1, name='C5')
+        self.patient_user = AppUser.objects.create(
+            user=User.objects.create_user(username='p5@a.com', password='pw'),
+            first_name='P', last_name='L', gender='M', age=30, phone_number='16', nin='16',
+            blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        self.patient = PatientProfile.objects.create(app_user=self.patient_user)
+        
+    def test_expire_blood_requests_task(self):
+        req1 = BloodRequest.objects.create(
+            patient=self.patient, blood_type='A', blood_sign='+', units_needed=1, urgency='normal',
+            required_date=date.today()+timedelta(days=1), wilaya=self.w1, commune=self.c1, 
+            status='pending'
+        )
+        BloodRequest.objects.filter(id=req1.id).update(expires_at=timezone.now() - timedelta(days=1))
+        
+        req2 = BloodRequest.objects.create(
+            patient=self.patient, blood_type='B', blood_sign='+', units_needed=1, urgency='normal',
+            required_date=date.today()+timedelta(days=10), wilaya=self.w1, commune=self.c1, 
+            status='pending'
+        )
+        
+        result = expire_blood_requests()
+        req1.refresh_from_db()
+        req2.refresh_from_db()
+        
+        self.assertEqual(req1.status, 'expired')
+        self.assertEqual(req2.status, 'pending')
+        self.assertEqual(result, "Expired 1 blood requests.")

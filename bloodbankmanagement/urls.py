@@ -55,4 +55,8 @@ urlpatterns += i18n_patterns(
     path('update-reject-status/<int:pk>', views.update_reject_status_view, name='update-reject-status'),
     path('complete-blood-request/<int:pk>', views.complete_blood_request_view, name='complete-blood-request'),
     path('admin-cancel-blood-request/<int:pk>', views.admin_cancel_blood_request_view, name='admin-cancel-blood-request'),
+    path('approve-donation/<int:pk>', views.approve_donation_view, name='approve-donation'),
+    path('reject-donation/<int:pk>', views.reject_donation_view, name='reject-donation'),
+    path('complete-donation-request/<int:pk>', views.complete_donation_request_view, name='complete-donation-request'),
+    path('admin-cancel-donation-request/<int:pk>', views.admin_cancel_donation_request_view, name='admin-cancel-donation-request'),
 )
