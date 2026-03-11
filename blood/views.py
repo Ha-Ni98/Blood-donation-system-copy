@@ -4,6 +4,7 @@ from django.db.models import Sum,Q
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
+from .decorators import admin_required
 from django.conf import settings
 from datetime import date, timedelta
 from django.core.mail import send_mail
@@ -308,7 +309,7 @@ def create_patient_profile_from_donor_view(request):
 
     return render(request, 'blood/create_patient_profile.html', {'form': form})
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     totalunit=models.Stock.objects.aggregate(Sum('unit'))
     dict={
@@ -328,7 +329,7 @@ def admin_dashboard_view(request):
     }
     return render(request,'blood/admin_dashboard.html',context=dict)
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_blood_view(request):
     dict={
         'bloodForm':forms.BloodForm(),
@@ -352,62 +353,62 @@ def admin_blood_view(request):
     return render(request,'blood/admin_blood.html',context=dict)
 
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_donor_view(request):
     donors=models.DonorProfile.objects.all()
     return render(request,'blood/admin_donor.html',{'donors':donors})
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def update_donor_view(request,pk):
     # This view will be rebuilt or disabled as part of the phase since
     # donor updates must go through AppUser unifying views. 
     # For now, redirecting to admin-donor to prevent errors.
     return redirect('admin-donor')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def delete_donor_view(request,pk):
     donor=models.DonorProfile.objects.get(id=pk)
     user=donor.app_user.user
     user.delete()
     return HttpResponseRedirect('/admin-donor')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_patient_view(request):
     patients=models.PatientProfile.objects.all()
     return render(request,'blood/admin_patient.html',{'patients':patients})
 
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def update_patient_view(request,pk):
     # This view will be rebuilt or disabled as part of the phase since
     # patient updates must go through AppUser unifying views. 
     # For now, redirecting to admin-patient to prevent errors.
     return redirect('admin-patient')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def delete_patient_view(request,pk):
     patient=models.PatientProfile.objects.get(id=pk)
     user=patient.app_user.user
     user.delete()
     return HttpResponseRedirect('/admin-patient')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_request_view(request):
     requests=models.BloodRequest.objects.all().filter(status='pending')
     return render(request,'blood/admin_request.html',{'requests':requests})
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_request_history_view(request):
     requests=models.BloodRequest.objects.all().exclude(status='pending')
     return render(request,'blood/admin_request_history.html',{'requests':requests})
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_donation_view(request):
     # Stubbed — legacy BloodDonate model references removed.
     # Will be rebuilt when DonationRequest views are implemented (Phase C).
     return render(request,'blood/admin_donation.html',{'donations': []})
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def update_approve_status_view(request, pk):
     """Pending → Approved. Notifies patient."""
     req = models.BloodRequest.objects.get(id=pk)
@@ -428,7 +429,7 @@ def update_approve_status_view(request, pk):
     return HttpResponseRedirect('/admin-request')
 
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def update_reject_status_view(request, pk):
     """Pending → Rejected. Notifies patient."""
     req = models.BloodRequest.objects.get(id=pk)
@@ -449,7 +450,7 @@ def update_reject_status_view(request, pk):
     return HttpResponseRedirect('/admin-request')
 
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def complete_blood_request_view(request, pk):
     """Approved → Completed. Creates TransfusionSafetyPeriod, sets donor ineligible, notifies patient."""
     req = models.BloodRequest.objects.get(id=pk)
@@ -483,7 +484,7 @@ def complete_blood_request_view(request, pk):
     return HttpResponseRedirect('/admin-request-history')
 
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def admin_cancel_blood_request_view(request, pk):
     """Any non-terminal → Cancelled by Admin. Cascades to DonationRequest. Notifies patient."""
     req = models.BloodRequest.objects.get(id=pk)
@@ -512,13 +513,13 @@ def admin_cancel_blood_request_view(request, pk):
     messages.success(request, 'Blood request cancelled by admin.')
     return HttpResponseRedirect('/admin-request')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def approve_donation_view(request,pk):
     # Stubbed — legacy BloodDonate model references removed.
     # Will be rebuilt when DonationRequest views are implemented (Phase C).
     return HttpResponseRedirect('/admin-donation')
 
-@login_required(login_url='adminlogin')
+@admin_required(login_url='adminlogin')
 def reject_donation_view(request,pk):
     # Stubbed — legacy BloodDonate model references removed.
     # Will be rebuilt when DonationRequest views are implemented (Phase C).
