@@ -99,7 +99,7 @@
                             </td>
                             <td class="text-right" style="white-space:nowrap;">
                                 {% if req.status == 'pending' %}
-                                    <a href="#" class="btn btn-success btn-sm badge-pill disabled" style="width:90px;" title="Implement in Sprint 8">{% trans "Approve" %}</a>
+                                    <a href="{% url 'update-approve-status' req.id %}" class="btn btn-success btn-sm badge-pill" style="width:90px;">{% trans "Approve" %}</a>
                                     <a href="{% url 'update-reject-status' req.id %}" class="btn btn-danger btn-sm badge-pill" style="width:80px;">{% trans "Reject" %}</a>
                                     <a href="{% url 'admin-cancel-blood-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this request?')">{% trans "Cancel" %}</a>
                                 {% elif req.status == 'approved' %}
