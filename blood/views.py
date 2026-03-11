@@ -311,23 +311,38 @@ def create_patient_profile_from_donor_view(request):
 
 @admin_required(login_url='adminlogin')
 def admin_dashboard_view(request):
-    totalunit=models.Stock.objects.aggregate(Sum('unit'))
-    dict={
+    br_data = request.GET if 'btn_br_filter' in request.GET else {'status': 'pending'}
+    dr_data = request.GET if 'btn_dr_filter' in request.GET else {'status': 'pending'}
 
-        'A1':models.Stock.objects.get(bloodgroup="A+"),
-        'A2':models.Stock.objects.get(bloodgroup="A-"),
-        'B1':models.Stock.objects.get(bloodgroup="B+"),
-        'B2':models.Stock.objects.get(bloodgroup="B-"),
-        'AB1':models.Stock.objects.get(bloodgroup="AB+"),
-        'AB2':models.Stock.objects.get(bloodgroup="AB-"),
-        'O1':models.Stock.objects.get(bloodgroup="O+"),
-        'O2':models.Stock.objects.get(bloodgroup="O-"),
-        'totaldonors':models.DonorProfile.objects.all().count(),
-        'totalbloodunit':totalunit['unit__sum'],
-        'totalrequest':models.BloodRequest.objects.all().count(),
-        'totalapprovedrequest':models.BloodRequest.objects.all().filter(status='approved').count()
+    br_form = forms.AdminBloodRequestFilterForm(br_data)
+    dr_form = forms.AdminDonationRequestFilterForm(dr_data)
+
+    br_qs = models.BloodRequest.objects.select_related('patient__app_user', 'wilaya', 'commune').order_by('-created_at')
+    dr_qs = models.DonationRequest.objects.select_related('donor__app_user').order_by('-created_at')
+
+    if br_form.is_valid():
+        if br_form.cleaned_data.get('status'):
+            br_qs = br_qs.filter(status=br_form.cleaned_data['status'])
+        if br_form.cleaned_data.get('urgency'):
+            br_qs = br_qs.filter(urgency=br_form.cleaned_data['urgency'])
+        if br_form.cleaned_data.get('blood_type'):
+            br_qs = br_qs.filter(blood_type=br_form.cleaned_data['blood_type'])
+        if br_form.cleaned_data.get('blood_sign'):
+            br_qs = br_qs.filter(blood_sign=br_form.cleaned_data['blood_sign'])
+        if br_form.cleaned_data.get('wilaya'):
+            br_qs = br_qs.filter(wilaya=br_form.cleaned_data['wilaya'])
+
+    if dr_form.is_valid():
+        if dr_form.cleaned_data.get('status'):
+            dr_qs = dr_qs.filter(status=dr_form.cleaned_data['status'])
+
+    context = {
+        'br_form': br_form,
+        'dr_form': dr_form,
+        'blood_requests': br_qs[:50],
+        'donation_requests': dr_qs[:50],
     }
-    return render(request,'blood/admin_dashboard.html',context=dict)
+    return render(request, 'blood/admin_requests_dashboard.html', context)
 
 @admin_required(login_url='adminlogin')
 def admin_blood_view(request):
