@@ -169,10 +169,12 @@
                                 {% if req.status == 'pending' %}
                                     <a href="#" class="btn btn-success btn-sm badge-pill disabled" style="width:90px;" title="Implement in Sprint 10">{% trans "Approve" %}</a>
                                     <a href="{% url 'reject-donation' req.id %}" class="btn btn-danger btn-sm badge-pill" style="width:80px;">{% trans "Reject" %}</a>
-                                    <a href="#" class="btn btn-secondary btn-sm badge-pill disabled">{% trans "Cancel" %}</a>
+                                    <a href="{% url 'admin-cancel-donation-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this donation request?')">{% trans "Cancel" %}</a>
                                 {% elif req.status == 'approved' %}
-                                    <a href="#" class="btn btn-primary btn-sm badge-pill disabled" style="width:90px;">{% trans "Complete" %}</a>
-                                    <a href="#" class="btn btn-secondary btn-sm badge-pill disabled">{% trans "Cancel" %}</a>
+                                    <a href="{% url 'complete-donation-request' req.id %}" class="btn btn-primary btn-sm badge-pill px-4" onclick="return confirm('Mark this donation as completed?')">{% trans "Complete" %}</a>
+                                    <a href="{% url 'admin-cancel-donation-request' req.id %}" class="btn btn-secondary btn-sm badge-pill px-4" onclick="return confirm('Cancel this donation request?')">{% trans "Cancel" %}</a>
+                                {% else %}
+                                    <span class="text-muted"><i class="fas fa-minus"></i></span>
                                 {% endif %}
                             </td>
                         </tr>

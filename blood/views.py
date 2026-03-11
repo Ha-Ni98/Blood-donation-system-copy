@@ -591,7 +591,74 @@ def update_approve_status_view(request, pk):
     })
 
 @admin_required(login_url='adminlogin')
+@terminal_status_guard(models.DonationRequest, models.DONATION_TERMINAL_STATUSES)
 def reject_donation_view(request,pk):
-    # Stubbed — legacy BloodDonate model references removed.
-    # Will be rebuilt when DonationRequest views are implemented (Phase C).
-    return HttpResponseRedirect('/admin-donation')
+    """Pending → Rejected. Notifies donor."""
+    req = models.DonationRequest.objects.get(id=pk)
+    if req.status != 'pending':
+        messages.error(request, 'Only pending requests can be rejected.')
+        return redirect('admin-dashboard')
+        
+    req.status = 'rejected'
+    req.save()
+    
+    models.Notification.objects.create(
+        recipient=req.donor.app_user,
+        title='Donation Request Rejected',
+        message='Your donation request status has been updated to Rejected.',
+    )
+    messages.success(request, 'Request has been rejected successfully.')
+    return redirect('admin-dashboard')
+
+@admin_required(login_url='adminlogin')
+@terminal_status_guard(models.DonationRequest, models.DONATION_TERMINAL_STATUSES)
+def complete_donation_request_view(request, pk):
+    """Approved → Completed. Notifies donor."""
+    req = models.DonationRequest.objects.get(id=pk)
+    if req.status != 'approved':
+        messages.error(request, 'Only approved requests can be marked as completed.')
+        return redirect('admin-dashboard')
+        
+    req.status = 'completed'
+    req.save()
+    
+    models.Notification.objects.create(
+        recipient=req.donor.app_user,
+        title='Donation Completed',
+        message='Your donation request status has been updated to Completed.',
+    )
+    messages.success(request, 'Request has been completed successfully.')
+    return redirect('admin-dashboard')
+
+@admin_required(login_url='adminlogin')
+@terminal_status_guard(models.DonationRequest, models.DONATION_TERMINAL_STATUSES)
+def admin_cancel_donation_request_view(request, pk):
+    """Pending/Approved → Cancelled by Admin. Atomic. Reverts linked BloodRequest. Notifies patient/donor."""
+    req = models.DonationRequest.objects.get(id=pk)
+    
+    with transaction.atomic():
+        req.status = 'cancelled_by_admin'
+        
+        # Unlink and revert BloodRequest if exists
+        if req.blood_request:
+            blood_req = req.blood_request
+            blood_req.status = 'pending'
+            req.blood_request = None
+            blood_req.save()
+            
+            models.Notification.objects.create(
+                recipient=blood_req.patient.app_user,
+                title='Donor Request Cancelled',
+                message="A donor's request was cancelled by the admin. Your blood request is now pending again.",
+            )
+            
+        req.save()
+        
+        models.Notification.objects.create(
+            recipient=req.donor.app_user,
+            title='Donation Request Cancelled',
+            message='Your donation request status has been updated to Cancelled by Admin.',
+        )
+        
+    messages.success(request, 'Request has been cancelled successfully.')
+    return redirect('admin-dashboard')
