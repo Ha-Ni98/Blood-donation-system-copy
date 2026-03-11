@@ -369,59 +369,33 @@ def admin_blood_view(request):
 
 
 @admin_required(login_url='adminlogin')
-def admin_donor_view(request):
-    donors=models.DonorProfile.objects.all()
-    return render(request,'blood/admin_donor.html',{'donors':donors})
+def admin_user_management_view(request):
+    """
+    Displays all users (AppUser.user.is_active toggling).
+    Handles POST requests to toggle the is_active status of a user.
+    """
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        action = request.POST.get('action')
+        
+        if user_id and action in ['activate', 'deactivate']:
+            try:
+                user = User.objects.get(id=user_id)
+                # Prevent admin from deactivating themselves
+                if user == request.user:
+                    messages.error(request, "You cannot deactivate your own account.")
+                else:
+                    user.is_active = (action == 'activate')
+                    user.save()
+                    status_str = "activated" if user.is_active else "deactivated"
+                    messages.success(request, f"User {user.username} has been {status_str}.")
+            except User.DoesNotExist:
+                messages.error(request, "User not found.")
+        return redirect('admin-user-management')
 
-@admin_required(login_url='adminlogin')
-def update_donor_view(request,pk):
-    # This view will be rebuilt or disabled as part of the phase since
-    # donor updates must go through AppUser unifying views. 
-    # For now, redirecting to admin-donor to prevent errors.
-    return redirect('admin-donor')
-
-@admin_required(login_url='adminlogin')
-def delete_donor_view(request,pk):
-    donor=models.DonorProfile.objects.get(id=pk)
-    user=donor.app_user.user
-    user.delete()
-    return HttpResponseRedirect('/admin-donor')
-
-@admin_required(login_url='adminlogin')
-def admin_patient_view(request):
-    patients=models.PatientProfile.objects.all()
-    return render(request,'blood/admin_patient.html',{'patients':patients})
-
-
-@admin_required(login_url='adminlogin')
-def update_patient_view(request,pk):
-    # This view will be rebuilt or disabled as part of the phase since
-    # patient updates must go through AppUser unifying views. 
-    # For now, redirecting to admin-patient to prevent errors.
-    return redirect('admin-patient')
-
-@admin_required(login_url='adminlogin')
-def delete_patient_view(request,pk):
-    patient=models.PatientProfile.objects.get(id=pk)
-    user=patient.app_user.user
-    user.delete()
-    return HttpResponseRedirect('/admin-patient')
-
-@admin_required(login_url='adminlogin')
-def admin_request_view(request):
-    requests=models.BloodRequest.objects.all().filter(status='pending')
-    return render(request,'blood/admin_request.html',{'requests':requests})
-
-@admin_required(login_url='adminlogin')
-def admin_request_history_view(request):
-    requests=models.BloodRequest.objects.all().exclude(status='pending')
-    return render(request,'blood/admin_request_history.html',{'requests':requests})
-
-@admin_required(login_url='adminlogin')
-def admin_donation_view(request):
-    # Stubbed — legacy BloodDonate model references removed.
-    # Will be rebuilt when DonationRequest views are implemented (Phase C).
-    return render(request,'blood/admin_donation.html',{'donations': []})
+    # GET: List all AppUsers with their related auth User
+    users = models.AppUser.objects.select_related('user', 'wilaya', 'commune').all()
+    return render(request, 'blood/admin_user_management.html', {'users': users})
 
 @admin_required(login_url='adminlogin')
 @terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
