@@ -1,0 +1,76 @@
+{% extends 'blood/adminbase.html' %}
+{% load i18n widget_tweaks %}
+
+{% block content %}
+<br><br>
+<div class="container-fluid px-4">
+    <h3 class="mb-4">{% trans "Donor Eligibility" %}</h3>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-heartbeat"></i> {% trans "Registered Donors" %}
+        </div>
+        <div class="card-body">
+            {% if donors %}
+            <div class="table-responsive">
+                <table class="table table-light table-hover table-bordered table-striped" id="donorsTable">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Blood Type" %}</th>
+                            <th>{% trans "Wilaya" %}</th>
+                            <th>{% trans "Last Donation" %}</th>
+                            <th>{% trans "Eligibility" %}</th>
+                            <th class="text-right">{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donor in donors %}
+                        <tr>
+                            <td>{{ donor.app_user.first_name }} {{ donor.app_user.last_name }}</td>
+                            <td><strong>{{ donor.app_user.blood_type }}{{ donor.app_user.blood_sign }}</strong></td>
+                            <td>{{ donor.app_user.wilaya.name }}</td>
+                            <td>
+                                {% if donor.last_donation_date %}
+                                    {{ donor.last_donation_date|date:"d/m/Y" }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "Never" %}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if donor.is_eligible %}
+                                    <span class="badge badge-success px-3 py-2">{% trans "Eligible" %}</span>
+                                {% else %}
+                                    <span class="badge badge-danger px-3 py-2">{% trans "Ineligible" %}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-right">
+                                <form method="POST" class="d-inline" onsubmit="return confirm('{% trans "Are you sure you want to change this donor\'s eligibility?" %}');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="donor_id" value="{{ donor.id }}">
+                                    {% if donor.is_eligible %}
+                                        <button type="submit" name="action" value="mark_ineligible" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-ban"></i> {% trans "Mark Ineligible" %}
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" name="action" value="mark_eligible" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i> {% trans "Mark Eligible" %}
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info py-4 text-center">
+                <i class="fas fa-users fa-3x mb-2 text-muted"></i>
+                <p class="mb-0">{% trans "No donors found in the system." %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

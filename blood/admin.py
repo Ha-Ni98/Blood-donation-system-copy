@@ -23,12 +23,11 @@ class CommuneAdmin(admin.ModelAdmin):
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'masked_nin', 'blood_type', 'blood_sign')
-    search_fields = ('user__email', 'first_name', 'last_name', 'nin', 'phone_number')
+    search_fields = ('user__email', 'first_name', 'last_name', 'phone_number')
     list_filter = ('blood_type', 'blood_sign', 'gender', 'wilaya')
 
-    # Exclude nin from edit forms to enforce write-once visually in admin layer
-    # (save() method protects it at the model layer regardless)
-    readonly_fields = ('nin', 'created_at')
+    exclude = ('nin',)
+    readonly_fields = ('masked_nin', 'created_at')
 
 
 @admin.register(PatientProfile)

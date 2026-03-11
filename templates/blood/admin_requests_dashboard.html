@@ -1,0 +1,194 @@
+{% extends 'blood/adminbase.html' %}
+{% load i18n widget_tweaks %}
+
+{% block content %}
+<br><br>
+<div class="container-fluid px-4">
+    <h3 class="mb-4">{% trans "Requests Dashboard" %}</h3>
+
+    <!-- Filter Form Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-filter"></i> {% trans "Filter" %}
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row align-items-end">
+                <!-- Blood Request Filters -->
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Status" %}</label>
+                    {% render_field br_form.status class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Blood Type" %}</label>
+                    {% render_field br_form.blood_type class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Blood Sign" %}</label>
+                    {% render_field br_form.blood_sign class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Urgency" %}</label>
+                    {% render_field br_form.urgency class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Wilaya" %}</label>
+                    {% render_field br_form.wilaya class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <button type="submit" name="btn_br_filter" class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-search"></i> {% trans "Apply Filters" %}
+                    </button>
+                    <a href="?" class="btn btn-secondary btn-sm w-100 mt-1">{% trans "Reset" %}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Blood Requests Table -->
+        <div class="col-lg-12 mb-5">
+            <h4 class="mb-3">{% trans "Blood Requests" %}</h4>
+            {% if blood_requests %}
+            <div class="table-responsive">
+                <table class="table table-light table-hover table-bordered table-striped">
+                    <thead class="bg-danger text-white">
+                        <tr>
+                            <th>{% trans "Request ID" %}</th>
+                            <th>{% trans "Patient Name" %}</th>
+                            <th>{% trans "Blood Type" %}</th>
+                            <th>{% trans "Urgency" %}</th>
+                            <th>{% trans "Wilaya" %}</th>
+                            <th>{% trans "Created At" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th class="text-right">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in blood_requests %}
+                        <tr>
+                            <td>#{{ req.id }}</td>
+                            <td>{{ req.patient.app_user.first_name }} {{ req.patient.app_user.last_name }}</td>
+                            <td><strong>{{ req.blood_type }}{{ req.blood_sign }}</strong></td>
+                            <td>
+                                {% if req.urgency == 'critical' %}
+                                    <span class="badge badge-danger">{% trans "Critical" %}</span>
+                                {% elif req.urgency == 'urgent' %}
+                                    <span class="badge badge-warning">{% trans "Urgent" %}</span>
+                                {% else %}
+                                    <span class="badge badge-info">{% trans "Normal" %}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ req.wilaya.name }}</td>
+                            <td>{{ req.created_at|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if req.status == 'pending' %}
+                                    <span class="badge badge-warning">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'approved' %}
+                                    <span class="badge badge-success">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'completed' %}
+                                    <span class="badge badge-primary">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="badge badge-danger">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'cancelled_by_user' %}
+                                    <span class="badge badge-secondary">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'cancelled_by_admin' %}
+                                    <span class="badge badge-dark">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'expired' %}
+                                    <span class="badge badge-light border">{{ req.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-right" style="white-space:nowrap;">
+                                {% if req.status == 'pending' %}
+                                    <a href="{% url 'update-approve-status' req.id %}" class="btn btn-success btn-sm badge-pill" style="width:90px;">{% trans "Approve" %}</a>
+                                    <a href="{% url 'update-reject-status' req.id %}" class="btn btn-danger btn-sm badge-pill" style="width:80px;">{% trans "Reject" %}</a>
+                                    <a href="{% url 'admin-cancel-blood-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this request?')">{% trans "Cancel" %}</a>
+                                {% elif req.status == 'approved' %}
+                                    <a href="{% url 'complete-blood-request' req.id %}" class="btn btn-primary btn-sm badge-pill" style="width:90px;">{% trans "Complete" %}</a>
+                                    <a href="{% url 'admin-cancel-blood-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this request?')">{% trans "Cancel" %}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info py-4 text-center">
+                <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
+                <p class="mb-0">{% trans "No blood requests found." %}</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Donation Requests Table -->
+        <div class="col-lg-12 mb-5">
+            <h4 class="mb-3">{% trans "Donation Requests" %}</h4>
+            
+            <form method="GET" class="mb-3 d-flex align-items-center">
+                <label class="mr-2">{% trans "Filter Donations:" %}</label>
+                {% render_field dr_form.status class="form-control form-control-sm d-inline-block w-auto mr-2" %}
+                <button type="submit" name="btn_dr_filter" class="btn btn-primary btn-sm">{% trans "Apply Filters" %}</button>
+            </form>
+            
+            {% if donation_requests %}
+            <div class="table-responsive">
+                <table class="table table-light table-hover table-bordered table-striped">
+                    <thead class="bg-danger text-white">
+                        <tr>
+                            <th>{% trans "Request ID" %}</th>
+                            <th>{% trans "Donor Name" %}</th>
+                            <th>{% trans "Blood Type" %}</th>
+                            <th>{% trans "Created At" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th class="text-right">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in donation_requests %}
+                        <tr>
+                            <td>#{{ req.id }}</td>
+                            <td>{{ req.donor.app_user.first_name }} {{ req.donor.app_user.last_name }}</td>
+                            <td><strong>{{ req.donor.app_user.blood_type }}{{ req.donor.app_user.blood_sign }}</strong></td>
+                            <td>{{ req.created_at|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if req.status == 'pending' %}
+                                    <span class="badge badge-warning">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'approved' %}
+                                    <span class="badge badge-success">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'completed' %}
+                                    <span class="badge badge-primary">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="badge badge-danger">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'cancelled_by_user' %}
+                                    <span class="badge badge-secondary">{{ req.get_status_display }}</span>
+                                {% elif req.status == 'cancelled_by_admin' %}
+                                    <span class="badge badge-dark">{{ req.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-right" style="white-space:nowrap;">
+                                {% if req.status == 'pending' %}
+                                    <a href="{% url 'approve-donation' req.id %}" class="btn btn-success btn-sm badge-pill" style="width:90px;">{% trans "Approve" %}</a>
+                                    <a href="{% url 'reject-donation' req.id %}" class="btn btn-danger btn-sm badge-pill" style="width:80px;">{% trans "Reject" %}</a>
+                                    <a href="{% url 'admin-cancel-donation-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this donation request?')">{% trans "Cancel" %}</a>
+                                {% elif req.status == 'approved' %}
+                                    <a href="{% url 'complete-donation-request' req.id %}" class="btn btn-primary btn-sm badge-pill px-4" onclick="return confirm('Mark this donation as completed?')">{% trans "Complete" %}</a>
+                                    <a href="{% url 'admin-cancel-donation-request' req.id %}" class="btn btn-secondary btn-sm badge-pill px-4" onclick="return confirm('Cancel this donation request?')">{% trans "Cancel" %}</a>
+                                {% else %}
+                                    <span class="text-muted"><i class="fas fa-minus"></i></span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info py-4 text-center">
+                <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
+                <p class="mb-0">{% trans "No donation requests found." %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

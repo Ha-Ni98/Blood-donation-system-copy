@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 15:43+0000\n"
+"POT-Creation-Date: 2026-03-11 15:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,8 @@ msgstr "Avez-vous donné du sang au cours des 3 derniers mois ?"
 
 #: donor/forms.py:24
 msgid "Received a blood transfusion in the last 6 months?"
-msgstr "Avez-vous reçu une transfusion sanguine au cours des 6 derniers mois ?"
+msgstr ""
+"Avez-vous reçu une transfusion sanguine au cours des 6 derniers mois ?"
 
 #: donor/forms.py:28
 msgid "Had surgery in the last 6 months?"
@@ -127,30 +128,36 @@ msgstr "Vous avez déjà une demande de don active."
 msgid ""
 "You cannot donate because you received a transfusion less than 6 months ago."
 msgstr ""
-"Vous ne pouvez pas donner car vous avez reçu une transfusion il y a moins de "
-"6 mois."
+"Vous ne pouvez pas donner car vous avez reçu une transfusion il y a moins de"
+" 6 mois."
 
 #: donor/views.py:115
 msgid "Your donation request has been submitted."
 msgstr "Votre demande de don a été soumise."
 
+#: donor/views.py:138
 msgid "Donation request not found or unauthorized."
 msgstr "Demande de don non trouvée ou non autorisée."
 
+#: donor/views.py:158
 msgid "Donation Cancelled"
 msgstr "Donation Annulée"
 
+#: donor/views.py:159
 msgid ""
 "A donor cancelled their donation. Your blood request is now pending again."
 msgstr ""
 "Un donneur a annulé son don. Votre demande de sang est à nouveau en attente."
 
+#: donor/views.py:163
 msgid "Your donation request has been cancelled."
 msgstr "Votre demande de don a été annulée."
 
+#: donor/views.py:165
 msgid "Only pending or approved requests can be cancelled."
 msgstr "Seules les demandes en attente ou approuvées peuvent être annulées."
 
+#: donor/views.py:167
 msgid "Invalid request method."
 msgstr "Méthode de requête invalide."
 
@@ -498,8 +505,8 @@ msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/core/validators.py:272
 msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/core/validators.py:281
@@ -685,15 +692,15 @@ msgstr ""
 #: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1288
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1292
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1296
@@ -712,8 +719,8 @@ msgstr ""
 #: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1585
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
-"uuuuuu] format."
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1588
@@ -880,7 +887,8 @@ msgid "Many-to-many relationship"
 msgstr ""
 
 #. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
+#. characters will prevent the default label_suffix to be appended to the
+#. label
 #: envWeb/lib/python3.10/site-packages/django/forms/boundfield.py:150
 msgid ":?.!"
 msgstr ""
@@ -930,7 +938,8 @@ msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/forms/fields.py:556
 #, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
 msgstr[0] ""
@@ -1037,7 +1046,8 @@ msgid "The inline value did not match the parent instance."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/forms/models.py:1193
-msgid "Select a valid choice. That choice is not one of the available choices."
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/forms/models.py:1311
@@ -1491,11 +1501,11 @@ msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/views/csrf.py:124
 msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
-"\" …> for links to third-party sites."
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/views/csrf.py:132
@@ -1546,8 +1556,8 @@ msgstr ""
 #: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:594
 #, python-format
 msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:628
@@ -1603,10 +1613,10 @@ msgstr ""
 #: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:222
 #, python-format
 msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> is in your settings file and you have not configured any "
-"URLs."
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
 msgstr ""
 
 #: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:230
@@ -1652,6 +1662,169 @@ msgstr ""
 msgid "A valid timezone is required."
 msgstr ""
 
+#: templates/blood/admin_approve_blood_request.html:9
+#, fuzzy
+#| msgid "Approved Requests"
+msgid "Approve Blood Request"
+msgstr "Demandes approuvées"
+
+#: templates/blood/admin_approve_blood_request.html:12
+#: templates/blood/admin_approve_donation_request.html:30
+#: templates/blood/admin_requests_dashboard.html:57
+#, fuzzy
+#| msgid "Patient"
+msgid "Patient Name"
+msgstr "Patient"
+
+#: templates/blood/admin_approve_blood_request.html:14
+#: templates/blood/admin_approve_blood_request.html:33
+#: templates/blood/admin_approve_donation_request.html:14
+#: templates/blood/admin_approve_donation_request.html:31
+#: templates/blood/admin_donor_eligibility.html:20
+#: templates/blood/admin_request.html:17
+#: templates/blood/admin_request_history.html:14
+#: templates/blood/admin_requests_dashboard.html:22
+#: templates/blood/admin_requests_dashboard.html:58
+#: templates/blood/admin_requests_dashboard.html:140
+#: templates/blood/admin_user_management.html:21
+#: templates/blood/index.html:269 templates/blood/signup.html:116
+#: templates/patient/my_request.html:20
+msgid "Blood Type"
+msgstr "Groupe sanguin"
+
+#: templates/blood/admin_approve_blood_request.html:15
+#: templates/blood/admin_approve_donation_request.html:32
+#: templates/blood/admin_request.html:19
+#: templates/blood/admin_request_history.html:16
+#: templates/blood/admin_requests_dashboard.html:30
+#: templates/blood/admin_requests_dashboard.html:59
+#: templates/patient/my_request.html:22
+#: templates/patient/patient_dashboard.html:50
+msgid "Urgency"
+msgstr "Urgence"
+
+#: templates/blood/admin_approve_blood_request.html:16
+#: templates/blood/admin_approve_donation_request.html:33
+#: templates/blood/admin_donor_eligibility.html:21
+#: templates/blood/admin_requests_dashboard.html:34
+#: templates/blood/admin_requests_dashboard.html:60
+#: templates/blood/admin_user_management.html:22
+#: templates/blood/signup.html:135 templates/donor/donor_dashboard.html:19
+#: templates/patient/blood_request_form.html:128
+#: templates/patient/patient_dashboard.html:19
+msgid "Wilaya"
+msgstr "Wilaya"
+
+#: templates/blood/admin_approve_blood_request.html:17
+#: templates/blood/admin_approve_blood_request.html:34
+#: templates/blood/admin_approve_donation_request.html:15
+#: templates/blood/admin_approve_donation_request.html:34
+#: templates/blood/admin_requests_dashboard.html:61
+#: templates/blood/admin_requests_dashboard.html:141
+msgid "Created At"
+msgstr "Créé le"
+
+#: templates/blood/admin_approve_blood_request.html:22
+#: templates/blood/choose_profile.html:31
+msgid "Select Donor"
+msgstr "Choisir Donneur"
+
+#: templates/blood/admin_approve_blood_request.html:31
+#: templates/blood/admin_approve_donation_request.html:29
+#, fuzzy
+#| msgid "Select Donor"
+msgid "Select"
+msgstr "Choisir Donneur"
+
+#: templates/blood/admin_approve_blood_request.html:32
+#: templates/blood/admin_approve_donation_request.html:12
+#: templates/blood/admin_donation.html:25
+#: templates/blood/admin_requests_dashboard.html:139
+msgid "Donor Name"
+msgstr "Nom du donneur"
+
+#: templates/blood/admin_approve_blood_request.html:54
+#: templates/blood/admin_approve_donation_request.html:64
+#: templates/blood/admin_request.html:60
+#: templates/blood/admin_request_history.html:71
+#: templates/blood/admin_requests_dashboard.html:104
+#: templates/blood/admin_requests_dashboard.html:107
+#: templates/blood/admin_requests_dashboard.html:172
+#: templates/blood/admin_requests_dashboard.html:175
+#: templates/donor/donation_history.html:53
+#: templates/patient/my_request.html:74
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/blood/admin_approve_blood_request.html:55
+#: templates/blood/admin_approve_donation_request.html:65
+msgid "Confirm Approval"
+msgstr "Confirmer l'Approbation"
+
+#: templates/blood/admin_approve_blood_request.html:61
+msgid "No eligible donors available for this blood type."
+msgstr "Aucun donneur éligible disponible pour ce groupe sanguin."
+
+#: templates/blood/admin_approve_blood_request.html:62
+msgid "There are no pending donation requests matching"
+msgstr "Il n'y a aucune demande de don en attente correspondant à"
+
+#: templates/blood/admin_approve_blood_request.html:63
+#: templates/blood/admin_approve_donation_request.html:73
+#, fuzzy
+#| msgid "Admin Dashboard"
+msgid "Return to Dashboard"
+msgstr "Admin Dashboard"
+
+#: templates/blood/admin_approve_donation_request.html:9
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Approve Donation Request"
+msgstr "Demande de sang"
+
+#: templates/blood/admin_approve_donation_request.html:20
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Select Blood Request"
+msgstr "Demande de sang"
+
+#: templates/blood/admin_approve_donation_request.html:48
+#: templates/blood/admin_request.html:36
+#: templates/blood/admin_request_history.html:33
+#: templates/blood/admin_requests_dashboard.html:74
+#: templates/patient/my_request.html:37
+#: templates/patient/patient_dashboard.html:52
+msgid "Critical"
+msgstr "Critique"
+
+#: templates/blood/admin_approve_donation_request.html:50
+#: templates/blood/admin_request.html:38
+#: templates/blood/admin_request_history.html:35
+#: templates/blood/admin_requests_dashboard.html:76
+#: templates/patient/my_request.html:39
+#: templates/patient/patient_dashboard.html:54
+msgid "Urgent"
+msgstr "Urgent"
+
+#: templates/blood/admin_approve_donation_request.html:52
+#: templates/blood/admin_request.html:40
+#: templates/blood/admin_request_history.html:37
+#: templates/blood/admin_requests_dashboard.html:78
+#: templates/patient/my_request.html:41
+#: templates/patient/patient_dashboard.html:56
+msgid "Normal"
+msgstr "Normal"
+
+#: templates/blood/admin_approve_donation_request.html:71
+msgid "No eligible blood requests available for this blood type."
+msgstr "Aucune demande de sang éligible disponible pour ce groupe sanguin."
+
+#: templates/blood/admin_approve_donation_request.html:72
+#, fuzzy
+#| msgid "Pending Request"
+msgid "There are no pending blood requests matching"
+msgstr "Demandes en attente"
+
 #: templates/blood/admin_blood.html:129
 msgid "Update Blood Unit"
 msgstr "Mettre à jour les unités de sang"
@@ -1690,17 +1863,14 @@ msgstr "Quantité totale de sang (en ml)"
 msgid "BLOOD DONATION DETAILS"
 msgstr "Détails du don de sang"
 
-#: templates/blood/admin_donation.html:25
-msgid "Donor Name"
-msgstr "Nom du donneur"
-
-#: templates/blood/admin_donation.html:26 templates/blood/admin_patient.html:18
+#: templates/blood/admin_donation.html:26
+#: templates/blood/admin_patient.html:18
 msgid "Disease"
 msgstr "Maladie"
 
-#: templates/blood/admin_donation.html:27 templates/blood/admin_patient.html:17
-#: templates/blood/signup.html:88 templates/blood/update_patient.html:62
-#: templates/donor/donate_blood.html:68
+#: templates/blood/admin_donation.html:27
+#: templates/blood/admin_patient.html:17 templates/blood/signup.html:88
+#: templates/blood/update_patient.html:62
 #: templates/donor/donation_request_form.html:49
 #: templates/patient/blood_request_form.html:45
 msgid "Age"
@@ -1708,7 +1878,7 @@ msgstr "Âge"
 
 #: templates/blood/admin_donation.html:28 templates/blood/admin_donor.html:16
 #: templates/blood/admin_patient.html:16 templates/blood/update_donor.html:62
-#: templates/blood/update_patient.html:71 templates/donor/donate_blood.html:28
+#: templates/blood/update_patient.html:71
 #: templates/donor/donation_history.html:20
 #: templates/donor/donation_request_form.html:40
 #: templates/donor/donor_dashboard.html:17
@@ -1720,22 +1890,31 @@ msgstr "Groupe sanguin"
 msgid "Request Date"
 msgstr "Date de la demande"
 
-#: templates/blood/admin_donation.html:31 templates/blood/admin_request.html:23
+#: templates/blood/admin_donation.html:31
+#: templates/blood/admin_request.html:23
 #: templates/blood/admin_request_history.html:20
+#: templates/blood/admin_requests_dashboard.html:18
+#: templates/blood/admin_requests_dashboard.html:62
+#: templates/blood/admin_requests_dashboard.html:142
+#: templates/blood/admin_user_management.html:24
 #: templates/donor/donation_history.html:22
-#: templates/donor/donor_dashboard.html:44 templates/patient/my_request.html:26
+#: templates/donor/donor_dashboard.html:44
+#: templates/patient/my_request.html:26
 msgid "Status"
 msgstr "Statut"
 
 #: templates/blood/admin_donation.html:32 templates/blood/admin_donor.html:19
+#: templates/blood/admin_donor_eligibility.html:24
 #: templates/blood/admin_patient.html:20 templates/blood/admin_request.html:24
 #: templates/blood/admin_request_history.html:21
+#: templates/blood/admin_user_management.html:25
 #: templates/donor/donation_history.html:23
 #: templates/patient/my_request.html:27
 msgid "Action"
 msgstr "Action"
 
-#: templates/blood/admin_donation.html:49 templates/blood/admin_request.html:47
+#: templates/blood/admin_donation.html:49
+#: templates/blood/admin_request.html:47
 #: templates/donor/donation_history.html:33
 #: templates/donor/donor_dashboard.html:48
 #: templates/donor/donor_dashboard.html:120
@@ -1786,7 +1965,10 @@ msgstr "Aucune unité ajoutée au stock"
 msgid "DONOR DETAILS"
 msgstr "Détails des donneurs"
 
-#: templates/blood/admin_donor.html:14 templates/blood/admin_patient.html:14
+#: templates/blood/admin_donor.html:14
+#: templates/blood/admin_donor_eligibility.html:19
+#: templates/blood/admin_patient.html:14
+#: templates/blood/admin_user_management.html:20
 msgid "Name"
 msgstr "Nom"
 
@@ -1800,7 +1982,8 @@ msgid "Address"
 msgstr "Adresse"
 
 #: templates/blood/admin_donor.html:18 templates/blood/admin_patient.html:19
-#: templates/blood/update_donor.html:93 templates/blood/update_patient.html:120
+#: templates/blood/update_donor.html:93
+#: templates/blood/update_patient.html:120
 msgid "Mobile"
 msgstr "Téléphone"
 
@@ -1818,6 +2001,65 @@ msgstr "Détails des donneurs"
 msgid "DELETE"
 msgstr "Supprimer"
 
+#: templates/blood/admin_donor_eligibility.html:7
+#: templates/blood/adminbase.html:141
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Donor Eligibility"
+msgstr "Informations médicales"
+
+#: templates/blood/admin_donor_eligibility.html:11
+#, fuzzy
+#| msgid "Register"
+msgid "Registered Donors"
+msgstr "S’inscrire"
+
+#: templates/blood/admin_donor_eligibility.html:22
+#, fuzzy
+#| msgid "Last Donation Date"
+msgid "Last Donation"
+msgstr "Date du dernier don"
+
+#: templates/blood/admin_donor_eligibility.html:23
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Eligibility"
+msgstr "Informations médicales"
+
+#: templates/blood/admin_donor_eligibility.html:37
+msgid "Never"
+msgstr "Jamais"
+
+#: templates/blood/admin_donor_eligibility.html:42
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Eligible"
+msgstr "Non éligible"
+
+#: templates/blood/admin_donor_eligibility.html:44
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Ineligible"
+msgstr "Non éligible"
+
+#: templates/blood/admin_donor_eligibility.html:48
+msgid "Are you sure you want to change this donor\\'s eligibility?"
+msgstr "Êtes-vous sûr de vouloir modifier l'éligibilité de ce donneur ?"
+
+#: templates/blood/admin_donor_eligibility.html:53
+msgid "Mark Ineligible"
+msgstr "Marquer Non Éligible"
+
+#: templates/blood/admin_donor_eligibility.html:57
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Mark Eligible"
+msgstr "Non éligible"
+
+#: templates/blood/admin_donor_eligibility.html:70
+msgid "No donors found in the system."
+msgstr "Aucun donneur trouvé dans le système."
+
 #: templates/blood/admin_patient.html:9
 msgid "PATIENT DETAILS"
 msgstr "Détails des patients"
@@ -1830,15 +2072,8 @@ msgstr "Demandes en attente"
 
 #: templates/blood/admin_request.html:16
 #: templates/blood/admin_request_history.html:13
-#: templates/blood/adminbase.html:140
 msgid "Patient"
 msgstr "Patient"
-
-#: templates/blood/admin_request.html:17
-#: templates/blood/admin_request_history.html:14 templates/blood/index.html:269
-#: templates/blood/signup.html:116 templates/patient/my_request.html:20
-msgid "Blood Type"
-msgstr "Groupe sanguin"
 
 #: templates/blood/admin_request.html:18
 #: templates/blood/admin_request_history.html:15
@@ -1847,13 +2082,6 @@ msgstr "Groupe sanguin"
 #| msgid "Unit"
 msgid "Units"
 msgstr "Quantité"
-
-#: templates/blood/admin_request.html:19
-#: templates/blood/admin_request_history.html:16
-#: templates/patient/my_request.html:22
-#: templates/patient/patient_dashboard.html:50
-msgid "Urgency"
-msgstr ""
 
 #: templates/blood/admin_request.html:20
 #: templates/blood/admin_request_history.html:17
@@ -1878,41 +2106,17 @@ msgstr "Raison"
 msgid "Submitted"
 msgstr ""
 
-#: templates/blood/admin_request.html:36
-#: templates/blood/admin_request_history.html:33
-#: templates/patient/my_request.html:37
-#: templates/patient/patient_dashboard.html:52
-msgid "Critical"
-msgstr ""
-
-#: templates/blood/admin_request.html:38
-#: templates/blood/admin_request_history.html:35
-#: templates/patient/my_request.html:39
-#: templates/patient/patient_dashboard.html:54
-msgid "Urgent"
-msgstr ""
-
-#: templates/blood/admin_request.html:40
-#: templates/blood/admin_request_history.html:37
-#: templates/patient/my_request.html:41
-#: templates/patient/patient_dashboard.html:56
-msgid "Normal"
-msgstr ""
-
 #: templates/blood/admin_request.html:51
+#: templates/blood/admin_requests_dashboard.html:102
+#: templates/blood/admin_requests_dashboard.html:170
 msgid "Approve"
 msgstr "Approuvée"
 
 #: templates/blood/admin_request.html:55
+#: templates/blood/admin_requests_dashboard.html:103
+#: templates/blood/admin_requests_dashboard.html:171
 msgid "Reject"
 msgstr "Rejetée"
-
-#: templates/blood/admin_request.html:60
-#: templates/blood/admin_request_history.html:71
-#: templates/donor/donation_history.html:53
-#: templates/patient/my_request.html:74
-msgid "Cancel"
-msgstr ""
 
 #: templates/blood/admin_request.html:72
 #, fuzzy
@@ -1951,8 +2155,127 @@ msgid "Expired"
 msgstr ""
 
 #: templates/blood/admin_request_history.html:66
+#: templates/blood/admin_requests_dashboard.html:106
+#: templates/blood/admin_requests_dashboard.html:174
 msgid "Complete"
-msgstr ""
+msgstr "Terminer"
+
+#: templates/blood/admin_requests_dashboard.html:7
+#: templates/blood/adminbase.html:139
+#, fuzzy
+#| msgid "Dashboard"
+msgid "Requests Dashboard"
+msgstr "Tableau de Bord"
+
+#: templates/blood/admin_requests_dashboard.html:12
+msgid "Filter"
+msgstr "Filtrer"
+
+#: templates/blood/admin_requests_dashboard.html:26
+#, fuzzy
+#| msgid "Blood Bank"
+msgid "Blood Sign"
+msgstr "Banque de sang"
+
+#: templates/blood/admin_requests_dashboard.html:39
+#: templates/blood/admin_requests_dashboard.html:130
+msgid "Apply Filters"
+msgstr "Appliquer les filtres"
+
+#: templates/blood/admin_requests_dashboard.html:41
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: templates/blood/admin_requests_dashboard.html:50
+msgid "Blood Requests"
+msgstr "Demandes de sang"
+
+#: templates/blood/admin_requests_dashboard.html:56
+#: templates/blood/admin_requests_dashboard.html:138
+#, fuzzy
+#| msgid "Request Date"
+msgid "Request ID"
+msgstr "Date de la demande"
+
+#: templates/blood/admin_requests_dashboard.html:63
+#: templates/blood/admin_requests_dashboard.html:143
+#, fuzzy
+#| msgid "Action"
+msgid "Actions"
+msgstr "Action"
+
+#: templates/blood/admin_requests_dashboard.html:118
+#, fuzzy
+#| msgid "Pending Request"
+msgid "No blood requests found."
+msgstr "Demandes en attente"
+
+#: templates/blood/admin_requests_dashboard.html:125
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Donation Requests"
+msgstr "Demande de sang"
+
+#: templates/blood/admin_requests_dashboard.html:128
+#, fuzzy
+#| msgid "Donations"
+msgid "Filter Donations:"
+msgstr "Dons"
+
+#: templates/blood/admin_requests_dashboard.html:188
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "No donation requests found."
+msgstr "Mes demandes de sang"
+
+#: templates/blood/admin_user_management.html:7
+#: templates/blood/adminbase.html:140
+#, fuzzy
+#| msgid "Username"
+msgid "User Management"
+msgstr "Nom d’utilisateur"
+
+#: templates/blood/admin_user_management.html:11
+#, fuzzy
+#| msgid "Register"
+msgid "Registered Users"
+msgstr "S’inscrire"
+
+#: templates/blood/admin_user_management.html:19
+msgid "NIN"
+msgstr "NIN"
+
+#: templates/blood/admin_user_management.html:23
+#, fuzzy
+#| msgid "Donate Blood"
+msgid "Date Joined"
+msgstr "Donner du sang"
+
+#: templates/blood/admin_user_management.html:38
+#, fuzzy
+#| msgid "Action"
+msgid "Active"
+msgstr "Action"
+
+#: templates/blood/admin_user_management.html:40
+msgid "Inactive"
+msgstr "Inactif"
+
+#: templates/blood/admin_user_management.html:44
+msgid "Are you sure you want to change this user\\'s status?"
+msgstr "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?"
+
+#: templates/blood/admin_user_management.html:49
+msgid "Deactivate"
+msgstr "Désactiver"
+
+#: templates/blood/admin_user_management.html:53
+msgid "Activate"
+msgstr "Activer"
+
+#: templates/blood/admin_user_management.html:66
+msgid "No users found in the system."
+msgstr "Aucun utilisateur trouvé dans le système."
 
 #: templates/blood/adminbase.html:8
 msgid "ADMIN"
@@ -1973,23 +2296,7 @@ msgstr "Déconnexion"
 msgid "Home"
 msgstr "Accueil"
 
-#: templates/blood/adminbase.html:139
-msgid "Donor"
-msgstr "Donneur"
-
-#: templates/blood/adminbase.html:141
-msgid "Donations"
-msgstr "Dons"
-
 #: templates/blood/adminbase.html:142
-msgid "Blood Requests"
-msgstr "Demandes de sang"
-
-#: templates/blood/adminbase.html:143 templates/patient/patientbase.html:130
-msgid "Request History"
-msgstr "Historique des demandes"
-
-#: templates/blood/adminbase.html:144
 msgid "Blood Stock"
 msgstr "Stock de sang"
 
@@ -2024,10 +2331,6 @@ msgstr "Je suis un Donneur"
 #: templates/blood/choose_profile.html:30
 msgid "Register as a donor to give blood and save lives."
 msgstr ""
-
-#: templates/blood/choose_profile.html:31
-msgid "Select Donor"
-msgstr "Choisir Donneur"
 
 #: templates/blood/choose_profile.html:39
 msgid "I am a Patient"
@@ -2141,14 +2444,11 @@ msgstr "Donner du sang sauve des vies"
 #: templates/blood/index.html:240
 msgid ""
 "\n"
-"            A few minutes of your time can give someone a new chance at "
-"life. Be a source of hope and help save lives.\n"
+"            A few minutes of your time can give someone a new chance at life. Be a source of hope and help save lives.\n"
 "            "
 msgstr ""
 "\n"
-"            Quelques minutes de votre temps peuvent donner à quelqu’un une "
-"nouvelle chance de vivre. Soyez une source d’espoir et aidez à sauver des "
-"vies.\n"
+"            Quelques minutes de votre temps peuvent donner à quelqu’un une nouvelle chance de vivre. Soyez une source d’espoir et aidez à sauver des vies.\n"
 "            "
 
 #: templates/blood/index.html:250
@@ -2162,13 +2462,11 @@ msgstr "🩸 Compatibilité des groupes sanguins"
 #: templates/blood/index.html:260
 msgid ""
 "\n"
-"        Understanding blood type compatibility helps speed up donations and "
-"save lives safely.\n"
+"        Understanding blood type compatibility helps speed up donations and save lives safely.\n"
 "        "
 msgstr ""
 "\n"
-"        Comprendre la compatibilité des groupes sanguins aide à accélérer "
-"les dons et à sauver des vies en toute sécurité.\n"
+"        Comprendre la compatibilité des groupes sanguins aide à accélérer les dons et à sauver des vies en toute sécurité.\n"
 "        "
 
 #: templates/blood/index.html:270
@@ -2194,13 +2492,11 @@ msgstr "AB+ uniquement"
 #: templates/blood/index.html:320
 msgid ""
 "\n"
-"        ⚠️ This information is for awareness purposes only. Full medical "
-"compatibility must always be confirmed.\n"
+"        ⚠️ This information is for awareness purposes only. Full medical compatibility must always be confirmed.\n"
 "        "
 msgstr ""
 "\n"
-"        ⚠️ Ces informations sont uniquement à titre de sensibilisation. La "
-"compatibilité médicale complète doit toujours être confirmée.\n"
+"        ⚠️ Ces informations sont uniquement à titre de sensibilisation. La compatibilité médicale complète doit toujours être confirmée.\n"
 "        "
 
 #: templates/blood/login.html:35 templates/blood/signup.html:31
@@ -2285,12 +2581,6 @@ msgstr ""
 msgid "Location Details"
 msgstr "Détails de l'emplacement"
 
-#: templates/blood/signup.html:135 templates/donor/donor_dashboard.html:19
-#: templates/patient/blood_request_form.html:128
-#: templates/patient/patient_dashboard.html:19
-msgid "Wilaya"
-msgstr ""
-
 #: templates/blood/signup.html:144 templates/donor/donor_dashboard.html:21
 #: templates/patient/blood_request_form.html:138
 #: templates/patient/patient_dashboard.html:21
@@ -2323,7 +2613,6 @@ msgid "Update Donor"
 msgstr "Mettre à jour le donneur"
 
 #: templates/blood/update_donor.html:67 templates/blood/update_patient.html:76
-#: templates/donor/donate_blood.html:33
 msgid "Choose option"
 msgstr "Choisir une option"
 
@@ -2331,25 +2620,13 @@ msgstr "Choisir une option"
 msgid "Update Patient"
 msgstr "Mettre à jour le patient"
 
-#: templates/blood/update_patient.html:93 templates/donor/donate_blood.html:59
+#: templates/blood/update_patient.html:93
 msgid "Disease (if any)"
 msgstr "Maladie (s'il y en a)"
 
 #: templates/blood/update_patient.html:102
 msgid "Doctor Name"
 msgstr "Nom du médecin"
-
-#: templates/donor/donate_blood.html:20
-msgid "DONATE BLOOD"
-msgstr "Don de sang"
-
-#: templates/donor/donate_blood.html:50
-msgid "Unit (in ml)"
-msgstr "Quantité (en ml)"
-
-#: templates/donor/donate_blood.html:77
-msgid "DONATE"
-msgstr "Donner"
 
 #: templates/donor/donation_history.html:9 templates/donor/donorbase.html:194
 msgid "Donation History"
@@ -2379,8 +2656,8 @@ msgstr "Demande de sang"
 #: templates/donor/donation_history.html:67
 #: templates/donor/donor_dashboard.html:194
 msgid ""
-"Are you sure you want to cancel your donation request? This action cannot be "
-"undone."
+"Are you sure you want to cancel your donation request? This action cannot be"
+" undone."
 msgstr ""
 
 #: templates/donor/donation_history.html:70
@@ -2585,8 +2862,8 @@ msgstr ""
 
 #: templates/patient/cancel_request_modal.html:24
 msgid ""
-"This action cannot be undone. If the request was already approved and linked "
-"to a donor, they will be notified."
+"This action cannot be undone. If the request was already approved and linked"
+" to a donor, they will be notified."
 msgstr ""
 
 #: templates/patient/cancel_request_modal.html:29
@@ -2658,6 +2935,22 @@ msgstr "PATIENT"
 msgid "Make Request"
 msgstr "Faire une demande"
 
+#: templates/patient/patientbase.html:130
+msgid "Request History"
+msgstr "Historique des demandes"
+
+#~ msgid "Donor"
+#~ msgstr "Donneur"
+
+#~ msgid "DONATE BLOOD"
+#~ msgstr "Don de sang"
+
+#~ msgid "Unit (in ml)"
+#~ msgstr "Quantité (en ml)"
+
+#~ msgid "DONATE"
+#~ msgstr "Donner"
+
 #~ msgid "My Donation History"
 #~ msgstr "Mon historique des dons"
 
@@ -2666,6 +2959,3 @@ msgstr "Faire une demande"
 
 #~ msgid "Date"
 #~ msgstr "Date"
-
-#~ msgid "Donate Blood"
-#~ msgstr "Donner du sang"
