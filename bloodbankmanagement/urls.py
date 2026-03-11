@@ -50,6 +50,7 @@ urlpatterns += i18n_patterns(
     path('admin-dashboard', views.admin_dashboard_view, name='admin-dashboard'),
     path('admin-blood', views.admin_blood_view, name='admin-blood'),
     path('admin-user-management', views.admin_user_management_view, name='admin-user-management'),
+    path('admin-donor-eligibility', views.admin_donor_eligibility_view, name='admin-donor-eligibility'),
     path('update-approve-status/<int:pk>', views.update_approve_status_view, name='update-approve-status'),
     path('update-reject-status/<int:pk>', views.update_reject_status_view, name='update-reject-status'),
     path('complete-blood-request/<int:pk>', views.complete_blood_request_view, name='complete-blood-request'),

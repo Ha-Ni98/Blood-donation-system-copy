@@ -398,6 +398,32 @@ def admin_user_management_view(request):
     return render(request, 'blood/admin_user_management.html', {'users': users})
 
 @admin_required(login_url='adminlogin')
+def admin_donor_eligibility_view(request):
+    """
+    Displays all donors.
+    Handles POST requests to toggle the is_eligible status of a donor.
+    """
+    if request.method == 'POST':
+        donor_id = request.POST.get('donor_id')
+        action = request.POST.get('action')
+        
+        if donor_id and action in ['mark_eligible', 'mark_ineligible']:
+            try:
+                donor = models.DonorProfile.objects.get(id=donor_id)
+                donor.is_eligible = (action == 'mark_eligible')
+                donor.save()
+                
+                status_str = "eligible" if donor.is_eligible else "ineligible"
+                messages.success(request, f"Donor {donor.app_user.first_name} {donor.app_user.last_name} marked as {status_str}.")
+            except models.DonorProfile.DoesNotExist:
+                messages.error(request, "Donor not found.")
+        return redirect('admin-donor-eligibility')
+
+    # GET: List all DonorProfiles
+    donors = models.DonorProfile.objects.select_related('app_user').all()
+    return render(request, 'blood/admin_donor_eligibility.html', {'donors': donors})
+
+@admin_required(login_url='adminlogin')
 @terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
 def update_reject_status_view(request, pk):
     """Pending → Rejected. Notifies patient."""
