@@ -4,7 +4,7 @@ from django.db.models import Sum,Q
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
-from .decorators import admin_required
+from .decorators import admin_required, terminal_status_guard
 from django.conf import settings
 from datetime import date, timedelta
 from django.core.mail import send_mail
@@ -424,115 +424,115 @@ def admin_donation_view(request):
     return render(request,'blood/admin_donation.html',{'donations': []})
 
 @admin_required(login_url='adminlogin')
-def update_approve_status_view(request, pk):
-    """Pending → Approved. Notifies patient."""
-    req = models.BloodRequest.objects.get(id=pk)
-    if req.status in models.TERMINAL_STATUSES:
-        messages.error(request, f'Cannot approve: request is already {req.status}.')
-        return HttpResponseRedirect('/admin-request')
-    if req.status != 'pending':
-        messages.error(request, 'Only pending requests can be approved.')
-        return HttpResponseRedirect('/admin-request')
-    req.status = 'approved'
-    req.save()
-    models.Notification.objects.create(
-        recipient=req.patient.app_user,
-        title='Blood Request Approved',
-        message=f'Your blood request for {req.blood_type}{req.blood_sign} has been approved.',
-    )
-    messages.success(request, 'Blood request approved.')
-    return HttpResponseRedirect('/admin-request')
-
-
-@admin_required(login_url='adminlogin')
+@terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
 def update_reject_status_view(request, pk):
     """Pending → Rejected. Notifies patient."""
     req = models.BloodRequest.objects.get(id=pk)
-    if req.status in models.TERMINAL_STATUSES:
-        messages.error(request, f'Cannot reject: request is already {req.status}.')
-        return HttpResponseRedirect('/admin-request')
     if req.status != 'pending':
         messages.error(request, 'Only pending requests can be rejected.')
-        return HttpResponseRedirect('/admin-request')
+        return redirect('admin-dashboard')
+    
     req.status = 'rejected'
     req.save()
+    
     models.Notification.objects.create(
         recipient=req.patient.app_user,
         title='Blood Request Rejected',
-        message=f'Your blood request for {req.blood_type}{req.blood_sign} has been rejected.',
+        message=f'Your blood request status has been updated to Rejected.',
     )
-    messages.success(request, 'Blood request rejected.')
-    return HttpResponseRedirect('/admin-request')
+    messages.success(request, 'Request has been rejected successfully.')
+    return redirect('admin-dashboard')
 
 
 @admin_required(login_url='adminlogin')
+@terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
 def complete_blood_request_view(request, pk):
-    """Approved → Completed. Creates TransfusionSafetyPeriod, sets donor ineligible, notifies patient."""
+    """Approved → Completed. Atomic. Creates TransfusionSafetyPeriod, sets donor ineligible, notifies patient/donor."""
     req = models.BloodRequest.objects.get(id=pk)
-    if req.status in models.TERMINAL_STATUSES:
-        messages.error(request, f'Cannot complete: request is already {req.status}.')
-        return HttpResponseRedirect('/admin-request-history')
     if req.status != 'approved':
         messages.error(request, 'Only approved requests can be marked as completed.')
-        return HttpResponseRedirect('/admin-request-history')
-    req.status = 'completed'
-    req.save()
-    # Create TransfusionSafetyPeriod if a donor is linked via DonationRequest
-    try:
-        donation_req = req.donation_request
-        donor_profile = donation_req.donor
-        models.TransfusionSafetyPeriod.objects.create(
-            donor=donor_profile,
-            blood_request=req,
-            started_at=date.today(),
+        return redirect('admin-dashboard')
+    
+    with transaction.atomic():
+        req.status = 'completed'
+        req.save()
+        
+        # Cascade to linked DonationRequest (if one exists)
+        try:
+            donation_req = req.donation_request
+            donation_req.status = 'completed'
+            donation_req.save()
+            
+            donor_profile = donation_req.donor
+            models.TransfusionSafetyPeriod.objects.create(
+                donor=donor_profile,
+                blood_request=req,
+                started_at=date.today(),
+            )
+            donor_profile.is_eligible = False
+            donor_profile.save()
+            
+            models.Notification.objects.create(
+                recipient=donor_profile.app_user,
+                title='Donation Completed',
+                message='Your donation request status has been updated to Completed.',
+            )
+        except models.DonationRequest.DoesNotExist:
+            pass
+            
+        models.Notification.objects.create(
+            recipient=req.patient.app_user,
+            title='Blood Request Completed',
+            message=f'Your blood request status has been updated to Completed.',
         )
-        donor_profile.is_eligible = False
-        donor_profile.save()
-    except models.DonationRequest.DoesNotExist:
-        pass  # No linked donor — no safety period needed
-    models.Notification.objects.create(
-        recipient=req.patient.app_user,
-        title='Blood Request Completed',
-        message=f'Your blood request for {req.blood_type}{req.blood_sign} has been completed.',
-    )
-    messages.success(request, 'Blood request marked as completed.')
-    return HttpResponseRedirect('/admin-request-history')
+        
+    messages.success(request, 'Request has been completed successfully.')
+    return redirect('admin-dashboard')
 
 
 @admin_required(login_url='adminlogin')
+@terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
 def admin_cancel_blood_request_view(request, pk):
-    """Any non-terminal → Cancelled by Admin. Cascades to DonationRequest. Notifies patient."""
+    """Pending/Approved → Cancelled by Admin. Atomic. Cascades to DonationRequest. Notifies patient/donor."""
     req = models.BloodRequest.objects.get(id=pk)
-    if req.status in models.TERMINAL_STATUSES:
-        messages.error(request, f'Cannot cancel: request is already {req.status}.')
-        return HttpResponseRedirect('/admin-request')
-    # Cascade to linked DonationRequest if exists
-    try:
-        donation_req = req.donation_request
-        donation_req.status = 'cancelled_by_admin'
-        donation_req.save()
+    
+    with transaction.atomic():
+        # Cascade to linked DonationRequest if exists
+        try:
+            donation_req = req.donation_request
+            donation_req.status = 'cancelled_by_admin'
+            donation_req.save()
+            
+            models.Notification.objects.create(
+                recipient=donation_req.donor.app_user,
+                title='Donation Request Cancelled',
+                message="The patient's blood request was cancelled by the admin. Your donation request has been cancelled.",
+            )
+        except models.DonationRequest.DoesNotExist:
+            pass
+            
+        req.status = 'cancelled_by_admin'
+        req.save()
+        
         models.Notification.objects.create(
-            recipient=donation_req.donor.app_user,
-            title='Donation Request Cancelled',
-            message='Your donation request has been cancelled by the admin.',
+            recipient=req.patient.app_user,
+            title='Blood Request Cancelled',
+            message=f'Your blood request status has been updated to Cancelled.',
         )
-    except models.DonationRequest.DoesNotExist:
-        pass
-    req.status = 'cancelled_by_admin'
-    req.save()
-    models.Notification.objects.create(
-        recipient=req.patient.app_user,
-        title='Blood Request Cancelled',
-        message=f'Your blood request for {req.blood_type}{req.blood_sign} has been cancelled by the admin.',
-    )
-    messages.success(request, 'Blood request cancelled by admin.')
-    return HttpResponseRedirect('/admin-request')
+        
+    messages.success(request, 'Request has been cancelled successfully.')
+    return redirect('admin-dashboard')
 
 @admin_required(login_url='adminlogin')
 def approve_donation_view(request,pk):
     # Stubbed — legacy BloodDonate model references removed.
     # Will be rebuilt when DonationRequest views are implemented (Phase C).
     return HttpResponseRedirect('/admin-donation')
+
+@admin_required(login_url='adminlogin')
+def update_approve_status_view(request, pk):
+    # Stubbed — will be rebuilt in Sprint 8
+    return redirect('admin-dashboard')
 
 @admin_required(login_url='adminlogin')
 def reject_donation_view(request,pk):
