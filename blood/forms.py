@@ -115,3 +115,28 @@ class DonorProfileForm(forms.ModelForm):
             self.add_error('last_donation_date', 'Please provide the date of your last donation.')
 
         return cleaned_data
+
+
+class AdminBloodRequestFilterForm(forms.Form):
+    status = forms.ChoiceField(
+        choices=[('', 'All Statuses')] + models.BLOOD_REQUEST_STATUS_CHOICES, required=False
+    )
+    urgency = forms.ChoiceField(
+        choices=[('', 'All Urgencies')] + models.URGENCY_CHOICES, required=False
+    )
+    blood_type = forms.ChoiceField(
+        choices=[('', 'All Types')] + models.BLOOD_TYPE_CHOICES, required=False
+    )
+    blood_sign = forms.ChoiceField(
+        choices=[('', 'All Signs')] + models.BLOOD_SIGN_CHOICES, required=False
+    )
+    wilaya = forms.ModelChoiceField(
+        queryset=models.Wilaya.objects.all(), empty_label='All Wilayas', required=False
+    )
+
+
+class AdminDonationRequestFilterForm(forms.Form):
+    status = forms.ChoiceField(
+        choices=[('', 'All Statuses')] + models.DONATION_REQUEST_STATUS_CHOICES, required=False
+    )
+
