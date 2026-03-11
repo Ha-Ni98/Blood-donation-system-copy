@@ -1,0 +1,78 @@
+{% extends 'blood/adminbase.html' %}
+{% load i18n widget_tweaks %}
+
+{% block content %}
+<br><br>
+<div class="container-fluid px-4">
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">{% trans "Approve Donation Request" %} #{{ req.id }}</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Donor Name" %}: {{ req.donor.app_user.first_name }} {{ req.donor.app_user.last_name }}</h5>
+            <p class="card-text">
+                <strong>{% trans "Blood Type" %}:</strong> {{ req.donor.app_user.blood_type }}{{ req.donor.app_user.blood_sign }}<br>
+                <strong>{% trans "Created At" %}:</strong> {{ req.created_at|date:"d/m/Y" }}
+            </p>
+        </div>
+    </div>
+
+    <h4 class="mb-3">{% trans "Select Blood Request" %}</h4>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {% if eligible_blood_requests %}
+        <div class="table-responsive mb-4">
+            <table class="table table-light table-hover table-bordered table-striped">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>{% trans "Select" %}</th>
+                        <th>{% trans "Patient Name" %}</th>
+                        <th>{% trans "Blood Type" %}</th>
+                        <th>{% trans "Urgency" %}</th>
+                        <th>{% trans "Wilaya" %}</th>
+                        <th>{% trans "Created At" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for breq in eligible_blood_requests %}
+                    <tr>
+                        <td class="text-center align-middle">
+                            <input type="radio" name="blood_request_id" value="{{ breq.id }}" required
+                                   style="width: 20px; height: 20px; cursor: pointer;">
+                        </td>
+                        <td class="align-middle">{{ breq.patient.app_user.first_name }} {{ breq.patient.app_user.last_name }}</td>
+                        <td class="align-middle"><strong>{{ breq.blood_type }}{{ breq.blood_sign }}</strong></td>
+                        <td class="align-middle">
+                            {% if breq.urgency == 'critical' %}
+                                <span class="badge badge-danger">{% trans "Critical" %}</span>
+                            {% elif breq.urgency == 'urgent' %}
+                                <span class="badge badge-warning">{% trans "Urgent" %}</span>
+                            {% else %}
+                                <span class="badge badge-info">{% trans "Normal" %}</span>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">{{ breq.wilaya.name }}</td>
+                        <td class="align-middle">{{ breq.created_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'admin-dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-success px-5">{% trans "Confirm Approval" %}</button>
+        </div>
+        
+        {% else %}
+        <div class="alert alert-warning py-4 text-center">
+            <i class="fas fa-exclamation-triangle fa-3x mb-3 text-warning"></i>
+            <h5>{% trans "No eligible blood requests available for this blood type." %}</h5>
+            <p class="mb-4">{% trans "There are no pending blood requests matching" %} {{ req.donor.app_user.blood_type }}{{ req.donor.app_user.blood_sign }}.</p>
+            <a href="{% url 'admin-dashboard' %}" class="btn btn-secondary">{% trans "Return to Dashboard" %}</a>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock content %}

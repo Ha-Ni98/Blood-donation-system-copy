@@ -524,10 +524,65 @@ def admin_cancel_blood_request_view(request, pk):
     return redirect('admin-dashboard')
 
 @admin_required(login_url='adminlogin')
-def approve_donation_view(request,pk):
-    # Stubbed — legacy BloodDonate model references removed.
-    # Will be rebuilt when DonationRequest views are implemented (Phase C).
-    return HttpResponseRedirect('/admin-donation')
+@terminal_status_guard(models.DonationRequest, models.DONATION_TERMINAL_STATUSES)
+def approve_donation_view(request, pk):
+    """Pending → Approved. Requires selecting an eligible pending BloodRequest. Atomic."""
+    req = models.DonationRequest.objects.get(id=pk)
+    if req.status != 'pending':
+        messages.error(request, 'Only pending requests can be approved.')
+        return redirect('admin-dashboard')
+        
+    # Get eligible pending blood requests (exact blood type match)
+    eligible_blood_requests = models.BloodRequest.objects.filter(
+        status='pending',
+        blood_type=req.donor.app_user.blood_type,
+        blood_sign=req.donor.app_user.blood_sign
+    ).select_related('patient__app_user', 'wilaya', 'commune')
+    
+    if request.method == 'POST':
+        blood_request_id = request.POST.get('blood_request_id')
+        if not blood_request_id:
+            messages.error(request, 'Please select a blood request.')
+            return redirect('approve-donation', pk=pk)
+            
+        try:
+            with transaction.atomic():
+                blood_req = models.BloodRequest.objects.select_for_update().get(id=blood_request_id, status='pending')
+                
+                # Link and update statuses
+                req.blood_request = blood_req
+                req.status = 'approved'
+                blood_req.status = 'approved'
+                
+                req.save()
+                blood_req.save()
+                
+                # Notify Donor
+                models.Notification.objects.create(
+                    recipient=req.donor.app_user,
+                    title='Donation Request Approved',
+                    message='Your donation request status has been updated to Approved.',
+                )
+                
+                # Notify Patient
+                models.Notification.objects.create(
+                    recipient=blood_req.patient.app_user,
+                    title='Blood Request Approved',
+                    message='Your blood request status has been updated to Approved.',
+                )
+                
+            messages.success(request, 'Request has been approved successfully.')
+            return redirect('admin-dashboard')
+            
+        except models.BloodRequest.DoesNotExist:
+            messages.error(request, 'The selected blood request is no longer available.')
+            return redirect('approve-donation', pk=pk)
+            
+    # GET: render selection form
+    return render(request, 'blood/admin_approve_donation_request.html', {
+        'req': req,
+        'eligible_blood_requests': eligible_blood_requests
+    })
 
 @admin_required(login_url='adminlogin')
 @terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)

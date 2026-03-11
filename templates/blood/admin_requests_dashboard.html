@@ -167,7 +167,7 @@
                             </td>
                             <td class="text-right" style="white-space:nowrap;">
                                 {% if req.status == 'pending' %}
-                                    <a href="#" class="btn btn-success btn-sm badge-pill disabled" style="width:90px;" title="Implement in Sprint 10">{% trans "Approve" %}</a>
+                                    <a href="{% url 'approve-donation' req.id %}" class="btn btn-success btn-sm badge-pill" style="width:90px;">{% trans "Approve" %}</a>
                                     <a href="{% url 'reject-donation' req.id %}" class="btn btn-danger btn-sm badge-pill" style="width:80px;">{% trans "Reject" %}</a>
                                     <a href="{% url 'admin-cancel-donation-request' req.id %}" class="btn btn-secondary btn-sm badge-pill" onclick="return confirm('Cancel this donation request?')">{% trans "Cancel" %}</a>
                                 {% elif req.status == 'approved' %}
