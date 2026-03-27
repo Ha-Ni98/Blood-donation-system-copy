@@ -88,13 +88,23 @@
                             <i class="fas fa-check-circle fa-2x text-success mr-3"></i>
                             <div>
                                 <h5 class="mb-0 text-success">{% trans "Eligible to Donate" %}</h5>
-                                <small class="text-muted">{% trans "You can submit a donation request." %}</small>
+                                <small class="text-muted">{% trans "You can safely submit a donation request." %}</small>
                             </div>
                         {% else %}
                             <i class="fas fa-times-circle fa-2x text-danger mr-3"></i>
                             <div>
                                 <h5 class="mb-0 text-danger">{% trans "Not Eligible" %}</h5>
-                                <small class="text-muted">{{ ineligible_reason }}</small>
+                                <p class="mb-1 text-muted" style="line-height: 1.2;">
+                                    <small>{{ ineligible_reason }}</small>
+                                </p>
+                                {% if next_eligible_date %}
+                                    <div class="mt-1">
+                                        <span class="badge badge-light border text-dark">
+                                            <i class="far fa-calendar-alt text-danger"></i> 
+                                            {% trans "Next Eligibility" %}: <strong>{{ next_eligible_date|date:"M d, Y" }}</strong>
+                                        </span>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>

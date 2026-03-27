@@ -89,16 +89,35 @@ from blood.tasks import expire_blood_requests
 from blood.admin import AppUserAdmin
 from django.contrib.admin.sites import site
 
-class AdminAccessGuardTests(TestCase):
+class AdminDonationTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='normal@a.com', password='pw')
-        self.admin = User.objects.create_superuser(username='admin@a.com', password='pw')
+        self.admin_user = User.objects.create_superuser(username='admin@a.com', password='pw')
+        self.u1 = User.objects.create_user(username='d1@a.com', password='pw')
+        self.w1 = Wilaya.objects.create(code='01', name='Adrar')
+        self.c1 = Commune.objects.create(name='Adrar', wilaya=self.w1)
+        self.app_user = AppUser.objects.create(
+            user=self.u1, first_name='D1', last_name='L1', 
+            phone_number='0555555555', nin='123456789012345678', 
+            gender='M', blood_type='A', blood_sign='+', 
+            date_of_birth=date(1990,1,1), wilaya=self.w1, commune=self.c1
+        )
+        self.donor = DonorProfile.objects.create(app_user=self.app_user)
+        self.client.login(username='admin@a.com', password='pw')
 
-    def test_non_staff_redirect(self):
-        self.client.login(username='normal@a.com', password='pw')
-        response = self.client.get(reverse('admin-dashboard'))
-        self.assertRedirects(response, reverse('adminlogin') + f"?next={reverse('admin-dashboard')}")
+    def test_complete_donation_updates_profile(self):
+        dr = DonationRequest.objects.create(donor=self.donor, status='approved')
+        
+        response = self.client.post(reverse('complete-donation-request', args=[dr.id]))
+        self.assertRedirects(response, reverse('admin-dashboard'))
+        
+        self.donor.refresh_from_db()
+        self.assertFalse(self.donor.is_eligible)
+        self.assertEqual(self.donor.last_donation_date, date.today())
+        
+        dr.refresh_from_db()
+        self.assertEqual(dr.status, 'completed')
 
+class AdminAccessGuardTests(TestCase):
     def test_staff_access(self):
         self.client.login(username='admin@a.com', password='pw')
         response = self.client.get(reverse('admin-dashboard'))

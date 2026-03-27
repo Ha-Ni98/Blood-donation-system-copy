@@ -483,6 +483,7 @@ def complete_blood_request_view(request, pk):
                 started_at=date.today(),
             )
             donor_profile.is_eligible = False
+            donor_profile.last_donation_date = date.today()
             donor_profile.save()
             
             models.Notification.objects.create(
@@ -687,8 +688,15 @@ def complete_donation_request_view(request, pk):
         messages.error(request, 'Only approved requests can be marked as completed.')
         return redirect('admin-dashboard')
         
-    req.status = 'completed'
-    req.save()
+    with transaction.atomic():
+        req.status = 'completed'
+        req.save()
+        
+        # Point 3: Update donor profile
+        donor_profile = req.donor
+        donor_profile.is_eligible = False
+        donor_profile.last_donation_date = date.today()
+        donor_profile.save()
     
     models.Notification.objects.create(
         recipient=req.donor.app_user,

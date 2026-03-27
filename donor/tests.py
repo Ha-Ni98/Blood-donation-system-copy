@@ -118,6 +118,109 @@ class DonorViewsTests(TestCase):
         response = self.client.get(reverse('submit-donation'))
         self.assertRedirects(response, reverse('donor-dashboard'))
 
+    def test_submit_blocks_when_chronic_disease(self):
+        self.donor_m.chronic_disease = True
+        self.donor_m.save()
+        
+        response = self.client.get(reverse('submit-donation'))
+        self.assertRedirects(response, reverse('donor-dashboard'))
+
+    def test_submit_blocks_when_anemia(self):
+        self.donor_m.anemia = True
+        self.donor_m.save()
+        
+        response = self.client.get(reverse('submit-donation'))
+        self.assertRedirects(response, reverse('donor-dashboard'))
+
+    def test_submit_blocks_when_recent_donation(self):
+        # Donated 2 months ago (less than 3 months)
+        self.donor_m.last_donation_date = timezone.now().date() - timedelta(days=60)
+        self.donor_m.save()
+        
+        response = self.client.get(reverse('submit-donation'))
+        self.assertRedirects(response, reverse('donor-dashboard'))
+
+    def test_submit_allowed_when_donation_is_old(self):
+        # Donated 4 months ago (more than 3 months)
+        self.donor_m.last_donation_date = timezone.now().date() - timedelta(days=120)
+        self.donor_m.save()
+        
+        response = self.client.get(reverse('submit-donation'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_submit_blocks_when_under_18(self):
+        # Update user date of birth to be 17 years ago
+        self.app_user_m.date_of_birth = date.today() - timedelta(days=17*365.25)
+        self.app_user_m.save()
+        
+        response = self.client.get(reverse('submit-donation'))
+        self.assertRedirects(response, reverse('donor-dashboard'))
+
+    def test_submit_fails_when_transfusion_checked(self):
+        data = {
+            'donated_last_3_months': False,
+            'transfusion_last_6_months': True,
+            'surgery_last_6_months': False,
+            'has_fever': False,
+            'on_medication': False,
+            'has_anemia': False,
+            'confirmed_accurate': True,
+            'confirmed_understands': True,
+        }
+        response = self.client.post(reverse('submit-donation'), data)
+        self.assertEqual(response.status_code, 200) # Re-renders form
+        self.assertContains(response, 'Your donation request cannot be submitted because you received a transfusion', status_code=200, html=False)
+        self.assertFalse(DonationRequest.objects.filter(donor=self.donor_m).exists())
+
+    def test_submit_fails_when_surgery_checked(self):
+        data = {
+            'donated_last_3_months': False,
+            'transfusion_last_6_months': False,
+            'surgery_last_6_months': True,
+            'has_fever': False,
+            'on_medication': False,
+            'has_anemia': False,
+            'confirmed_accurate': True,
+            'confirmed_understands': True,
+        }
+        response = self.client.post(reverse('submit-donation'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Your donation request cannot be submitted because you had surgery in the last 6 months.', html=False)
+
+    def test_submit_fails_when_anemia_checked(self):
+        data = {
+            'donated_last_3_months': False,
+            'transfusion_last_6_months': False,
+            'surgery_last_6_months': False,
+            'has_fever': False,
+            'on_medication': False,
+            'has_anemia': True,
+            'confirmed_accurate': True,
+            'confirmed_understands': True,
+        }
+        response = self.client.post(reverse('submit-donation'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Your donation request cannot be submitted because you have anemia.', html=False)
+
+    def test_submit_fails_when_female_pregnant(self):
+        self.client.logout()
+        self.client.login(username='donor_f@a.com', password='pw')
+        data = {
+            'donated_last_3_months': False,
+            'transfusion_last_6_months': False,
+            'surgery_last_6_months': False,
+            'has_fever': False,
+            'on_medication': False,
+            'has_anemia': False,
+            'is_pregnant': True,
+            'is_breastfeeding': False,
+            'confirmed_accurate': True,
+            'confirmed_understands': True,
+        }
+        response = self.client.post(reverse('submit-donation'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Your donation request cannot be submitted because you are pregnant or breastfeeding.', html=False)
+
     def test_cancel_donation_pending(self):
         dr = DonationRequest.objects.create(donor=self.donor_m, status='pending')
         
@@ -126,6 +229,29 @@ class DonorViewsTests(TestCase):
         
         dr.refresh_from_db()
         self.assertEqual(dr.status, 'cancelled_by_user')
+
+    def test_dashboard_eligibility_logic(self):
+        # 1. Under 18
+        self.app_user_m.date_of_birth = date.today() - timedelta(days=17*365)
+        self.app_user_m.save()
+        response = self.client.get(reverse('donor-dashboard'))
+        self.assertContains(response, 'You are under 18 years old.')
+        
+        # 2. Chronic Disease (reset age first)
+        self.app_user_m.date_of_birth = date(1990,1,1)
+        self.app_user_m.save()
+        self.donor_m.chronic_disease = True
+        self.donor_m.save()
+        response = self.client.get(reverse('donor-dashboard'))
+        self.assertContains(response, 'You have a chronic disease.')
+        
+        # 3. Recent Donation (90 days)
+        self.donor_m.chronic_disease = False
+        self.donor_m.last_donation_date = date.today() - timedelta(days=10)
+        self.donor_m.save()
+        response = self.client.get(reverse('donor-dashboard'))
+        self.assertContains(response, 'Last donation was 10 days ago.')
+        self.assertContains(response, 'Next Eligibility') # Badge check
 
     def test_cancel_donation_approved_cascades(self):
         patient = PatientProfile.objects.create(app_user=self.app_user_f)

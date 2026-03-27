@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from datetime import timedelta
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from blood import models as bmodels
@@ -26,9 +27,25 @@ def donor_dashboard_view(request):
     # Eligibility logic
     is_eligible = donor_profile.is_eligible
     ineligible_reason = None
+    next_eligible_date = None
 
     if not is_eligible:
         ineligible_reason = _("Marked ineligible by administrator.")
+    elif app_user.age < 18:
+        is_eligible = False
+        ineligible_reason = _("You are under 18 years old.")
+    elif donor_profile.chronic_disease:
+        is_eligible = False
+        ineligible_reason = _("You have a chronic disease.")
+    elif donor_profile.anemia:
+        is_eligible = False
+        ineligible_reason = _("You have a history of anemia.")
+    elif donor_profile.last_donation_date and donor_profile.last_donation_date > timezone.now().date() - timedelta(days=90):
+        is_eligible = False
+        days_since = (timezone.now().date() - donor_profile.last_donation_date).days
+        days_left = 90 - days_since
+        next_eligible_date = donor_profile.last_donation_date + timedelta(days=90)
+        ineligible_reason = _("Last donation was {0} days ago. Please wait {1} more days.").format(days_since, days_left)
     else:
         has_active_tsp = bmodels.TransfusionSafetyPeriod.objects.filter(
             donor=donor_profile, ends_at__gt=timezone.now()
@@ -61,6 +78,7 @@ def donor_dashboard_view(request):
         'active_request': active_request,
         'is_eligible': is_eligible,
         'ineligible_reason': ineligible_reason,
+        'next_eligible_date': next_eligible_date,
         'stats': stats,
     }
     
@@ -79,6 +97,24 @@ def submit_donation_request_view(request):
     if not donor_profile.is_eligible:
         messages.warning(request, _("You are currently not eligible to donate blood."))
         return redirect('donor-dashboard')
+
+    if app_user.age < 18:
+        messages.warning(request, _("You cannot donate because you are under 18 years old."))
+        return redirect('donor-dashboard')
+
+    if donor_profile.chronic_disease:
+        messages.warning(request, _("You cannot donate because you have a chronic disease."))
+        return redirect('donor-dashboard')
+
+    if donor_profile.anemia:
+        messages.warning(request, _("You cannot donate because you have anemia."))
+        return redirect('donor-dashboard')
+
+    if donor_profile.last_donation_date:
+        ninety_days_ago = timezone.now().date() - timedelta(days=90)
+        if donor_profile.last_donation_date > ninety_days_ago:
+            messages.warning(request, _("You cannot donate because your last donation was less than 3 months ago."))
+            return redirect('donor-dashboard')
 
     if hasattr(app_user, 'patientprofile'):
         has_active_br = bmodels.BloodRequest.objects.filter(
@@ -108,6 +144,31 @@ def submit_donation_request_view(request):
     if request.method == 'POST':
         form = forms.DonationRequestForm(request.POST, gender=app_user.gender)
         if form.is_valid():
+            # Point 2: Additional Submission Validation Checks
+            reason = None
+            if form.cleaned_data.get('transfusion_last_6_months'):
+                reason = _("you received a transfusion in the last 6 months")
+            elif form.cleaned_data.get('surgery_last_6_months'):
+                reason = _("you had surgery in the last 6 months")
+            elif form.cleaned_data.get('has_anemia'):
+                reason = _("you have anemia")
+            elif app_user.gender == 'F' and (form.cleaned_data.get('is_pregnant') or form.cleaned_data.get('is_breastfeeding')):
+                reason = _("you are pregnant or breastfeeding")
+            elif form.cleaned_data.get('donated_last_3_months'):
+                reason = _("you donated in the last 3 months")
+
+            if reason:
+                messages.error(request, _("Your donation request cannot be submitted because {0}.").format(reason))
+                return render(request, 'donor/donation_request_form.html', {
+                    'form': form,
+                    'full_name': f"{app_user.first_name} {app_user.last_name}",
+                    'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+                    'date_of_birth': app_user.date_of_birth,
+                    'age': app_user.age,
+                    'last_donation_date': donor_profile.last_donation_date,
+                    'is_female': app_user.gender == 'F'
+                })
+
             donation_request = form.save(commit=False)
             donation_request.donor = donor_profile
             donation_request.status = 'pending'
