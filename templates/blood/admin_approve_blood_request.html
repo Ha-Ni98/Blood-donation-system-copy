@@ -38,7 +38,7 @@
                     {% for donation in eligible_donations %}
                     <tr>
                         <td class="text-center align-middle">
-                            <input type="radio" name="donation_id" value="{{ donation.id }}" required
+                            <input type="checkbox" name="donation_ids" value="{{ donation.id }}"
                                    style="width: 20px; height: 20px; cursor: pointer;">
                         </td>
                         <td class="align-middle">{{ donation.donor.app_user.first_name }} {{ donation.donor.app_user.last_name }}</td>

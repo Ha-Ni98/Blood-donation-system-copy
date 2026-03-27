@@ -154,45 +154,85 @@ class AdminBloodRequestActionTests(TestCase):
         self.assertEqual(self.req.status, 'cancelled_by_admin')
         self.assertTrue(Notification.objects.filter(recipient=self.patient_user, title='Blood Request Cancelled').exists())
 
-    def test_approve_blood_request_with_donor_linking(self):
-        donor_user = AppUser.objects.create(
+    def test_approve_blood_request_with_multiple_donor_linking(self):
+        # Create Donor 1
+        donor_user1 = AppUser.objects.create(
             user=User.objects.create_user(username='d2@a.com', password='pw'),
-            first_name='D', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='22', 
+            first_name='D1', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='22', 
             nin='22', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
-        donor = DonorProfile.objects.create(app_user=donor_user)
-        donation_req = DonationRequest.objects.create(donor=donor, status='pending')
+        donor1 = DonorProfile.objects.create(app_user=donor_user1)
+        donation_req1 = DonationRequest.objects.create(donor=donor1, status='pending')
 
-        response = self.client.post(reverse('update-approve-status', args=[self.req.id]), {'donation_id': donation_req.id})
+        # Create Donor 2
+        donor_user2 = AppUser.objects.create(
+            user=User.objects.create_user(username='d2_2@a.com', password='pw'),
+            first_name='D2', last_name='L', gender='F', date_of_birth=date(1995, 1, 1), phone_number='23', 
+            nin='23', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        donor2 = DonorProfile.objects.create(app_user=donor_user2)
+        donation_req2 = DonationRequest.objects.create(donor=donor2, status='pending')
+
+        # Approve with both donations selected
+        response = self.client.post(
+            reverse('update-approve-status', args=[self.req.id]), 
+            {'donation_ids': [donation_req1.id, donation_req2.id]}
+        )
+        
         self.req.refresh_from_db()
-        donation_req.refresh_from_db()
+        donation_req1.refresh_from_db()
+        donation_req2.refresh_from_db()
         
         self.assertEqual(self.req.status, 'approved')
-        self.assertEqual(donation_req.status, 'approved')
-        self.assertEqual(donation_req.blood_request, self.req)
-
-    def test_complete_blood_request(self):
+        self.assertEqual(donation_req1.status, 'approved')
+        self.assertEqual(donation_req2.status, 'approved')
+        
+        # Verify foreign keys
+        self.assertEqual(donation_req1.blood_request, self.req)
+        self.assertEqual(donation_req2.blood_request, self.req)
+        self.assertEqual(self.req.donation_requests.count(), 2)
+    def test_complete_blood_request_with_multiple_donors(self):
         self.req.status = 'approved'
         self.req.save()
-        donor_user = AppUser.objects.create(
+        
+        # Donor 1 setup
+        donor_user1 = AppUser.objects.create(
             user=User.objects.create_user(username='d3@a.com', password='pw'),
-            first_name='D', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='32', 
+            first_name='D1', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='32', 
             nin='32', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
-        donor = DonorProfile.objects.create(app_user=donor_user)
-        donation_req = DonationRequest.objects.create(donor=donor, blood_request=self.req, status='approved')
+        donor1 = DonorProfile.objects.create(app_user=donor_user1)
+        donation_req1 = DonationRequest.objects.create(donor=donor1, blood_request=self.req, status='approved')
+
+        # Donor 2 setup
+        donor_user2 = AppUser.objects.create(
+            user=User.objects.create_user(username='d3_2@a.com', password='pw'),
+            first_name='D2', last_name='L', gender='F', date_of_birth=date(1995, 1, 1), phone_number='33', 
+            nin='33', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
+        )
+        donor2 = DonorProfile.objects.create(app_user=donor_user2)
+        donation_req2 = DonationRequest.objects.create(donor=donor2, blood_request=self.req, status='approved')
 
         response = self.client.get(reverse('complete-blood-request', args=[self.req.id]))
         
         self.req.refresh_from_db()
-        donation_req.refresh_from_db()
-        donor.refresh_from_db()
+        donation_req1.refresh_from_db()
+        donation_req2.refresh_from_db()
+        donor1.refresh_from_db()
+        donor2.refresh_from_db()
         
+        # Verify BloodRequest status
         self.assertEqual(self.req.status, 'completed')
-        self.assertEqual(donation_req.status, 'completed')
-        self.assertFalse(donor.is_eligible)
-        self.assertTrue(TransfusionSafetyPeriod.objects.filter(donor=donor, blood_request=self.req).exists())
-
+        
+        # Verify cascaded DonationRequest statuses
+        self.assertEqual(donation_req1.status, 'completed')
+        self.assertEqual(donation_req2.status, 'completed')
+        
+        # Verify safety protocols for both donors
+        self.assertFalse(donor1.is_eligible)
+        self.assertFalse(donor2.is_eligible)
+        self.assertTrue(TransfusionSafetyPeriod.objects.filter(donor=donor1, blood_request=self.req).exists())
+        self.assertTrue(TransfusionSafetyPeriod.objects.filter(donor=donor2, blood_request=self.req).exists())
 class AdminDonationRequestActionTests(TestCase):
     def setUp(self):
         self.admin = User.objects.create_superuser(username='admin3@a.com', password='pw')

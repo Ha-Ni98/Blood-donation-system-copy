@@ -470,12 +470,13 @@ def complete_blood_request_view(request, pk):
         req.status = 'completed'
         req.save()
         
-        # Cascade to linked DonationRequest (if one exists)
-        try:
-            donation_req = req.donation_request
+        # Cascade to linked DonationRequests
+        donation_reqs = req.donation_requests.select_for_update().filter(status='approved')
+        for donation_req in donation_reqs:
             donation_req.status = 'completed'
             donation_req.save()
             
+            # Determine donor profile eligibility side effects (Spec §7.2)
             donor_profile = donation_req.donor
             models.TransfusionSafetyPeriod.objects.create(
                 donor=donor_profile,
@@ -491,8 +492,6 @@ def complete_blood_request_view(request, pk):
                 title='Donation Completed',
                 message='Your donation request status has been updated to Completed.',
             )
-        except models.DonationRequest.DoesNotExist:
-            pass
             
         models.Notification.objects.create(
             recipient=req.patient.app_user,
@@ -511,19 +510,18 @@ def admin_cancel_blood_request_view(request, pk):
     req = models.BloodRequest.objects.get(id=pk)
     
     with transaction.atomic():
-        # Cascade to linked DonationRequest if exists
-        try:
-            donation_req = req.donation_request
-            donation_req.status = 'cancelled_by_admin'
-            donation_req.save()
-            
-            models.Notification.objects.create(
-                recipient=donation_req.donor.app_user,
-                title='Donation Request Cancelled',
-                message="The patient's blood request was cancelled by the admin. Your donation request has been cancelled.",
-            )
-        except models.DonationRequest.DoesNotExist:
-            pass
+        # Cascade to linked DonationRequests if approved
+        if req.status == 'approved':
+            donation_reqs = req.donation_requests.select_for_update().filter(status__in=['pending', 'approved'])
+            for donation_req in donation_reqs:
+                donation_req.status = 'cancelled_by_admin'
+                donation_req.save()
+                
+                models.Notification.objects.create(
+                    recipient=donation_req.donor.app_user,
+                    title='Donation Request Cancelled',
+                    message="The patient's blood request was cancelled by the admin. Your donation request has been cancelled.",
+                )
             
         req.status = 'cancelled_by_admin'
         req.save()
@@ -601,7 +599,7 @@ def approve_donation_view(request, pk):
 @admin_required(login_url='adminlogin')
 @terminal_status_guard(models.BloodRequest, models.TERMINAL_STATUSES)
 def update_approve_status_view(request, pk):
-    """Pending → Approved. Requires selecting an eligible pending DonationRequest. Atomic."""
+    """Pending → Approved. Requires selecting 1 or more eligible pending DonationRequests. Atomic."""
     req = models.BloodRequest.objects.get(id=pk)
     if req.status != 'pending':
         messages.error(request, 'Only pending requests can be approved.')
@@ -615,42 +613,50 @@ def update_approve_status_view(request, pk):
     ).select_related('donor__app_user')
     
     if request.method == 'POST':
-        donation_id = request.POST.get('donation_id')
-        if not donation_id:
-            messages.error(request, 'Please select a donor.')
+        donation_ids = request.POST.getlist('donation_ids')
+        if not donation_ids:
+            messages.error(request, 'Please select at least one donor.')
             return redirect('update-approve-status', pk=pk)
             
         try:
             with transaction.atomic():
-                donation_req = models.DonationRequest.objects.select_for_update().get(id=donation_id, status='pending')
+                # Lock the donation requests
+                selected_donations = models.DonationRequest.objects.select_for_update().filter(
+                    id__in=donation_ids, status='pending'
+                )
                 
+                if len(selected_donations) != len(donation_ids):
+                    messages.error(request, 'One or more selected donations are no longer available.')
+                    return redirect('update-approve-status', pk=pk)
+
                 # Link and update statuses
-                donation_req.blood_request = req
-                donation_req.status = 'approved'
+                for donation_req in selected_donations:
+                    donation_req.blood_request = req
+                    donation_req.status = 'approved'
+                    donation_req.save()
+                    
+                    # Notify Donor
+                    models.Notification.objects.create(
+                        recipient=donation_req.donor.app_user,
+                        title='Donation Request Approved',
+                        message=f'Your donation request has been matched and Approved for a Blood Request.',
+                    )
+
                 req.status = 'approved'
-                
-                donation_req.save()
                 req.save()
                 
                 # Notify Patient
                 models.Notification.objects.create(
                     recipient=req.patient.app_user,
                     title='Blood Request Approved',
-                    message='Your blood request status has been updated to Approved.',
-                )
-                
-                # Notify Donor
-                models.Notification.objects.create(
-                    recipient=donation_req.donor.app_user,
-                    title='Donation Request Approved',
-                    message='Your donation request status has been updated to Approved.',
+                    message='Your blood request status has been updated to Approved and matched with donor(s).',
                 )
                 
             messages.success(request, 'Request has been approved successfully.')
             return redirect('admin-dashboard')
             
-        except models.DonationRequest.DoesNotExist:
-            messages.error(request, 'The selected donation request is no longer available.')
+        except Exception as e:
+            messages.error(request, 'An error occurred while approving the request.')
             return redirect('update-approve-status', pk=pk)
             
     # GET: render selection form

@@ -42,10 +42,15 @@
                                     <span class="badge badge-success px-3 py-2">{% trans "Eligible" %}</span>
                                 {% else %}
                                     <span class="badge badge-danger px-3 py-2">{% trans "Ineligible" %}</span>
+                                    {% if donor.regular_medication %}
+                                        <small class="text-warning d-block mt-1 font-weight-bold">
+                                            <i class="fas fa-pills"></i> {% trans "On Regular Medication" %}
+                                        </small>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td class="text-right">
-                                <form method="POST" class="d-inline" onsubmit="return confirm('{% trans "Are you sure you want to change this donor\'s eligibility?" %}');">
+                                <form method="POST" class="d-inline" onsubmit='return confirm("{% trans "Are you sure you want to change this donor eligibility?" %}");'>
                                     {% csrf_token %}
                                     <input type="hidden" name="donor_id" value="{{ donor.id }}">
                                     {% if donor.is_eligible %}

@@ -290,12 +290,12 @@ class DonationRequest(models.Model):
         DonorProfile, on_delete=models.CASCADE, related_name='donation_requests'
     )
     # Nullable — admin links this to a BloodRequest (Phase C/D admin action)
-    blood_request = models.OneToOneField(
+    blood_request = models.ForeignKey(
         BloodRequest,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='donation_request',
+        related_name='donation_requests',
     )
 
     # --- Health screening fields (Spec §9.1) ---
