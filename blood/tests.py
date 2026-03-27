@@ -16,7 +16,7 @@ class BloodRequestLogicTests(TestCase):
         self.c1 = Commune.objects.create(id=1, wilaya=self.w1, name='C1')        
         self.app_user1 = AppUser.objects.create(
             user=self.user1, first_name='P1', last_name='L1', gender='M',
-            age=30, phone_number='111', nin='111', blood_type='A', blood_sign='+',
+            date_of_birth=date(1994, 1, 1), phone_number='111', nin='111', blood_type='A', blood_sign='+',
             wilaya=self.w1, commune=self.c1
         )
         self.patient = PatientProfile.objects.create(app_user=self.app_user1)
@@ -25,7 +25,7 @@ class BloodRequestLogicTests(TestCase):
         self.user2 = User.objects.create_user(username='donor1@a.com', password='pw')
         self.app_user2 = AppUser.objects.create(
             user=self.user2, first_name='D1', last_name='L1', gender='M',
-            age=30, phone_number='222', nin='222', blood_type='A', blood_sign='+',
+            date_of_birth=date(1994, 1, 1), phone_number='222', nin='222', blood_type='A', blood_sign='+',
             wilaya=self.w1, commune=self.c1
         )
         self.donor = DonorProfile.objects.create(app_user=self.app_user2)
@@ -112,7 +112,7 @@ class AdminBloodRequestActionTests(TestCase):
         self.c1 = Commune.objects.create(id=2, wilaya=self.w1, name='C2')
         self.patient_user = AppUser.objects.create(
             user=User.objects.create_user(username='p2@a.com', password='pw'),
-            first_name='P', last_name='L', gender='M', age=30, phone_number='12', 
+            first_name='P', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='12', 
             nin='12', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         self.patient = PatientProfile.objects.create(app_user=self.patient_user)
@@ -138,7 +138,7 @@ class AdminBloodRequestActionTests(TestCase):
     def test_approve_blood_request_with_donor_linking(self):
         donor_user = AppUser.objects.create(
             user=User.objects.create_user(username='d2@a.com', password='pw'),
-            first_name='D', last_name='L', gender='M', age=30, phone_number='22', 
+            first_name='D', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='22', 
             nin='22', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         donor = DonorProfile.objects.create(app_user=donor_user)
@@ -157,7 +157,7 @@ class AdminBloodRequestActionTests(TestCase):
         self.req.save()
         donor_user = AppUser.objects.create(
             user=User.objects.create_user(username='d3@a.com', password='pw'),
-            first_name='D', last_name='L', gender='M', age=30, phone_number='32', 
+            first_name='D', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='32', 
             nin='32', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         donor = DonorProfile.objects.create(app_user=donor_user)
@@ -182,7 +182,7 @@ class AdminDonationRequestActionTests(TestCase):
         self.c1 = Commune.objects.create(id=3, wilaya=self.w1, name='C3')
         self.donor_user = AppUser.objects.create(
             user=User.objects.create_user(username='d4@a.com', password='pw'),
-            first_name='D', last_name='L', gender='M', age=30, phone_number='14', 
+            first_name='D', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='14', 
             nin='14', blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         self.donor = DonorProfile.objects.create(app_user=self.donor_user)
@@ -228,7 +228,7 @@ class TerminalStatusGuardTests(TestCase):
         self.c1 = Commune.objects.create(id=4, wilaya=self.w1, name='C4')
         self.patient_user = AppUser.objects.create(
             user=User.objects.create_user(username='p4@a.com', password='pw'),
-            first_name='P', last_name='L', gender='M', age=30, phone_number='15', nin='15',
+            first_name='P', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='15', nin='15',
             blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         self.req = BloodRequest.objects.create(
@@ -281,7 +281,7 @@ class CeleryTaskTests(TestCase):
         self.c1 = Commune.objects.create(id=5, wilaya=self.w1, name='C5')
         self.patient_user = AppUser.objects.create(
             user=User.objects.create_user(username='p5@a.com', password='pw'),
-            first_name='P', last_name='L', gender='M', age=30, phone_number='16', nin='16',
+            first_name='P', last_name='L', gender='M', date_of_birth=date(1994, 1, 1), phone_number='16', nin='16',
             blood_type='A', blood_sign='+', wilaya=self.w1, commune=self.c1
         )
         self.patient = PatientProfile.objects.create(app_user=self.patient_user)

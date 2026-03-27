@@ -110,12 +110,17 @@ def signup_view(request):
             # Add wilaya/commune IDs for reconstruction logic
             request.session['pending_registration']['app_user']['wilaya_id'] = app_user_form.cleaned_data['wilaya'].id
             request.session['pending_registration']['app_user']['commune_id'] = app_user_form.cleaned_data['commune'].id
-            
-            # Form cleaned_data contains unserializable Model instances, let's clean them out 
+
+            # Serialize date_of_birth (date object is not JSON-serializable)
+            dob = request.session['pending_registration']['app_user'].get('date_of_birth')
+            if dob:
+                request.session['pending_registration']['app_user']['date_of_birth'] = dob.isoformat()
+
+            # Remove unserializable Model instances
             del request.session['pending_registration']['app_user']['wilaya']
             del request.session['pending_registration']['app_user']['commune']
 
-            return redirect('choose-profile') # View built in next sprint
+            return redirect('choose-profile')
 
     return render(request, 'blood/signup.html', {
         'user_form': user_form,
@@ -158,7 +163,11 @@ def create_patient_profile_view(request):
                         del app_user_data['wilaya_id']
                         del app_user_data['commune_id']
                         app_user_data.pop('terms', None)
-                        
+
+                        # Deserialize date_of_birth from ISO string
+                        if isinstance(app_user_data.get('date_of_birth'), str):
+                            app_user_data['date_of_birth'] = date.fromisoformat(app_user_data['date_of_birth'])
+
                         app_user = models.AppUser.objects.create(
                             user=user,
                             wilaya=wilaya,
@@ -218,7 +227,11 @@ def create_donor_profile_view(request):
                         del app_user_data['wilaya_id']
                         del app_user_data['commune_id']
                         app_user_data.pop('terms', None)
-                        
+
+                        # Deserialize date_of_birth from ISO string
+                        if isinstance(app_user_data.get('date_of_birth'), str):
+                            app_user_data['date_of_birth'] = date.fromisoformat(app_user_data['date_of_birth'])
+
                         app_user = models.AppUser.objects.create(
                             user=user,
                             wilaya=wilaya,

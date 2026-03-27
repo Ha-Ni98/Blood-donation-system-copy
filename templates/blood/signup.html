@@ -33,6 +33,7 @@
                                 <div class="input-group">
                                     {% render_field user_form.username class="input--style-5" %}
                                 </div>
+                                <div class="text-danger mt-1">{{ user_form.username.errors }}</div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -85,11 +86,12 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="name">{% trans "Age" %}</div>
+                            <div class="name">{% trans "Date of Birth" %}</div>
                             <div class="value">
                                 <div class="input-group">
-                                    {% render_field app_user_form.age class="input--style-5" %}
+                                    {% render_field app_user_form.date_of_birth class="input--style-5" %}
                                 </div>
+                                <div class="text-danger mt-1">{{ app_user_form.date_of_birth.errors }}</div>
                             </div>
                         </div>
 
@@ -109,6 +111,7 @@
                                 <div class="input-group">
                                     {% render_field app_user_form.phone_number class="input--style-5" %}
                                 </div>
+                                <div class="text-danger mt-1">{{ app_user_form.phone_number.errors }}</div>
                             </div>
                         </div>
 

@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
-from .validators import validate_nin
+from datetime import timedelta, date
+from .validators import validate_nin, validate_phone_number
 
 
 # --- Shared choice constants ---
@@ -24,7 +24,7 @@ class Wilaya(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.code} - {self.name}"
+        return f"{self.code}-{self.name}"
 
 
 class Commune(models.Model):
@@ -47,8 +47,8 @@ class AppUser(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    age = models.PositiveIntegerField()
-    phone_number = models.CharField(max_length=20)
+    date_of_birth = models.DateField()
+    phone_number = models.CharField(max_length=20, validators=[validate_phone_number])
     nin = models.CharField(max_length=18, unique=True, validators=[validate_nin])
     blood_type = models.CharField(max_length=2, choices=BLOOD_TYPE_CHOICES)
     blood_sign = models.CharField(max_length=1, choices=BLOOD_SIGN_CHOICES)
@@ -74,6 +74,13 @@ class AppUser(models.Model):
         if not self.nin or len(self.nin) != 18:
             return self.nin
         return "*" * 13 + self.nin[-5:]
+
+    @property
+    def age(self):
+        """Computes current age from date_of_birth."""
+        today = date.today()
+        dob = self.date_of_birth
+        return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

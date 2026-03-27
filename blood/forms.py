@@ -53,6 +53,12 @@ class LoginForm(AuthenticationForm):
         self.fields['username'].label = 'Email'
 
 class SignupUserForm(forms.ModelForm):
+    username = forms.EmailField(
+        label='Email',
+        error_messages={
+            'invalid': 'Enter a valid email address (e.g. user@domain.com).',
+        }
+    )
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -63,6 +69,14 @@ class SignupUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = 'Email'
+
+    def clean_username(self):
+        email = self.cleaned_data.get('username')
+        if email and User.objects.filter(username=email).exists():
+            raise forms.ValidationError(
+                'A user with this email already exists.'
+            )
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -79,7 +93,10 @@ class SignupAppUserForm(forms.ModelForm):
 
     class Meta:
         model = models.AppUser
-        fields = ['first_name', 'last_name', 'gender', 'age', 'phone_number', 'nin', 'blood_type', 'blood_sign', 'wilaya', 'commune']
+        fields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'nin', 'blood_type', 'blood_sign', 'wilaya', 'commune']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 class PatientProfileForm(forms.ModelForm):
     class Meta:

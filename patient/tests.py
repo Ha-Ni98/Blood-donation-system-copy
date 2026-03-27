@@ -15,7 +15,7 @@ class PatientViewsTests(TestCase):
         self.c1 = Commune.objects.create(id=1, wilaya=self.w1, name='C1')        
         self.app_user = AppUser.objects.create(
             user=self.user, first_name='P1', last_name='L1', gender='M',
-            age=30, phone_number='111', nin='111', blood_type='A', blood_sign='+',
+            date_of_birth=date(1994, 1, 1), phone_number='111', nin='111', blood_type='A', blood_sign='+',
             wilaya=self.w1, commune=self.c1
         )
         self.patient = PatientProfile.objects.create(app_user=self.app_user)

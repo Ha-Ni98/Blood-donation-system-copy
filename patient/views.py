@@ -103,6 +103,7 @@ def make_request_view(request):
         'form': form,
         'full_name': f"{app_user.first_name} {app_user.last_name}",
         'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'date_of_birth': app_user.date_of_birth,
         'age': app_user.age,
     }
     return render(request, 'patient/blood_request_form.html', context)

@@ -14,7 +14,7 @@
                 <th scope="col">{% trans "Name" %}</th>
                 <th scope="col">{% trans "Profile" %}</th>
                 <th scope="col">{% trans "Blood Group" %}</th>
-                <th scope="col">{% trans "Age" %}</th>
+                <th scope="col">{% trans "Date of Birth / Age" %}</th>
                 <th scope="col">{% trans "Disease" %}</th>
                 <th scope="col">{% trans "Mobile" %}</th>
                 <th class="text-right">{% trans "Action" %}</th>
@@ -29,7 +29,7 @@
                     <img src="{% static t.profile_pic.url %}" alt="{% trans 'Profile Pic' %}" height="40px" width="40px" />
                 </td>
                 <td>{{t.bloodgroup}}</td>
-                <td>{{t.age}}</td>
+                <td>{{t.date_of_birth}} ({{t.age}})</td>
                 <td>{{t.disease}}</td>
                 <td>{{t.mobile}}</td>
 

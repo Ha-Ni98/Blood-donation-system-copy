@@ -18,7 +18,7 @@ class DonorViewsTests(TestCase):
         self.user_m = User.objects.create_user(username='donor_m@a.com', password='pw')
         self.app_user_m = AppUser.objects.create(
             user=self.user_m, first_name='Donor', last_name='Male', gender='M',
-            age=30, phone_number='111', nin='111111111111111111', blood_type='A', blood_sign='+',
+            date_of_birth=date(1994, 1, 1), phone_number='111', nin='111111111111111111', blood_type='A', blood_sign='+',
             wilaya=self.w1, commune=self.c1
         )
         self.donor_m = DonorProfile.objects.create(app_user=self.app_user_m)
@@ -27,7 +27,7 @@ class DonorViewsTests(TestCase):
         self.user_f = User.objects.create_user(username='donor_f@a.com', password='pw')
         self.app_user_f = AppUser.objects.create(
             user=self.user_f, first_name='Donor', last_name='Female', gender='F',
-            age=25, phone_number='222', nin='222222222222222222', blood_type='O', blood_sign='-',
+            date_of_birth=date(1999, 1, 1), phone_number='222', nin='222222222222222222', blood_type='O', blood_sign='-',
             wilaya=self.w1, commune=self.c1
         )
         self.donor_f = DonorProfile.objects.create(app_user=self.app_user_f)

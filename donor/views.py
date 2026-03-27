@@ -121,6 +121,7 @@ def submit_donation_request_view(request):
         'form': form,
         'full_name': f"{app_user.first_name} {app_user.last_name}",
         'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'date_of_birth': app_user.date_of_birth,
         'age': app_user.age,
         'last_donation_date': donor_profile.last_donation_date,
         'is_female': app_user.gender == 'F'
