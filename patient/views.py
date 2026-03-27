@@ -10,7 +10,9 @@ from blood.models import ACTIVE_STATUSES
 
 @login_required(login_url='login')
 def patient_dashboard_view(request):
-    patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
+    patient_profile = bmodels.PatientProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not patient_profile:
+        return redirect('home')
     app_user = patient_profile.app_user
 
     # Active request: first Pending or Approved request (at most one exists per spec §4.5)
@@ -49,9 +51,8 @@ def make_request_view(request):
     Auto-fills read-only patient info from AppUser in context.
     Pre-fills Wilaya/Commune from AppUser as form initial.
     """
-    try:
-        patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
-    except bmodels.PatientProfile.DoesNotExist:
+    patient_profile = bmodels.PatientProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not patient_profile:
         messages.error(request, 'Patient profile not found.')
         return redirect('home')
 
@@ -67,8 +68,8 @@ def make_request_view(request):
 
     # --- Rule 2: Cross-profile blocking (Spec §7.1) ---
     # If the patient also has a DonorProfile, check for active DonationRequests
-    if hasattr(app_user, 'donorprofile'):
-        donor_profile = app_user.donorprofile
+    donor_profile = app_user.donor_profiles.order_by('-created_at').first()
+    if donor_profile:
         has_active_donation = bmodels.DonationRequest.objects.filter(
             donor=donor_profile, status__in=['pending', 'approved']
         ).exists()
@@ -111,7 +112,9 @@ def make_request_view(request):
 
 @login_required(login_url='login')
 def my_request_view(request):
-    patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
+    patient_profile = bmodels.PatientProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not patient_profile:
+        return redirect('home')
     blood_request = bmodels.BloodRequest.objects.filter(
         patient=patient_profile
     ).order_by('-created_at')
@@ -130,9 +133,8 @@ def cancel_request_view(request, pk):
     if request.method != 'POST':
         return redirect('my-request')
 
-    try:
-        patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
-    except bmodels.PatientProfile.DoesNotExist:
+    patient_profile = bmodels.PatientProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not patient_profile:
         messages.error(request, 'Patient profile not found.')
         return redirect('home')
 
@@ -178,9 +180,8 @@ def notifications_view(request):
     Displays all notifications for the current patient.
     Marks all unread notifications as read on page load (Spec §8.3).
     """
-    try:
-        patient_profile = bmodels.PatientProfile.objects.get(app_user__user=request.user)
-    except bmodels.PatientProfile.DoesNotExist:
+    patient_profile = bmodels.PatientProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not patient_profile:
         messages.error(request, 'Patient profile not found.')
         return redirect('home')
 

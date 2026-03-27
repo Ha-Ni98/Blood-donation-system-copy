@@ -118,6 +118,9 @@ class AdminDonationTests(TestCase):
         self.assertEqual(dr.status, 'completed')
 
 class AdminAccessGuardTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin@a.com', password='pw')
+
     def test_staff_access(self):
         self.client.login(username='admin@a.com', password='pw')
         response = self.client.get(reverse('admin-dashboard'))

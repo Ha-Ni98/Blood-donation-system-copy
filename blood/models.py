@@ -87,14 +87,12 @@ class AppUser(models.Model):
 
 
 class PatientProfile(models.Model):
-    app_user = models.OneToOneField(AppUser, on_delete=models.CASCADE)
+    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='patient_profiles')
     chronic_disease = models.BooleanField(default=False)
     chronic_disease_details = models.CharField(max_length=255, blank=True, null=True)
     allergies = models.BooleanField(default=False)
     allergies_details = models.CharField(max_length=255, blank=True, null=True)
     previous_surgeries = models.BooleanField(default=False)
-    emergency_contact_name = models.CharField(max_length=100)
-    emergency_contact_phone = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -102,7 +100,7 @@ class PatientProfile(models.Model):
 
 
 class DonorProfile(models.Model):
-    app_user = models.OneToOneField(AppUser, on_delete=models.CASCADE)
+    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='donor_profiles')
     chronic_disease = models.BooleanField(default=False)
     regular_medication = models.BooleanField(default=False)
     anemia = models.BooleanField(default=False)

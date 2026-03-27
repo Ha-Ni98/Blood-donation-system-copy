@@ -101,7 +101,7 @@ class SignupAppUserForm(forms.ModelForm):
 class PatientProfileForm(forms.ModelForm):
     class Meta:
         model = models.PatientProfile
-        fields = ['chronic_disease', 'chronic_disease_details', 'allergies', 'allergies_details', 'previous_surgeries', 'emergency_contact_name', 'emergency_contact_phone']
+        fields = ['chronic_disease', 'chronic_disease_details', 'allergies', 'allergies_details', 'previous_surgeries']
 
     def clean(self):
         cleaned_data = super().clean()

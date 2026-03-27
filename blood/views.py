@@ -58,11 +58,17 @@ def home_view(request):
 def afterlogin_view(request):
     if hasattr(request.user, 'app_user'):
         app_user = request.user.app_user
-        if hasattr(app_user, 'donorprofile') and hasattr(app_user, 'patientprofile'):
+        latest_donor = app_user.donor_profiles.order_by('-created_at').first()
+        latest_patient = app_user.patient_profiles.order_by('-created_at').first()
+        
+        if latest_donor and latest_patient:
+            if latest_donor.created_at >= latest_patient.created_at:
+                return redirect('donor-dashboard')
+            else:
+                return redirect('patient-dashboard')
+        elif latest_donor:
             return redirect('donor-dashboard')
-        elif hasattr(app_user, 'donorprofile'):
-            return redirect('donor-dashboard')
-        elif hasattr(app_user, 'patientprofile'):
+        elif latest_patient:
             return redirect('patient-dashboard')
         else:
             return redirect('admin-dashboard')
@@ -272,9 +278,15 @@ def create_donor_profile_from_patient_view(request):
     if not app_user:
         return redirect('home')
 
-    if hasattr(app_user, 'donorprofile'):
-        messages.info(request, "You already have a Donor profile.")
-        return redirect('donor-dashboard')
+    patient_profile = app_user.patient_profiles.order_by('-created_at').first()
+    if patient_profile:
+        has_active_br = models.BloodRequest.objects.filter(
+            patient=patient_profile,
+            status__in=['pending', 'approved']
+        ).exists()
+        if has_active_br:
+            messages.warning(request, "You cannot switch to Donor because you have an active blood request.")
+            return redirect('patient-dashboard')
 
     if request.method == 'POST':
         form = forms.DonorProfileForm(request.POST)
@@ -300,9 +312,15 @@ def create_patient_profile_from_donor_view(request):
     if not app_user:
         return redirect('home')
 
-    if hasattr(app_user, 'patientprofile'):
-        messages.info(request, "You already have a Patient profile.")
-        return redirect('patient-dashboard')
+    donor_profile = app_user.donor_profiles.order_by('-created_at').first()
+    if donor_profile:
+        has_active_dr = models.DonationRequest.objects.filter(
+            donor=donor_profile,
+            status__in=['pending', 'approved']
+        ).exists()
+        if has_active_dr:
+            messages.warning(request, "You cannot switch to Patient because you have an active donation request.")
+            return redirect('donor-dashboard')
 
     if request.method == 'POST':
         form = forms.PatientProfileForm(request.POST)

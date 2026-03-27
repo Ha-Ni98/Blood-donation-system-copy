@@ -11,9 +11,8 @@ from . import forms
 
 @login_required
 def donor_dashboard_view(request):
-    try:
-        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    except bmodels.DonorProfile.DoesNotExist:
+    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not donor_profile:
         return redirect('/')
 
     app_user = donor_profile.app_user
@@ -53,13 +52,15 @@ def donor_dashboard_view(request):
         if has_active_tsp:
             is_eligible = False
             ineligible_reason = _("Recent required safety period.")
-        elif hasattr(app_user, 'patientprofile'):
-            has_active_br = bmodels.BloodRequest.objects.filter(
-                patient=app_user.patientprofile, status__in=['pending', 'approved']
-            ).exists()
-            if has_active_br:
-                is_eligible = False
-                ineligible_reason = _("Active blood request as a patient.")
+        else:
+            patient_profile = app_user.patient_profiles.order_by('-created_at').first()
+            if patient_profile:
+                has_active_br = bmodels.BloodRequest.objects.filter(
+                    patient=patient_profile, status__in=['pending', 'approved']
+                ).exists()
+                if has_active_br:
+                    is_eligible = False
+                    ineligible_reason = _("Active blood request as a patient.")
 
     # Stat cards
     all_requests = bmodels.DonationRequest.objects.filter(donor=donor_profile)
@@ -86,9 +87,8 @@ def donor_dashboard_view(request):
 
 @login_required
 def submit_donation_request_view(request):
-    try:
-        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    except bmodels.DonorProfile.DoesNotExist:
+    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not donor_profile:
         return redirect('/')
 
     app_user = donor_profile.app_user
@@ -116,9 +116,10 @@ def submit_donation_request_view(request):
             messages.warning(request, _("You cannot donate because your last donation was less than 3 months ago."))
             return redirect('donor-dashboard')
 
-    if hasattr(app_user, 'patientprofile'):
+    patient_profile = app_user.patient_profiles.order_by('-created_at').first()
+    if patient_profile:
         has_active_br = bmodels.BloodRequest.objects.filter(
-            patient=app_user.patientprofile,
+            patient=patient_profile,
             status__in=['pending', 'approved']
         ).exists()
         if has_active_br:
@@ -193,10 +194,14 @@ from django.db import transaction
 
 @login_required
 def cancel_donation_request_view(request, pk):
+    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not donor_profile:
+        messages.error(request, _("Donor profile not found."))
+        return redirect('donor-dashboard')
+
     try:
-        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
         donation_request = bmodels.DonationRequest.objects.get(id=pk, donor=donor_profile)
-    except (bmodels.DonorProfile.DoesNotExist, bmodels.DonationRequest.DoesNotExist):
+    except bmodels.DonationRequest.DoesNotExist:
         messages.error(request, _("Donation request not found or unauthorized."))
         return redirect('donor-dashboard')
 
@@ -232,10 +237,10 @@ def cancel_donation_request_view(request, pk):
 
 @login_required
 def donation_history_view(request):
-    try:
-        donor_profile = bmodels.DonorProfile.objects.get(app_user__user=request.user)
-    except bmodels.DonorProfile.DoesNotExist:
-        return redirect('/')
+    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
+    if not donor_profile:
+        messages.error(request, _('Donor profile not found.'))
+        return redirect('home')
 
     donations = bmodels.DonationRequest.objects.filter(donor=donor_profile).order_by('-created_at')
     
