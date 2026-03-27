@@ -1,0 +1,212 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="ltr">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+</head>
+<body>
+    {% include "blood/navbar.html" %}
+    {% include "blood/toast.html" %}
+
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <br><br><br>
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title" style="text-align: center;">{% trans "Register" %}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Credentials -->
+                        <h4 class="mb-3">{% trans "Account Credentials" %}</h4>
+                        <div class="form-row">
+                            <div class="name">{% trans "Email" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field user_form.username class="input--style-5" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ user_form.username.errors }}</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">{% trans "Password" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field user_form.password class="input--style-5" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">{% trans "Confirm Password" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field user_form.confirm_password class="input--style-5" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ user_form.confirm_password.errors }}</div>
+                                <div class="text-danger mt-1">{{ user_form.non_field_errors }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Info -->
+                        <h4 class="mt-4 mb-3">{% trans "Personal Information" %}</h4>
+                        
+                        <div class="form-row">
+                            <div class="name">{% trans "First Name" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.first_name class="input--style-5" %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="name">{% trans "Last Name" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.last_name class="input--style-5" %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Gender" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.gender class="input--style-5" %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Date of Birth" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.date_of_birth class="input--style-5" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ app_user_form.date_of_birth.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "National Identity Number (NIN)" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.nin class="input--style-5" maxlength="18" placeholder="18-digit identity number" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ app_user_form.nin.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Phone Number" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.phone_number class="input--style-5" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ app_user_form.phone_number.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Blood Type" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <div class="row w-100 m-0">
+                                        <div class="col-8 pl-0">
+                                            {% render_field app_user_form.blood_type class="input--style-5" %}
+                                        </div>
+                                        <div class="col-4 pr-0">
+                                            {% render_field app_user_form.blood_sign class="input--style-5" %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <h4 class="mt-4 mb-3">{% trans "Location Details" %}</h4>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Wilaya" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.wilaya class="input--style-5" id="id_wilaya" %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="name">{% trans "Commune" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field app_user_form.commune class="input--style-5" id="id_commune" %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Disclaimer -->
+                        <div class="form-row p-t-20">
+                            <div class="input-group">
+                                <label class="checkbox-container m-b-20">
+                                    {% render_field app_user_form.terms %}
+                                    <span class="checkmark"></span>
+                                    {% trans "I confirm that the information provided is accurate and agree to the terms." %}
+                                </label>
+                                <div class="text-danger">{{ app_user_form.terms.errors }}</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn--radius-2 btn-danger" type="submit">{% trans "Next Step" %}</button>
+                        </div>
+                    </form>
+                    
+                    <p style="text-align: center; margin-top:20px;">
+                        {% trans "Already have an account?" %} <a style="text-decoration: none;" href="/login">{% trans "Click here to login" %}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "blood/footer.html" %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            var wilayaDropdown = $('#id_wilaya');
+            var communeDropdown = $('#id_commune');
+            
+            wilayaDropdown.change(function() {
+                var wilayaId = $(this).val();
+                communeDropdown.empty();
+                if (wilayaId) {
+                    $.ajax({
+                        url: "{% url 'api-communes' %}",
+                        data: {
+                            'wilaya_id': wilayaId
+                        },
+                        success: function(data) {
+                            communeDropdown.append('<option value="" selected>---------</option>');
+                            $.each(data, function(key, value) {
+                                communeDropdown.append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

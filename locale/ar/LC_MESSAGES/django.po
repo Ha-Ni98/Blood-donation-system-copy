@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-08 20:40+0100\n"
+"POT-Creation-Date: 2026-03-11 15:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,614 +16,3023 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\bloodbankmanagement\settings.py:116
+#: blood/validators.py:12
+msgid "NIN must be exactly 18 digits long."
+msgstr ""
+
+#: bloodbankmanagement/settings.py:122
 msgid "English"
 msgstr ""
 
-#: .\bloodbankmanagement\settings.py:117
+#: bloodbankmanagement/settings.py:123
 msgid "French"
 msgstr ""
 
-#: .\bloodbankmanagement\settings.py:118
+#: bloodbankmanagement/settings.py:124
 msgid "Arabic"
 msgstr ""
 
-#: .\donor\forms.py:23
-msgid "Nothing"
-msgstr "لا يوجد مرض"
+#: donor/forms.py:14
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:739
+msgid "Yes"
+msgstr ""
 
-#: .\templates\blood\admin_blood.html:129
-msgid "Update Blood Unit"
-msgstr "تحديث كمية الدم"
+#: donor/forms.py:15
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:740
+msgid "No"
+msgstr ""
 
-#: .\templates\blood\admin_blood.html:137
-msgid "Choose Blood Group"
-msgstr "اختر فصيلة الدم"
+#: donor/forms.py:20
+msgid "Donated blood in the last 3 months?"
+msgstr "هل تبرعت بالدم في آخر 3 أشهر؟"
 
-#: .\templates\blood\admin_blood.html:150
-#: .\templates\blood\admin_donation.html:29
-#: .\templates\donor\donation_history.html:32
-#: .\templates\donor\request_history.html:33
-#: .\templates\patient\my_request.html:33
-msgid "Unit"
-msgstr "الكمية"
+#: donor/forms.py:24
+msgid "Received a blood transfusion in the last 6 months?"
+msgstr "هل تلقيت نقل دم في آخر 6 أشهر؟"
 
-#: .\templates\blood\admin_blood.html:153
-#: .\templates\blood\update_donor.html:111
-#: .\templates\blood\update_patient.html:138
-msgid "Update"
-msgstr "تحديث"
+#: donor/forms.py:28
+msgid "Had surgery in the last 6 months?"
+msgstr "هل أجريت عملية جراحية في آخر 6 أشهر؟"
 
-#: .\templates\blood\admin_dashboard.html:119
-msgid "Total Donors"
-msgstr "إجمالي المتبرعين"
+#: donor/forms.py:32
+msgid "Currently have fever, infection, or flu?"
+msgstr "هل تعاني حاليا من حمى أو عدوى أو إنفلونزا؟"
 
-#: .\templates\blood\admin_dashboard.html:133
-msgid "Total Requests"
-msgstr "إجمالي الطلبات"
+#: donor/forms.py:36
+msgid "Currently taking medication?"
+msgstr "هل تتناول حاليا أدوية؟"
 
-#: .\templates\blood\admin_dashboard.html:147
-msgid "Approved Requests"
+#: donor/forms.py:40
+msgid "Suffer from anemia?"
+msgstr "هل تعاني من فقر الدم؟"
+
+#: donor/forms.py:45
+msgid "Are you pregnant?"
+msgstr "هل أنت حامل؟"
+
+#: donor/forms.py:49
+msgid "Are you breastfeeding?"
+msgstr "هل ترضعين طبيعياً؟"
+
+#: donor/forms.py:54 templates/patient/blood_request_form.html:153
+msgid "I confirm the accuracy of this information"
+msgstr ""
+
+#: donor/forms.py:55
+msgid "You must confirm the accuracy of this information."
+msgstr "يجب عليك تأكيد صحة هذه المعلومات."
+
+#: donor/forms.py:59
+msgid "I understand that providing false information may disqualify me"
+msgstr "أفهم أن تقديم معلومات كاذبة قد يؤدي إلى استبعادي"
+
+#: donor/forms.py:60
+msgid "You must acknowledge this before submitting."
+msgstr "يجب عليك الإقرار بهذا قبل التقديم."
+
+#: donor/forms.py:90
+msgid "You must confirm both checkboxes at the bottom."
+msgstr "يجب عليك تأكيد كلا المربعين في الأسفل."
+
+#: donor/views.py:31
+msgid "Marked ineligible by administrator."
+msgstr ""
+
+#: donor/views.py:38
+msgid "Recent required safety period."
+msgstr ""
+
+#: donor/views.py:45
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "Active blood request as a patient."
+msgstr "طلباتي للدم"
+
+#: donor/views.py:80
+msgid "You are currently not eligible to donate blood."
+msgstr "أنت غير مؤهل حاليا للتبرع بالدم."
+
+#: donor/views.py:89
+msgid "You cannot donate because you have an active blood request."
+msgstr "لا يمكنك التبرع لأن لديك طلب دم نشط."
+
+#: donor/views.py:97
+msgid "You already have an active donation request."
+msgstr "لديك بالفعل طلب تبرع نشط."
+
+#: donor/views.py:105
+msgid ""
+"You cannot donate because you received a transfusion less than 6 months ago."
+msgstr "لا يمكنك التبرع لأنك تلقيت نقل دم منذ أقل من 6 أشهر."
+
+#: donor/views.py:115
+msgid "Your donation request has been submitted."
+msgstr "تم تقديم طلب التبرع الخاص بك."
+
+#: donor/views.py:138
+msgid "Donation request not found or unauthorized."
+msgstr "طلب التبرع غير موجود أو غير مصرح به."
+
+#: donor/views.py:158
+msgid "Donation Cancelled"
+msgstr "تم إلغاء التبرع"
+
+#: donor/views.py:159
+msgid ""
+"A donor cancelled their donation. Your blood request is now pending again."
+msgstr "قام متبرع بإلغاء تبرعه. طلبك للدم قيد الانتظار الآن."
+
+#: donor/views.py:163
+msgid "Your donation request has been cancelled."
+msgstr "تم إلغاء طلب التبرع الخاص بك."
+
+#: donor/views.py:165
+msgid "Only pending or approved requests can be cancelled."
+msgstr "يمكن إلغاء الطلبات المعلقة أو المعتمدة فقط."
+
+#: donor/views.py:167
+msgid "Invalid request method."
+msgstr "طريقة طلب غير صالحة."
+
+#: envWeb/lib/python3.10/site-packages/click/_termui_impl.py:613
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/_termui_impl.py:617
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1114
+#: envWeb/lib/python3.10/site-packages/click/core.py:1151
+#, python-brace-format
+msgid "{text} {deprecated_message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1170
+#, fuzzy
+#| msgid "Donations"
+msgid "Options"
+msgstr "التبرعات"
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1245
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1264
+msgid "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1448
+msgid "Aborted!"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1822
+msgid "Commands"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1853
+msgid "Missing command."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:1931
+msgid "No such command {name!r}."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:2355
+msgid "Value must be an iterable."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:2378
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:2567
+msgid ""
+"DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:3015
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:3018
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/core.py:3082
+msgid "(dynamic)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/decorators.py:465
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/decorators.py:522
+msgid "Show the version and exit."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/decorators.py:548
+msgid "Show this message and exit."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:50
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:89
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:81
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:130
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:132
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:190
+msgid "Missing argument"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:192
+msgid "Missing option"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:194
+msgid "Missing parameter"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:196
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:203
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:223
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:235
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:282
+msgid "unknown error"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/exceptions.py:289
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/parser.py:199
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/parser.py:381
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/parser.py:444
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/shell_completion.py:332
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/shell_completion.py:339
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:165
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:181
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:183
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:194
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:253
+msgid "Error: invalid input"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/termui.py:872
+msgid "Press any key to continue..."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:332
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:369
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:460
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:482
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:538
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:719
+msgid "{value!r} is not a valid boolean. Recognized values: {states}"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:747
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:937
+#, fuzzy
+#| msgid "Profile"
+msgid "file"
+msgstr "الملف الشخصي"
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:939
+msgid "directory"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:941
+msgid "path"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:988
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:997
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:1005
+msgid "{name} {filename!r} is a directory."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:1014
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:1023
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:1032
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/click/types.py:1099
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/contrib/messages/apps.py:7
+msgid "Messages"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/contrib/sitemaps/apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/contrib/staticfiles/apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/contrib/syndication/apps.py:7
+#, fuzzy
+#| msgid "Donations"
+msgid "Syndication"
+msgstr "التبرعات"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: envWeb/lib/python3.10/site-packages/django/core/paginator.py:30
+msgid "…"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/paginator.py:51
+msgid "That page number is not an integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/paginator.py:53
+msgid "That page number is less than 1"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/paginator.py:58
+msgid "That page contains no results"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:93
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:678
+msgid "Enter a valid URL."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:151
+msgid "Enter a valid integer."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:162
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:265
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:272
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:281
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:291
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:314
+msgid "Enter a valid IPv4 address."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:299
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:315
+msgid "Enter a valid IPv6 address."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:309
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:313
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:343
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:349
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:382
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:391
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:401
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:416
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:435
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:292
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:327
+msgid "Enter a number."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:437
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:442
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:447
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:509
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/core/validators.py:562
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/base.py:1210
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:768
+msgid "and"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/base.py:1212
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:100
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:101
+msgid "This field cannot be null."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:102
+msgid "This field cannot be blank."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:103
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+#. Eg: "Title must be unique for pub_date year"
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:107
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:126
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:958
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:959
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:961
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1002
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1096
+msgid "Comma-separated integers"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1145
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1147
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1290
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1150
+msgid "Date (without time)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1288
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1292
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1296
+msgid "Date (with time)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1444
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1446
+msgid "Decimal number"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1585
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1588
+#, fuzzy
+#| msgid "Donations"
+msgid "Duration"
+msgstr "التبرعات"
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1638
+#, fuzzy
+#| msgid "Address"
+msgid "Email address"
+msgstr "العنوان"
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1661
+msgid "File path"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1727
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1729
+msgid "Floating point number"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1767
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1769
+msgid "Integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1852
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1867
+msgid "Small integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1875
+#, fuzzy
+#| msgid "Address"
+msgid "IPv4 address"
+msgstr "العنوان"
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1906
+#, fuzzy
+#| msgid "Address"
+msgid "IP address"
+msgstr "العنوان"
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1986
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1987
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1989
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2043
+msgid "Positive big integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2056
+msgid "Positive integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2069
+msgid "Positive small integer"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2083
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2115
+msgid "Text"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2181
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2183
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2186
+msgid "Time"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2312
+msgid "URL"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2334
+msgid "Raw binary data"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2399
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/__init__.py:2401
+msgid "Universally unique identifier"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/files.py:226
+msgid "File"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/files.py:375
+msgid "Image"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/json.py:18
+msgid "A JSON object"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/json.py:20
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:790
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:792
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:1045
+msgid "One-to-one relationship"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:1099
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:1100
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/db/models/fields/related.py:1142
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the
+#. label
+#: envWeb/lib/python3.10/site-packages/django/forms/boundfield.py:150
+msgid ":?.!"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:54
+msgid "This field is required."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:247
+msgid "Enter a whole number."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:402
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:1146
+msgid "Enter a valid date."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:426
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:1147
+msgid "Enter a valid time."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:454
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:488
+msgid "Enter a valid duration."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:489
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:552
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:553
+msgid "No file was submitted."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:554
+msgid "The submitted file is empty."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:556
+#, python-format
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:559
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:620
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:782
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:872
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:1309
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:873
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:988
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:1308
+msgid "Enter a list of values."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:989
+msgid "Enter a complete value."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:1205
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/fields.py:1235
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: envWeb/lib/python3.10/site-packages/django/forms/forms.py:76
+msgid ":"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/forms.py:203
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:370
+#, python-format
+msgid "Please submit at most %d form."
+msgid_plural "Please submit at most %d forms."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:377
+#, python-format
+msgid "Please submit at least %d form."
+msgid_plural "Please submit at least %d forms."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:405
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:412
+msgid "Order"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/formsets.py:417
+msgid "Delete"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:763
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:767
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:773
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:782
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:1109
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:1193
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/models.py:1311
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/utils.py:172
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:427
+msgid "Clear"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:428
+msgid "Currently"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:429
+msgid "Change"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/forms/widgets.py:738
+msgid "Unknown"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:817
+msgid "yes,no,maybe"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:846
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:863
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:865
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:867
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:869
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:871
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/template/defaultfilters.py:873
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:66
+msgid "p.m."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:67
+msgid "a.m."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:72
+msgid "PM"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:73
+msgid "AM"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:146
+msgid "midnight"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dateformat.py:148
+msgid "noon"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:6
+msgid "Monday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:6
+msgid "Tuesday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:6
+msgid "Wednesday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:6
+msgid "Thursday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:6
+msgid "Friday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:7
+msgid "Saturday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:7
+msgid "Sunday"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:10
+msgid "Mon"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:10
+msgid "Tue"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:10
+msgid "Wed"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:10
+msgid "Thu"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:10
+msgid "Fri"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:11
+#, fuzzy
+#| msgid "Status"
+msgid "Sat"
+msgstr "الحالة"
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:11
+msgid "Sun"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "January"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "February"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "March"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "April"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "May"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:14
+msgid "June"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:15
+msgid "July"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:15
+msgid "August"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:15
+msgid "September"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:15
+msgid "October"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:15
+msgid "November"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:16
+msgid "December"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "jan"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "feb"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "mar"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "apr"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "may"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:19
+msgid "jun"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "jul"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "aug"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "sep"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "oct"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "nov"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:20
+msgid "dec"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:23
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:24
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:25
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:26
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:27
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:28
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:29
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:30
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:31
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:32
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:33
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:34
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:37
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:38
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:39
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:40
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:41
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:42
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:43
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:44
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:45
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:46
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:47
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/dates.py:48
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/text.py:131
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/text.py:309
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: envWeb/lib/python3.10/site-packages/django/utils/text.py:328
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:94
+msgid ", "
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:9
+#, python-format
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:10
+#, python-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:11
+#, python-format
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:12
+#, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:13
+#, python-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/utils/timesince.py:14
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:110
+msgid "Forbidden"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:111
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:115
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:120
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:124
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:132
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:137
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/csrf.py:142
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:41
+msgid "No year specified"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:61
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:111
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:208
+msgid "Date out of range"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:90
+msgid "No month specified"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:142
+msgid "No day specified"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:188
+msgid "No week specified"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:338
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:367
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:594
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/dates.py:628
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/detail.py:54
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/list.py:67
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/list.py:72
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/generic/list.py:154
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/static.py:40
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/static.py:42
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/static.py:80
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:7
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:221
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:207
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:222
+#, python-format
+msgid ""
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:230
+msgid "Django Documentation"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:231
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:239
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:240
+msgid "Get started with Django"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:248
+msgid "Django Community"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/django/views/templates/default_urlconf.html:249
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/kombu/transport/qpid.py:1311
+#, python-format
+msgid "Attempting to connect to qpid with SASL mechanism %s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/kombu/transport/qpid.py:1316
+#, python-format
+msgid "Connected to qpid with SASL mechanism %s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/kombu/transport/qpid.py:1334
+#, python-format
+msgid "Unable to connect to qpid with SASL mechanism %s"
+msgstr ""
+
+#: envWeb/lib/python3.10/site-packages/timezone_field/rest_framework.py:10
+msgid "A valid timezone is required."
+msgstr ""
+
+#: templates/blood/admin_approve_blood_request.html:9
+#, fuzzy
+#| msgid "Approved Requests"
+msgid "Approve Blood Request"
 msgstr "الطلبات المقبولة"
 
-#: .\templates\blood\admin_dashboard.html:161
-msgid "Total Blood Unit (in ml)"
-msgstr "إجمالي كمية الدم (بالمل)"
+#: templates/blood/admin_approve_blood_request.html:12
+#: templates/blood/admin_approve_donation_request.html:30
+#: templates/blood/admin_requests_dashboard.html:57
+#, fuzzy
+#| msgid "Patient"
+msgid "Patient Name"
+msgstr "المريض"
 
-#: .\templates\blood\admin_donation.html:20
-msgid "BLOOD DONATION DETAILS"
-msgstr "تفاصيل التبرع بالدم"
+#: templates/blood/admin_approve_blood_request.html:14
+#: templates/blood/admin_approve_blood_request.html:33
+#: templates/blood/admin_approve_donation_request.html:14
+#: templates/blood/admin_approve_donation_request.html:31
+#: templates/blood/admin_donor_eligibility.html:20
+#: templates/blood/admin_request.html:17
+#: templates/blood/admin_request_history.html:14
+#: templates/blood/admin_requests_dashboard.html:22
+#: templates/blood/admin_requests_dashboard.html:58
+#: templates/blood/admin_requests_dashboard.html:140
+#: templates/blood/admin_user_management.html:21
+#: templates/blood/index.html:269 templates/blood/signup.html:116
+#: templates/patient/my_request.html:20
+msgid "Blood Type"
+msgstr "فصيلة الدم"
 
-#: .\templates\blood\admin_donation.html:25
+#: templates/blood/admin_approve_blood_request.html:15
+#: templates/blood/admin_approve_donation_request.html:32
+#: templates/blood/admin_request.html:19
+#: templates/blood/admin_request_history.html:16
+#: templates/blood/admin_requests_dashboard.html:30
+#: templates/blood/admin_requests_dashboard.html:59
+#: templates/patient/my_request.html:22
+#: templates/patient/patient_dashboard.html:50
+msgid "Urgency"
+msgstr "الاستعجال"
+
+#: templates/blood/admin_approve_blood_request.html:16
+#: templates/blood/admin_approve_donation_request.html:33
+#: templates/blood/admin_donor_eligibility.html:21
+#: templates/blood/admin_requests_dashboard.html:34
+#: templates/blood/admin_requests_dashboard.html:60
+#: templates/blood/admin_user_management.html:22
+#: templates/blood/signup.html:135 templates/donor/donor_dashboard.html:19
+#: templates/patient/blood_request_form.html:128
+#: templates/patient/patient_dashboard.html:19
+msgid "Wilaya"
+msgstr "الولاية"
+
+#: templates/blood/admin_approve_blood_request.html:17
+#: templates/blood/admin_approve_blood_request.html:34
+#: templates/blood/admin_approve_donation_request.html:15
+#: templates/blood/admin_approve_donation_request.html:34
+#: templates/blood/admin_requests_dashboard.html:61
+#: templates/blood/admin_requests_dashboard.html:141
+msgid "Created At"
+msgstr "تاريخ الإنشاء"
+
+#: templates/blood/admin_approve_blood_request.html:22
+#: templates/blood/choose_profile.html:31
+msgid "Select Donor"
+msgstr "اختر متبرع"
+
+#: templates/blood/admin_approve_blood_request.html:31
+#: templates/blood/admin_approve_donation_request.html:29
+#, fuzzy
+#| msgid "Select Donor"
+msgid "Select"
+msgstr "اختر متبرع"
+
+#: templates/blood/admin_approve_blood_request.html:32
+#: templates/blood/admin_approve_donation_request.html:12
+#: templates/blood/admin_donation.html:25
+#: templates/blood/admin_requests_dashboard.html:139
 msgid "Donor Name"
 msgstr "اسم المتبرع"
 
-#: .\templates\blood\admin_donation.html:26
-#: .\templates\blood\admin_patient.html:18
-#: .\templates\patient\patientsignup.html:103
+#: templates/blood/admin_approve_blood_request.html:54
+#: templates/blood/admin_approve_donation_request.html:64
+#: templates/blood/admin_request.html:60
+#: templates/blood/admin_request_history.html:71
+#: templates/blood/admin_requests_dashboard.html:104
+#: templates/blood/admin_requests_dashboard.html:107
+#: templates/blood/admin_requests_dashboard.html:172
+#: templates/blood/admin_requests_dashboard.html:175
+#: templates/donor/donation_history.html:53
+#: templates/patient/my_request.html:74
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: templates/blood/admin_approve_blood_request.html:55
+#: templates/blood/admin_approve_donation_request.html:65
+msgid "Confirm Approval"
+msgstr "تأكيد الموافقة"
+
+#: templates/blood/admin_approve_blood_request.html:61
+msgid "No eligible donors available for this blood type."
+msgstr "لا يتوفر متبرعون مؤهلون لفصيلة الدم هذه."
+
+#: templates/blood/admin_approve_blood_request.html:62
+msgid "There are no pending donation requests matching"
+msgstr "لا توجد طلبات تبرع معلقة مطابقة"
+
+#: templates/blood/admin_approve_blood_request.html:63
+#: templates/blood/admin_approve_donation_request.html:73
+#, fuzzy
+#| msgid "Admin Dashboard"
+msgid "Return to Dashboard"
+msgstr "لوحة التحكم"
+
+#: templates/blood/admin_approve_donation_request.html:9
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Approve Donation Request"
+msgstr "طلب دم"
+
+#: templates/blood/admin_approve_donation_request.html:20
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Select Blood Request"
+msgstr "طلب دم"
+
+#: templates/blood/admin_approve_donation_request.html:48
+#: templates/blood/admin_request.html:36
+#: templates/blood/admin_request_history.html:33
+#: templates/blood/admin_requests_dashboard.html:74
+#: templates/patient/my_request.html:37
+#: templates/patient/patient_dashboard.html:52
+msgid "Critical"
+msgstr "حرج"
+
+#: templates/blood/admin_approve_donation_request.html:50
+#: templates/blood/admin_request.html:38
+#: templates/blood/admin_request_history.html:35
+#: templates/blood/admin_requests_dashboard.html:76
+#: templates/patient/my_request.html:39
+#: templates/patient/patient_dashboard.html:54
+msgid "Urgent"
+msgstr "عاجل"
+
+#: templates/blood/admin_approve_donation_request.html:52
+#: templates/blood/admin_request.html:40
+#: templates/blood/admin_request_history.html:37
+#: templates/blood/admin_requests_dashboard.html:78
+#: templates/patient/my_request.html:41
+#: templates/patient/patient_dashboard.html:56
+msgid "Normal"
+msgstr "عادي"
+
+#: templates/blood/admin_approve_donation_request.html:71
+msgid "No eligible blood requests available for this blood type."
+msgstr "لا تتوفر طلبات دم مؤهلة لفصيلة الدم هذه."
+
+#: templates/blood/admin_approve_donation_request.html:72
+#, fuzzy
+#| msgid "Pending Request"
+msgid "There are no pending blood requests matching"
+msgstr "طلبات قيد الانتظار"
+
+#: templates/blood/admin_blood.html:129
+msgid "Update Blood Unit"
+msgstr "تحديث كمية الدم"
+
+#: templates/blood/admin_blood.html:137
+msgid "Choose Blood Group"
+msgstr "اختر فصيلة الدم"
+
+#: templates/blood/admin_blood.html:150 templates/blood/admin_donation.html:29
+msgid "Unit"
+msgstr "الكمية"
+
+#: templates/blood/admin_blood.html:153 templates/blood/update_donor.html:111
+#: templates/blood/update_patient.html:138
+msgid "Update"
+msgstr "تحديث"
+
+#: templates/blood/admin_dashboard.html:119
+msgid "Total Donors"
+msgstr "إجمالي المتبرعين"
+
+#: templates/blood/admin_dashboard.html:133
+#: templates/patient/patient_dashboard.html:96
+msgid "Total Requests"
+msgstr "إجمالي الطلبات"
+
+#: templates/blood/admin_dashboard.html:147
+msgid "Approved Requests"
+msgstr "الطلبات المقبولة"
+
+#: templates/blood/admin_dashboard.html:161
+msgid "Total Blood Unit (in ml)"
+msgstr "إجمالي كمية الدم (بالمل)"
+
+#: templates/blood/admin_donation.html:20
+msgid "BLOOD DONATION DETAILS"
+msgstr "تفاصيل التبرع بالدم"
+
+#: templates/blood/admin_donation.html:26
+#: templates/blood/admin_patient.html:18
 msgid "Disease"
 msgstr "المرض"
 
-#: .\templates\blood\admin_donation.html:27
-#: .\templates\blood\admin_patient.html:17
-#: .\templates\blood\admin_request.html:20
-#: .\templates\blood\admin_request_history.html:33
-#: .\templates\blood\update_patient.html:62
-#: .\templates\donor\donate_blood.html:68
-#: .\templates\patient\patientsignup.html:72
+#: templates/blood/admin_donation.html:27
+#: templates/blood/admin_patient.html:17 templates/blood/signup.html:88
+#: templates/blood/update_patient.html:62
+#: templates/donor/donation_request_form.html:49
+#: templates/patient/blood_request_form.html:45
 msgid "Age"
 msgstr "العمر"
 
-#: .\templates\blood\admin_donation.html:28
-#: .\templates\blood\admin_donor.html:16
-#: .\templates\blood\admin_patient.html:16
-#: .\templates\blood\admin_request.html:22
-#: .\templates\blood\admin_request_history.html:35
-#: .\templates\blood\update_donor.html:62
-#: .\templates\blood\update_patient.html:71
-#: .\templates\donor\donate_blood.html:28
-#: .\templates\donor\donation_history.html:31
-#: .\templates\donor\donorsignup.html:69 .\templates\donor\makerequest.html:55
-#: .\templates\donor\request_history.html:32
-#: .\templates\patient\makerequest.html:54
-#: .\templates\patient\my_request.html:32
-#: .\templates\patient\patientsignup.html:81
+#: templates/blood/admin_donation.html:28 templates/blood/admin_donor.html:16
+#: templates/blood/admin_patient.html:16 templates/blood/update_donor.html:62
+#: templates/blood/update_patient.html:71
+#: templates/donor/donation_history.html:20
+#: templates/donor/donation_request_form.html:40
+#: templates/donor/donor_dashboard.html:17
+#: templates/patient/patient_dashboard.html:17
 msgid "Blood Group"
 msgstr "فصيلة الدم"
 
-#: .\templates\blood\admin_donation.html:30
+#: templates/blood/admin_donation.html:30
 msgid "Request Date"
 msgstr "تاريخ الطلب"
 
-#: .\templates\blood\admin_donation.html:31
-#: .\templates\blood\admin_request.html:25
-#: .\templates\blood\admin_request_history.html:38
-#: .\templates\donor\donation_history.html:34
-#: .\templates\donor\request_history.html:35
-#: .\templates\patient\my_request.html:35
+#: templates/blood/admin_donation.html:31
+#: templates/blood/admin_request.html:23
+#: templates/blood/admin_request_history.html:20
+#: templates/blood/admin_requests_dashboard.html:18
+#: templates/blood/admin_requests_dashboard.html:62
+#: templates/blood/admin_requests_dashboard.html:142
+#: templates/blood/admin_user_management.html:24
+#: templates/donor/donation_history.html:22
+#: templates/donor/donor_dashboard.html:44
+#: templates/patient/my_request.html:26
 msgid "Status"
 msgstr "الحالة"
 
-#: .\templates\blood\admin_donation.html:32
-#: .\templates\blood\admin_donor.html:19
-#: .\templates\blood\admin_patient.html:20
-#: .\templates\blood\admin_request.html:26
+#: templates/blood/admin_donation.html:32 templates/blood/admin_donor.html:19
+#: templates/blood/admin_donor_eligibility.html:24
+#: templates/blood/admin_patient.html:20 templates/blood/admin_request.html:24
+#: templates/blood/admin_request_history.html:21
+#: templates/blood/admin_user_management.html:25
+#: templates/donor/donation_history.html:23
+#: templates/patient/my_request.html:27
 msgid "Action"
 msgstr "الإجراء"
 
-#: .\templates\blood\admin_donation.html:49
-#: .\templates\donor\donation_history.html:52
-#: .\templates\donor\request_history.html:54
-#: .\templates\patient\my_request.html:54
+#: templates/blood/admin_donation.html:49
+#: templates/blood/admin_request.html:47
+#: templates/donor/donation_history.html:33
+#: templates/donor/donor_dashboard.html:48
+#: templates/donor/donor_dashboard.html:120
+#: templates/patient/my_request.html:50
+#: templates/patient/patient_dashboard.html:67
+#: templates/patient/patient_dashboard.html:105
 msgid "Pending"
 msgstr "قيد الانتظار"
 
-#: .\templates\blood\admin_donation.html:51
-#: .\templates\blood\admin_request_history.html:54
-#: .\templates\donor\donation_history.html:48
-#: .\templates\donor\request_history.html:50
-#: .\templates\patient\my_request.html:50
+#: templates/blood/admin_donation.html:51
+#: templates/blood/admin_request_history.html:46
+#: templates/donor/donation_history.html:35
+#: templates/donor/donor_dashboard.html:46
+#: templates/donor/donor_dashboard.html:128
+#: templates/patient/my_request.html:52
+#: templates/patient/patient_dashboard.html:65
+#: templates/patient/patient_dashboard.html:114
 msgid "Approved"
 msgstr "مقبول"
 
-#: .\templates\blood\admin_donation.html:53
-#: .\templates\blood\admin_request_history.html:61
-#: .\templates\donor\donation_history.html:50
-#: .\templates\donor\request_history.html:52
-#: .\templates\patient\my_request.html:52
+#: templates/blood/admin_donation.html:53
+#: templates/blood/admin_request_history.html:50
+#: templates/donor/donation_history.html:39
+#: templates/donor/donor_dashboard.html:147
+#: templates/patient/my_request.html:56
+#: templates/patient/patient_dashboard.html:136
 msgid "Rejected"
 msgstr "مرفوض"
 
-#: .\templates\blood\admin_donation.html:63
+#: templates/blood/admin_donation.html:63
 msgid "APPROVE"
 msgstr "قبول"
 
-#: .\templates\blood\admin_donation.html:68
+#: templates/blood/admin_donation.html:68
 msgid "REJECT"
 msgstr "رفض"
 
-#: .\templates\blood\admin_donation.html:76
+#: templates/blood/admin_donation.html:76
 #, python-format
 msgid "%(unit)s Unit Added To Stock"
 msgstr "تمت إضافة %(unit)s وحدة إلى المخزون"
 
-#: .\templates\blood\admin_donation.html:83
+#: templates/blood/admin_donation.html:83
 msgid "0 Unit Added To Stock"
 msgstr "لم تتم إضافة أي وحدة إلى المخزون"
 
-#: .\templates\blood\admin_donor.html:9
+#: templates/blood/admin_donor.html:9
 msgid "DONOR DETAILS"
 msgstr "تفاصيل المتبرعين"
 
-#: .\templates\blood\admin_donor.html:14
-#: .\templates\blood\admin_patient.html:14
+#: templates/blood/admin_donor.html:14
+#: templates/blood/admin_donor_eligibility.html:19
+#: templates/blood/admin_patient.html:14
+#: templates/blood/admin_user_management.html:20
 msgid "Name"
 msgstr "الاسم"
 
-#: .\templates\blood\admin_donor.html:15
-#: .\templates\blood\admin_patient.html:15
+#: templates/blood/admin_donor.html:15 templates/blood/admin_patient.html:15
 msgid "Profile"
 msgstr "الملف الشخصي"
 
-#: .\templates\blood\admin_donor.html:17 .\templates\blood\update_donor.html:84
-#: .\templates\blood\update_patient.html:111
-#: .\templates\donor\donorsignup.html:91
-#: .\templates\patient\patientsignup.html:121
+#: templates/blood/admin_donor.html:17 templates/blood/update_donor.html:84
+#: templates/blood/update_patient.html:111
 msgid "Address"
 msgstr "العنوان"
 
-#: .\templates\blood\admin_donor.html:18
-#: .\templates\blood\admin_patient.html:19
-#: .\templates\blood\update_donor.html:93
-#: .\templates\blood\update_patient.html:120
-#: .\templates\donor\donorsignup.html:100
-#: .\templates\patient\patientsignup.html:130
+#: templates/blood/admin_donor.html:18 templates/blood/admin_patient.html:19
+#: templates/blood/update_donor.html:93
+#: templates/blood/update_patient.html:120
 msgid "Mobile"
 msgstr "رقم الهاتف"
 
-#: .\templates\blood\admin_donor.html:28
-#: .\templates\blood\admin_patient.html:29
-#: .\templates\blood\update_donor.html:102
-#: .\templates\blood\update_patient.html:129
-#: .\templates\donor\donorsignup.html:109
-#: .\templates\patient\patientsignup.html:139
+#: templates/blood/admin_donor.html:28 templates/blood/admin_patient.html:29
+#: templates/blood/update_donor.html:102
+#: templates/blood/update_patient.html:129
 msgid "Profile Pic"
 msgstr "الصورة الشخصية"
 
-#: .\templates\blood\admin_donor.html:37
-#: .\templates\blood\admin_patient.html:39
+#: templates/blood/admin_donor.html:37 templates/blood/admin_patient.html:39
 msgid "EDIT"
 msgstr "تعديل"
 
-#: .\templates\blood\admin_donor.html:42
-#: .\templates\blood\admin_patient.html:44
+#: templates/blood/admin_donor.html:42 templates/blood/admin_patient.html:44
 msgid "DELETE"
 msgstr "حذف"
 
-#: .\templates\blood\admin_patient.html:9
+#: templates/blood/admin_donor_eligibility.html:7
+#: templates/blood/adminbase.html:141
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Donor Eligibility"
+msgstr "معلومات طبية"
+
+#: templates/blood/admin_donor_eligibility.html:11
+#, fuzzy
+#| msgid "Register"
+msgid "Registered Donors"
+msgstr "تسجيل"
+
+#: templates/blood/admin_donor_eligibility.html:22
+#, fuzzy
+#| msgid "Last Donation Date"
+msgid "Last Donation"
+msgstr "تاريخ آخر تبرع"
+
+#: templates/blood/admin_donor_eligibility.html:23
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Eligibility"
+msgstr "معلومات طبية"
+
+#: templates/blood/admin_donor_eligibility.html:37
+msgid "Never"
+msgstr "أبدا"
+
+#: templates/blood/admin_donor_eligibility.html:42
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Eligible"
+msgstr "غير مؤهل"
+
+#: templates/blood/admin_donor_eligibility.html:44
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Ineligible"
+msgstr "غير مؤهل"
+
+#: templates/blood/admin_donor_eligibility.html:48
+msgid "Are you sure you want to change this donor\\'s eligibility?"
+msgstr "هل أنت متأكد أنك تريد تغيير أهلية هذا المتبرع؟"
+
+#: templates/blood/admin_donor_eligibility.html:53
+msgid "Mark Ineligible"
+msgstr "جعله غير مؤهل"
+
+#: templates/blood/admin_donor_eligibility.html:57
+#, fuzzy
+#| msgid "Not Eligible"
+msgid "Mark Eligible"
+msgstr "غير مؤهل"
+
+#: templates/blood/admin_donor_eligibility.html:70
+msgid "No donors found in the system."
+msgstr "لم يتم العثور على متبرعين في النظام."
+
+#: templates/blood/admin_patient.html:9
 msgid "PATIENT DETAILS"
 msgstr "تفاصيل المرضى"
 
-#: .\templates\blood\admin_request.html:10
-msgid "Blood Requested"
-msgstr "طلبات الدم"
+#: templates/blood/admin_request.html:8
+#, fuzzy
+#| msgid "Pending Request"
+msgid "Pending Blood Requests"
+msgstr "طلبات قيد الانتظار"
 
-#: .\templates\blood\admin_request.html:19
-#: .\templates\blood\admin_request_history.html:32
-#: .\templates\donor\makerequest.html:28
-#: .\templates\donor\request_history.html:29
-#: .\templates\patient\makerequest.html:27
-#: .\templates\patient\my_request.html:29
-msgid "Patient Name"
-msgstr "اسم المريض"
-
-#: .\templates\blood\admin_request.html:21
-#: .\templates\blood\admin_request_history.html:34
-#: .\templates\donor\makerequest.html:46
-#: .\templates\donor\request_history.html:31
-#: .\templates\patient\makerequest.html:45
-#: .\templates\patient\my_request.html:31
-msgid "Reason"
-msgstr "السبب"
-
-#: .\templates\blood\admin_request.html:23
-#: .\templates\blood\admin_request_history.html:36
-#: .\templates\donor\donate_blood.html:50 .\templates\donor\makerequest.html:77
-#: .\templates\patient\makerequest.html:76
-msgid "Unit (in ml)"
-msgstr "الكمية (بالمل)"
-
-#: .\templates\blood\admin_request.html:24
-#: .\templates\blood\admin_request_history.html:37
-#: .\templates\donor\donation_history.html:33
-#: .\templates\donor\request_history.html:34
-#: .\templates\patient\my_request.html:34
-msgid "Date"
-msgstr "التاريخ"
-
-#: .\templates\blood\admin_request.html:44
-msgid "Approve"
-msgstr "مقبول"
-
-#: .\templates\blood\admin_request.html:49
-msgid "Reject"
-msgstr "مرفوض"
-
-#: .\templates\blood\admin_request.html:59
-msgid "No Blood Request By Patient / Donor !"
-msgstr "لا توجد طلبات دم من المريض / المتبرع!"
-
-#: .\templates\blood\admin_request_history.html:23
-msgid "Blood Request History"
-msgstr "سجل طلبات الدم"
-
-#: .\templates\blood\admin_request_history.html:39
-msgid "Stock Status"
-msgstr " حالة المخزون"
-
-#: .\templates\blood\admin_request_history.html:57
-msgid "Unit Deducted From Stock"
-msgstr "وحدة خُصمت من المخزون"
-
-#: .\templates\blood\admin_request_history.html:64
-msgid "0 Unit Deducted From Stock"
-msgstr "لم يتم خصم أي وحدة من المخزون"
-
-#: .\templates\blood\adminbase.html:7
-msgid "ADMIN"
-msgstr "المسؤول"
-
-#: .\templates\blood\adminbase.html:117 .\templates\donor\donorbase.html:160
-#: .\templates\patient\patientbase.html:85
-msgid "Blood Bank Management System"
-msgstr "نظام إدارة بنك الدم"
-
-#: .\templates\blood\adminbase.html:124 .\templates\donor\donorbase.html:167
-#: .\templates\patient\patientbase.html:92
-msgid "Logout"
-msgstr "تسجيل الخروج"
-
-#: .\templates\blood\adminbase.html:135 .\templates\blood\navbar.html:33
-#: .\templates\donor\donorbase.html:179
-#: .\templates\patient\patientbase.html:106
-msgid "Home"
-msgstr "الواجهة الرئيسية"
-
-#: .\templates\blood\adminbase.html:136 .\templates\blood\navbar.html:45
-msgid "Donor"
-msgstr "المتبرع"
-
-#: .\templates\blood\adminbase.html:137 .\templates\blood\navbar.html:39
+#: templates/blood/admin_request.html:16
+#: templates/blood/admin_request_history.html:13
 msgid "Patient"
 msgstr "المريض"
 
-#: .\templates\blood\adminbase.html:138
-msgid "Donations"
-msgstr "التبرعات"
+#: templates/blood/admin_request.html:18
+#: templates/blood/admin_request_history.html:15
+#: templates/patient/my_request.html:21
+#, fuzzy
+#| msgid "Unit"
+msgid "Units"
+msgstr "الكمية"
 
-#: .\templates\blood\adminbase.html:139
+#: templates/blood/admin_request.html:20
+#: templates/blood/admin_request_history.html:17
+#: templates/patient/blood_request_form.html:94
+#: templates/patient/my_request.html:23
+#: templates/patient/patient_dashboard.html:60
+#, fuzzy
+#| msgid "Request Date"
+msgid "Required Date"
+msgstr "تاريخ الطلب"
+
+#: templates/blood/admin_request.html:21
+#: templates/blood/admin_request_history.html:18
+#: templates/patient/my_request.html:24
+msgid "Reason"
+msgstr "السبب"
+
+#: templates/blood/admin_request.html:22
+#: templates/blood/admin_request_history.html:19
+#: templates/donor/donation_history.html:21
+#: templates/patient/my_request.html:25
+msgid "Submitted"
+msgstr ""
+
+#: templates/blood/admin_request.html:51
+#: templates/blood/admin_requests_dashboard.html:102
+#: templates/blood/admin_requests_dashboard.html:170
+msgid "Approve"
+msgstr "مقبول"
+
+#: templates/blood/admin_request.html:55
+#: templates/blood/admin_requests_dashboard.html:103
+#: templates/blood/admin_requests_dashboard.html:171
+msgid "Reject"
+msgstr "مرفوض"
+
+#: templates/blood/admin_request.html:72
+#, fuzzy
+#| msgid "Pending Request"
+msgid "No pending blood requests."
+msgstr "طلبات قيد الانتظار"
+
+#: templates/blood/admin_request_history.html:7
+msgid "Blood Request History"
+msgstr "سجل طلبات الدم"
+
+#: templates/blood/admin_request_history.html:48
+#: templates/donor/donation_history.html:37
+#: templates/donor/donor_dashboard.html:139
+#: templates/patient/my_request.html:54
+#: templates/patient/patient_dashboard.html:123
+msgid "Completed"
+msgstr ""
+
+#: templates/blood/admin_request_history.html:52
+#, fuzzy
+#| msgid "Select Patient"
+msgid "Cancelled by Patient"
+msgstr "اختر مريض"
+
+#: templates/blood/admin_request_history.html:54
+#: templates/donor/donation_history.html:43
+#: templates/patient/my_request.html:60
+msgid "Cancelled by Admin"
+msgstr ""
+
+#: templates/blood/admin_request_history.html:56
+#: templates/patient/my_request.html:62
+#: templates/patient/patient_dashboard.html:154
+msgid "Expired"
+msgstr ""
+
+#: templates/blood/admin_request_history.html:66
+#: templates/blood/admin_requests_dashboard.html:106
+#: templates/blood/admin_requests_dashboard.html:174
+msgid "Complete"
+msgstr "إكمال"
+
+#: templates/blood/admin_requests_dashboard.html:7
+#: templates/blood/adminbase.html:139
+#, fuzzy
+#| msgid "Dashboard"
+msgid "Requests Dashboard"
+msgstr "لوحة القيادة"
+
+#: templates/blood/admin_requests_dashboard.html:12
+msgid "Filter"
+msgstr "تصفية"
+
+#: templates/blood/admin_requests_dashboard.html:26
+#, fuzzy
+#| msgid "Blood Bank"
+msgid "Blood Sign"
+msgstr "بنك الدم"
+
+#: templates/blood/admin_requests_dashboard.html:39
+#: templates/blood/admin_requests_dashboard.html:130
+msgid "Apply Filters"
+msgstr "تطبيق عوامل التصفية"
+
+#: templates/blood/admin_requests_dashboard.html:41
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#: templates/blood/admin_requests_dashboard.html:50
 msgid "Blood Requests"
 msgstr "طلبات الدم"
 
-#: .\templates\blood\adminbase.html:140 .\templates\donor\donorbase.html:183
-#: .\templates\patient\patientbase.html:116
-msgid "Request History"
-msgstr "سجل الطلبات"
+#: templates/blood/admin_requests_dashboard.html:56
+#: templates/blood/admin_requests_dashboard.html:138
+#, fuzzy
+#| msgid "Request Date"
+msgid "Request ID"
+msgstr "تاريخ الطلب"
 
-#: .\templates\blood\adminbase.html:141
+#: templates/blood/admin_requests_dashboard.html:63
+#: templates/blood/admin_requests_dashboard.html:143
+#, fuzzy
+#| msgid "Action"
+msgid "Actions"
+msgstr "الإجراء"
+
+#: templates/blood/admin_requests_dashboard.html:118
+#, fuzzy
+#| msgid "Pending Request"
+msgid "No blood requests found."
+msgstr "طلبات قيد الانتظار"
+
+#: templates/blood/admin_requests_dashboard.html:125
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Donation Requests"
+msgstr "طلب دم"
+
+#: templates/blood/admin_requests_dashboard.html:128
+#, fuzzy
+#| msgid "Donations"
+msgid "Filter Donations:"
+msgstr "التبرعات"
+
+#: templates/blood/admin_requests_dashboard.html:188
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "No donation requests found."
+msgstr "طلباتي للدم"
+
+#: templates/blood/admin_user_management.html:7
+#: templates/blood/adminbase.html:140
+#, fuzzy
+#| msgid "Username"
+msgid "User Management"
+msgstr "اسم المستخدم"
+
+#: templates/blood/admin_user_management.html:11
+#, fuzzy
+#| msgid "Register"
+msgid "Registered Users"
+msgstr "تسجيل"
+
+#: templates/blood/admin_user_management.html:19
+msgid "NIN"
+msgstr "رقم التعريف الوطني"
+
+#: templates/blood/admin_user_management.html:23
+#, fuzzy
+#| msgid "Donate Blood"
+msgid "Date Joined"
+msgstr "التبرع بالدم"
+
+#: templates/blood/admin_user_management.html:38
+#, fuzzy
+#| msgid "Action"
+msgid "Active"
+msgstr "الإجراء"
+
+#: templates/blood/admin_user_management.html:40
+msgid "Inactive"
+msgstr "غير نشط"
+
+#: templates/blood/admin_user_management.html:44
+msgid "Are you sure you want to change this user\\'s status?"
+msgstr "هل أنت متأكد أنك تريد تغيير حالة هذا المستخدم؟"
+
+#: templates/blood/admin_user_management.html:49
+msgid "Deactivate"
+msgstr "تعطيل"
+
+#: templates/blood/admin_user_management.html:53
+msgid "Activate"
+msgstr "تفعيل"
+
+#: templates/blood/admin_user_management.html:66
+msgid "No users found in the system."
+msgstr "لم يتم العثور على مستخدمين في النظام."
+
+#: templates/blood/adminbase.html:8
+msgid "ADMIN"
+msgstr "المسؤول"
+
+#: templates/blood/adminbase.html:120 templates/donor/donorbase.html:163
+#: templates/patient/patientbase.html:88
+msgid "Blood Bank Management System"
+msgstr "نظام إدارة بنك الدم"
+
+#: templates/blood/adminbase.html:127 templates/blood/navbar.html:53
+#: templates/donor/donorbase.html:180 templates/patient/patientbase.html:106
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: templates/blood/adminbase.html:138 templates/blood/navbar.html:33
+#: templates/donor/donorbase.html:192 templates/patient/patientbase.html:120
+msgid "Home"
+msgstr "الواجهة الرئيسية"
+
+#: templates/blood/adminbase.html:142
 msgid "Blood Stock"
 msgstr "مخزون الدم"
 
-#: .\templates\blood\adminlogin.html:21
+#: templates/blood/adminlogin.html:21
 msgid "Admin Login"
 msgstr "تسجيل دخول المسؤول"
 
-#: .\templates\blood\adminlogin.html:29 .\templates\blood\update_donor.html:44
-#: .\templates\blood\update_patient.html:44
-#: .\templates\donor\donorlogin.html:33 .\templates\donor\donorsignup.html:51
-#: .\templates\patient\patientlogin.html:36
-#: .\templates\patient\patientsignup.html:54
+#: templates/blood/adminlogin.html:29 templates/blood/update_donor.html:44
+#: templates/blood/update_patient.html:44
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: .\templates\blood\adminlogin.html:38 .\templates\blood\update_donor.html:53
-#: .\templates\blood\update_patient.html:53
-#: .\templates\donor\donorlogin.html:42 .\templates\donor\donorsignup.html:60
-#: .\templates\patient\patientlogin.html:45
-#: .\templates\patient\patientsignup.html:63
+#: templates/blood/adminlogin.html:38 templates/blood/login.html:44
+#: templates/blood/signup.html:39 templates/blood/update_donor.html:53
+#: templates/blood/update_patient.html:53
 msgid "Password"
 msgstr "كلمة المرور"
 
-#: .\templates\blood\adminlogin.html:48 .\templates\donor\donorlogin.html:52
-#: .\templates\patient\patientlogin.html:54
+#: templates/blood/adminlogin.html:48 templates/blood/login.html:27
+#: templates/blood/login.html:54 templates/blood/navbar.html:59
 msgid "Login"
 msgstr "تسجيل الدخول"
 
-#: .\templates\blood\footer.html:26
+#: templates/blood/choose_profile.html:21
+msgid "Choose Your Profile Type"
+msgstr "اختر نوع ملفك"
+
+#: templates/blood/choose_profile.html:29
+msgid "I am a Donor"
+msgstr "أنا متبرع"
+
+#: templates/blood/choose_profile.html:30
+msgid "Register as a donor to give blood and save lives."
+msgstr ""
+
+#: templates/blood/choose_profile.html:39
+msgid "I am a Patient"
+msgstr "أنا مريض"
+
+#: templates/blood/choose_profile.html:40
+msgid "Register as a patient to request blood from our database."
+msgstr ""
+
+#: templates/blood/choose_profile.html:41
+msgid "Select Patient"
+msgstr "اختر مريض"
+
+#: templates/blood/create_donor_profile.html:22
+#, fuzzy
+#| msgid "Create Donor Profile"
+msgid "Donor Profile"
+msgstr "إنشاء ملف متبرع"
+
+#: templates/blood/create_donor_profile.html:28
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Eligibility Information"
+msgstr "معلومات طبية"
+
+#: templates/blood/create_donor_profile.html:29
+msgid "Required for a safe and accurate blood donation process."
+msgstr ""
+
+#: templates/blood/create_donor_profile.html:32
+#: templates/blood/create_patient_profile.html:33
+msgid "Do you have any chronic diseases?"
+msgstr "هل تعاني من أمراض مزمنة؟"
+
+#: templates/blood/create_donor_profile.html:43
+msgid "Are you on regular medication?"
+msgstr "هل تتناول أدوية بانتظام؟"
+
+#: templates/blood/create_donor_profile.html:54
+msgid "Do you have anemia?"
+msgstr "هل تعاني من فقر دم؟"
+
+#: templates/blood/create_donor_profile.html:65
+msgid "Have you received a blood transfusion before?"
+msgstr "هل تلقيت نقل دم من قبل؟"
+
+#: templates/blood/create_donor_profile.html:77
+msgid "Have you donated blood before?"
+msgstr "هل تبرعت بالدم من قبل؟"
+
+#: templates/blood/create_donor_profile.html:85
+msgid "When was your last donation?"
+msgstr "متى كانت آخر مرة تبرعت فيها بالدم؟"
+
+#: templates/blood/create_donor_profile.html:93
+#: templates/blood/create_patient_profile.html:100
+msgid "Submit & Finalize"
+msgstr "تأكيد"
+
+#: templates/blood/create_patient_profile.html:22
+#, fuzzy
+#| msgid "Create Patient Profile"
+msgid "Patient Profile"
+msgstr "إنشاء ملف مريض"
+
+#: templates/blood/create_patient_profile.html:28
+msgid "Medical Information"
+msgstr "معلومات طبية"
+
+#: templates/blood/create_patient_profile.html:29
+msgid "Required for a safe and accurate blood request process."
+msgstr ""
+
+#: templates/blood/create_patient_profile.html:41
+#: templates/blood/create_patient_profile.html:58
+msgid "Please specify"
+msgstr "يرجى التوضيح"
+
+#: templates/blood/create_patient_profile.html:50
+msgid "Do you have any allergies?"
+msgstr "هل تعاني من اي حساسية؟"
+
+#: templates/blood/create_patient_profile.html:67
+msgid "Have you had previous surgeries?"
+msgstr "هل خضعت لعمليات جراحية سابقة؟"
+
+#: templates/blood/create_patient_profile.html:77
+msgid "Emergency Contact"
+msgstr "جهة اتصال للطوارئ"
+
+#: templates/blood/create_patient_profile.html:81
+msgid "Contact Name"
+msgstr "اسم جهة الاتصال"
+
+#: templates/blood/create_patient_profile.html:91
+msgid "Contact Phone"
+msgstr "رقم هاتف جهة الاتصال"
+
+#: templates/blood/footer.html:26
 msgid "Blood Bank Management System © 2026"
 msgstr "نظام إدارة بنك الدم © 2026"
 
-#: .\templates\blood\index.html:9
+#: templates/blood/index.html:9
 msgid "Blood Bank"
 msgstr "بنك الدم"
 
-#: .\templates\blood\index.html:236
+#: templates/blood/index.html:238
 msgid "Donating blood saves lives"
 msgstr "التبرع بالدم ينقذ الأرواح"
 
-#: .\templates\blood\index.html:238
+#: templates/blood/index.html:240
 msgid ""
 "\n"
-"            A few minutes of your time can give someone a new chance at "
-"life. Be a source of hope and help save lives.\n"
+"            A few minutes of your time can give someone a new chance at life. Be a source of hope and help save lives.\n"
 "            "
 msgstr ""
 "\n"
-"            بضع دقائق من وقتك يمكن أن تمنح شخصًا فرصة جديدة للحياة. كن مصدر "
-"أمل وساهم في إنقاذ الأرواح.\n"
+"            بضع دقائق من وقتك يمكن أن تمنح شخصًا فرصة جديدة للحياة. كن مصدر أمل وساهم في إنقاذ الأرواح.\n"
 "            "
 
-#: .\templates\blood\index.html:248
+#: templates/blood/index.html:250
 msgid "A Blood Bank Services You Can Trust"
 msgstr "خدمات بنك الدم التي يمكنك الوثوق بها"
 
-#: .\templates\blood\index.html:256
+#: templates/blood/index.html:258
 msgid "🩸 Blood Type Compatibility"
 msgstr "🩸 توافق فصائل الدم"
 
-#: .\templates\blood\index.html:258
+#: templates/blood/index.html:260
 msgid ""
 "\n"
-"        Understanding blood type compatibility helps speed up donations and "
-"save lives safely.\n"
+"        Understanding blood type compatibility helps speed up donations and save lives safely.\n"
 "        "
 msgstr ""
 "\n"
-"        فهم توافق فصائل الدم يساعد على تسريع عمليات التبرع وإنقاذ الأرواح "
-"بأمان.\n"
+"        فهم توافق فصائل الدم يساعد على تسريع عمليات التبرع وإنقاذ الأرواح بأمان.\n"
 "        "
 
-#: .\templates\blood\index.html:267
-msgid "Blood Type"
-msgstr "فصيلة الدم"
-
-#: .\templates\blood\index.html:268
+#: templates/blood/index.html:270
 msgid "Can Donate To"
 msgstr "يمكنه التبرع لـ"
 
-#: .\templates\blood\index.html:269
+#: templates/blood/index.html:271
 msgid "Can Receive From"
 msgstr "يمكنه الاستقبال من"
 
-#: .\templates\blood\index.html:275 .\templates\blood\index.html:311
+#: templates/blood/index.html:277 templates/blood/index.html:313
 msgid "Everyone"
 msgstr "الجميع"
 
-#: .\templates\blood\index.html:276
+#: templates/blood/index.html:278
 msgid "O- only"
 msgstr "O- فقط"
 
-#: .\templates\blood\index.html:310
+#: templates/blood/index.html:312
 msgid "AB+ only"
 msgstr "AB+ فقط"
 
-#: .\templates\blood\index.html:318
+#: templates/blood/index.html:320
 msgid ""
 "\n"
-"        ⚠️ This information is for awareness purposes only. Full medical "
-"compatibility must always be confirmed.\n"
+"        ⚠️ This information is for awareness purposes only. Full medical compatibility must always be confirmed.\n"
 "        "
 msgstr ""
 "\n"
 "        ⚠️ هذه المعلومات للتوعية فقط. يجب دائمًا تأكيد التوافق الطبي الكامل.\n"
 "        "
 
-#: .\templates\blood\logout.html:8
+#: templates/blood/login.html:35 templates/blood/signup.html:31
+msgid "Email"
+msgstr ""
+
+#: templates/blood/login.html:62
+#, fuzzy
+#| msgid "Does not have an account ?"
+msgid "Don't have an account?"
+msgstr "ليس لديك حساب؟"
+
+#: templates/blood/login.html:63
+msgid "Click here to register"
+msgstr "اضغط هنا للتسجيل"
+
+#: templates/blood/logout.html:8
 msgid "Logged Out"
 msgstr "تم تسجيل الخروج"
 
-#: .\templates\blood\logout.html:67
+#: templates/blood/logout.html:67
 msgid "You Have Been Logged Out"
 msgstr "لقد تم تسجيل خروجك"
 
-#: .\templates\blood\logout.html:68
+#: templates/blood/logout.html:68
 msgid "Thank you for using our website"
 msgstr "شكرًا لاستخدامك موقعنا"
 
-#: .\templates\blood\navbar.html:19
+#: templates/blood/navbar.html:19
 msgid "Blood Bank Management"
 msgstr "إدارة بنك الدم"
 
-#: .\templates\blood\navbar.html:51
-msgid "Admin"
-msgstr "المسؤول"
+#: templates/blood/navbar.html:41
+msgid "Admin Dashboard"
+msgstr "لوحة التحكم"
 
-#: .\templates\blood\update_donor.html:18
+#: templates/blood/navbar.html:47
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+#: templates/blood/navbar.html:64 templates/blood/signup.html:22
+msgid "Register"
+msgstr "تسجيل"
+
+#: templates/blood/signup.html:29
+msgid "Account Credentials"
+msgstr "بيانات الحساب"
+
+#: templates/blood/signup.html:47
+#, fuzzy
+#| msgid "Password"
+msgid "Confirm Password"
+msgstr "كلمة المرور"
+
+#: templates/blood/signup.html:58
+msgid "Personal Information"
+msgstr "معلومات شخصية"
+
+#: templates/blood/signup.html:61 templates/blood/update_donor.html:26
+#: templates/blood/update_patient.html:26
+msgid "First Name"
+msgstr "الاسم"
+
+#: templates/blood/signup.html:70 templates/blood/update_donor.html:35
+#: templates/blood/update_patient.html:35
+msgid "Last Name"
+msgstr "اللقب"
+
+#: templates/blood/signup.html:79
+msgid "Gender"
+msgstr ""
+
+#: templates/blood/signup.html:97
+msgid "National Identity Number (NIN)"
+msgstr "رقم التعريف الوطني (NIN)"
+
+#: templates/blood/signup.html:107
+msgid "Phone Number"
+msgstr ""
+
+#: templates/blood/signup.html:132
+msgid "Location Details"
+msgstr "تفاصيل الموقع"
+
+#: templates/blood/signup.html:144 templates/donor/donor_dashboard.html:21
+#: templates/patient/blood_request_form.html:138
+#: templates/patient/patient_dashboard.html:21
+msgid "Commune"
+msgstr ""
+
+#: templates/blood/signup.html:158
+msgid ""
+"I confirm that the information provided is accurate and agree to the terms."
+msgstr ""
+
+#: templates/blood/signup.html:165
+msgid "Next Step"
+msgstr "الخطوة التالية"
+
+#: templates/blood/signup.html:170
+#, fuzzy
+#| msgid "Already have an account ?"
+msgid "Already have an account?"
+msgstr "لديك حساب بالفعل؟"
+
+#: templates/blood/signup.html:170
+msgid "Click here to login"
+msgstr "اضغط هنا لتسجيل الدخول"
+
+#: templates/blood/update_donor.html:18
 #, fuzzy
 #| msgid "Update"
 msgid "Update Donor"
 msgstr "تحديث بيانات المتبرع"
 
-#: .\templates\blood\update_donor.html:26
-#: .\templates\blood\update_patient.html:26
-#: .\templates\donor\donorsignup.html:33
-#: .\templates\patient\patientsignup.html:36
-msgid "First Name"
-msgstr "الاسم"
-
-#: .\templates\blood\update_donor.html:35
-#: .\templates\blood\update_patient.html:35
-#: .\templates\donor\donorsignup.html:42
-#: .\templates\patient\patientsignup.html:45
-msgid "Last Name"
-msgstr "اللقب"
-
-#: .\templates\blood\update_donor.html:67
-#: .\templates\blood\update_patient.html:76
-#: .\templates\donor\donate_blood.html:33 .\templates\donor\donorsignup.html:74
-#: .\templates\donor\makerequest.html:60
-#: .\templates\patient\makerequest.html:59
-#: .\templates\patient\patientsignup.html:86
+#: templates/blood/update_donor.html:67 templates/blood/update_patient.html:76
 msgid "Choose option"
 msgstr "اختر خيارًا"
 
-#: .\templates\blood\update_patient.html:18
+#: templates/blood/update_patient.html:18
 msgid "Update Patient"
 msgstr "تحديث بيانات المريض"
 
-#: .\templates\blood\update_patient.html:93
-#: .\templates\donor\donate_blood.html:59
-#: .\templates\donor\donation_history.html:30
+#: templates/blood/update_patient.html:93
 msgid "Disease (if any)"
 msgstr "المرض (إن وجد)"
 
-#: .\templates\blood\update_patient.html:102
-#: .\templates\patient\patientsignup.html:112
+#: templates/blood/update_patient.html:102
 msgid "Doctor Name"
 msgstr "اسم الطبيب"
 
-#: .\templates\donor\donate_blood.html:20
-msgid "DONATE BLOOD"
-msgstr "التبرع بالدم"
-
-#: .\templates\donor\donate_blood.html:77
-msgid "DONATE"
-msgstr "تبرع"
-
-#: .\templates\donor\donation_history.html:24
-msgid "My Donation History"
-msgstr "سجل تبرعاتي"
-
-#: .\templates\donor\donation_history.html:29
-msgid "Donor Age"
-msgstr "عمر المتبرع"
-
-#: .\templates\donor\donor_dashboard.html:16
-#: .\templates\patient\patient_dashboard.html:25
-msgid "Request Made"
-msgstr "الطلبات المقدّمة"
-
-#: .\templates\donor\donor_dashboard.html:30
-#: .\templates\patient\patient_dashboard.html:39
-msgid "Pending Request"
-msgstr "طلبات قيد الانتظار"
-
-#: .\templates\donor\donor_dashboard.html:44
-#: .\templates\patient\patient_dashboard.html:53
-msgid "Approved Request"
-msgstr "طلبات مقبولة"
-
-#: .\templates\donor\donor_dashboard.html:58
-#: .\templates\patient\patient_dashboard.html:67
-msgid "Rejected Request"
-msgstr "طلبات مرفوضة"
-
-#: .\templates\donor\donorbase.html:7
-msgid "DONOR"
-msgstr "المتبرع"
-
-#: .\templates\donor\donorbase.html:180
-msgid "Donate Blood"
-msgstr "التبرع بالدم"
-
-#: .\templates\donor\donorbase.html:181
+#: templates/donor/donation_history.html:9 templates/donor/donorbase.html:194
 msgid "Donation History"
 msgstr "سجل التبرعات"
 
-#: .\templates\donor\donorbase.html:182
-msgid "Blood Request"
+#: templates/donor/donation_history.html:11
+#: templates/donor/donor_dashboard.html:26 templates/donor/donorbase.html:193
+msgid "Submit Donation"
+msgstr "تقديم تبرع"
+
+#: templates/donor/donation_history.html:41
+#: templates/donor/donor_dashboard.html:155
+#: templates/patient/my_request.html:58
+#: templates/patient/patient_dashboard.html:145
+msgid "Cancelled"
+msgstr ""
+
+#: templates/donor/donation_history.html:61
+#: templates/donor/donor_dashboard.html:188
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Cancel Donation Request"
 msgstr "طلب دم"
 
-#: .\templates\donor\donorlogin.html:25
-msgid "Donor Login"
-msgstr "دخول المتبرع"
+#: templates/donor/donation_history.html:67
+#: templates/donor/donor_dashboard.html:194
+msgid ""
+"Are you sure you want to cancel your donation request? This action cannot be"
+" undone."
+msgstr ""
 
-#: .\templates\donor\donorlogin.html:60
-#: .\templates\patient\patientlogin.html:61
-msgid "Does not have an account ?"
-msgstr "ليس لديك حساب؟"
+#: templates/donor/donation_history.html:70
+#: templates/donor/donor_dashboard.html:197
+msgid "Close"
+msgstr ""
 
-#: .\templates\donor\donorlogin.html:61
-#: .\templates\patient\patientlogin.html:63
-msgid "Click here to register"
-msgstr "اضغط هنا للتسجيل"
-
-#: .\templates\donor\donorsignup.html:25
-msgid "Donor Signup"
-msgstr "تسجيل المتبرع"
-
-#: .\templates\donor\donorsignup.html:119
-#: .\templates\patient\patientsignup.html:148
-msgid "Register"
-msgstr "تسجيل"
-
-#: .\templates\donor\donorsignup.html:127
-#: .\templates\patient\patientsignup.html:155
-msgid "Already have an account ?"
-msgstr "لديك حساب بالفعل؟"
-
-#: .\templates\donor\donorsignup.html:128
-#: .\templates\patient\patientsignup.html:157
-msgid "Click here to login"
-msgstr "اضغط هنا لتسجيل الدخول"
-
-#: .\templates\donor\makerequest.html:20
-#: .\templates\patient\makerequest.html:19
-msgid "MAKE BLOOD REQUEST"
+#: templates/donor/donation_history.html:73
+#: templates/donor/donor_dashboard.html:200
+#: templates/patient/cancel_request_modal.html:34
+#, fuzzy
+#| msgid "Make Request"
+msgid "Yes, Cancel Request"
 msgstr "طلب دم"
 
-#: .\templates\donor\makerequest.html:37
-#: .\templates\donor\request_history.html:30
-#: .\templates\patient\makerequest.html:36
-#: .\templates\patient\my_request.html:30
-msgid "Patient Age"
-msgstr "عمر المريض"
-
-#: .\templates\donor\makerequest.html:87
-#: .\templates\patient\makerequest.html:85
-msgid "REQUEST"
-msgstr "إرسال الطلب"
-
-#: .\templates\donor\request_history.html:24
-#: .\templates\patient\my_request.html:24
-msgid "My Blood Request"
+#: templates/donor/donation_history.html:91
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "You have no donation history."
 msgstr "طلباتي للدم"
 
-#: .\templates\patient\patientbase.html:7
+#: templates/donor/donation_history.html:92
+msgid "Submit your first donation"
+msgstr "قدّم تبرعك الأول"
+
+#: templates/donor/donation_request_form.html:20
+#: templates/donor/donation_request_form.html:197
+msgid "Submit Donation Request"
+msgstr "تقديم طلب تبرع"
+
+#: templates/donor/donation_request_form.html:28
+#: templates/patient/blood_request_form.html:24
+#, fuzzy
+#| msgid "Personal Information"
+msgid "Your Information"
+msgstr "معلومات شخصية"
+
+#: templates/donor/donation_request_form.html:31
+#: templates/patient/blood_request_form.html:27
+#, fuzzy
+#| msgid "First Name"
+msgid "Full Name"
+msgstr "الاسم"
+
+#: templates/donor/donation_request_form.html:58
+msgid "Last Donation Date"
+msgstr "تاريخ آخر تبرع"
+
+#: templates/donor/donation_request_form.html:67
+msgid "Health Screening"
+msgstr "الفحص الصحي"
+
+#: templates/donor/donor_dashboard.html:40
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Active Donation Request"
+msgstr "طلب دم"
+
+#: templates/donor/donor_dashboard.html:58
+#: templates/donor/donor_dashboard.html:62
+#, fuzzy
+#| msgid "Make Request"
+msgid "Cancel Request"
+msgstr "طلب دم"
+
+#: templates/donor/donor_dashboard.html:64
+msgid "Only pending requests can be cancelled"
+msgstr ""
+
+#: templates/donor/donor_dashboard.html:74
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "No active donation request."
+msgstr "طلباتي للدم"
+
+#: templates/donor/donor_dashboard.html:75
+#: templates/patient/patient_dashboard.html:82
+msgid "Submit one now"
+msgstr ""
+
+#: templates/donor/donor_dashboard.html:85
+#, fuzzy
+#| msgid "Medical Information"
+msgid "Eligibility Status"
+msgstr "معلومات طبية"
+
+#: templates/donor/donor_dashboard.html:90
+msgid "Eligible to Donate"
+msgstr "مؤهل للتبرع"
+
+#: templates/donor/donor_dashboard.html:91
+msgid "You can submit a donation request."
+msgstr "يمكنك تقديم طلب تبرع."
+
+#: templates/donor/donor_dashboard.html:96
+msgid "Not Eligible"
+msgstr "غير مؤهل"
+
+#: templates/donor/donor_dashboard.html:112
+#, fuzzy
+#| msgid "Total Donors"
+msgid "Total Donations"
+msgstr "إجمالي المتبرعين"
+
+#: templates/donor/donor_dashboard.html:168
+msgid "Become a Patient"
+msgstr "كن مريضاً"
+
+#: templates/donor/donor_dashboard.html:169
+msgid ""
+"Need blood? You can request it right from your existing account by applying "
+"for a Patient profile."
+msgstr ""
+
+#: templates/donor/donor_dashboard.html:173
+msgid "Create Patient Profile"
+msgstr "إنشاء ملف مريض"
+
+#: templates/donor/donorbase.html:8
+msgid "DONOR"
+msgstr "المتبرع"
+
+#: templates/donor/donorbase.html:195 templates/donor/notifications.html:10
+#: templates/patient/notifications.html:10
+#, fuzzy
+#| msgid "Donations"
+msgid "Notifications"
+msgstr "التبرعات"
+
+#: templates/donor/notifications.html:32
+#: templates/patient/notifications.html:32
+msgid "You have no notifications."
+msgstr ""
+
+#: templates/patient/blood_request_form.html:16
+#: templates/patient/blood_request_form.html:170
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Submit Blood Request"
+msgstr "طلب دم"
+
+#: templates/patient/blood_request_form.html:36
+#, fuzzy
+#| msgid "Blood Group"
+msgid "Your Blood Group"
+msgstr "فصيلة الدم"
+
+#: templates/patient/blood_request_form.html:54
+#: templates/patient/patient_dashboard.html:44
+#, fuzzy
+#| msgid "Blood Requested"
+msgid "Blood Needed"
+msgstr "طلبات الدم"
+
+#: templates/patient/blood_request_form.html:57
+#, fuzzy
+#| msgid "Blood Type"
+msgid "Blood Type Needed"
+msgstr "فصيلة الدم"
+
+#: templates/patient/blood_request_form.html:74
+msgid "Number of Units"
+msgstr ""
+
+#: templates/patient/blood_request_form.html:84
+msgid "Urgency Level"
+msgstr ""
+
+#: templates/patient/blood_request_form.html:104
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Reason for Request"
+msgstr "طلب دم"
+
+#: templates/patient/blood_request_form.html:114
+msgid "Recent Surgery"
+msgstr ""
+
+#: templates/patient/blood_request_form.html:118
+msgid "Check if you had surgery in the last 6 months"
+msgstr ""
+
+#: templates/patient/blood_request_form.html:125
+#, fuzzy
+#| msgid "Action"
+msgid "Location"
+msgstr "الإجراء"
+
+#: templates/patient/cancel_request_modal.html:12
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Cancel Blood Request"
+msgstr "طلب دم"
+
+#: templates/patient/cancel_request_modal.html:20
+msgid "Are you sure you want to cancel your blood request for"
+msgstr ""
+
+#: templates/patient/cancel_request_modal.html:24
+msgid ""
+"This action cannot be undone. If the request was already approved and linked"
+" to a donor, they will be notified."
+msgstr ""
+
+#: templates/patient/cancel_request_modal.html:29
+msgid "Go Back"
+msgstr ""
+
+#: templates/patient/my_request.html:9
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "My Blood Requests"
+msgstr "طلباتي للدم"
+
+#: templates/patient/my_request.html:11
+#: templates/patient/patient_dashboard.html:26
+#, fuzzy
+#| msgid "Make Request"
+msgid "New Request"
+msgstr "طلب دم"
+
+#: templates/patient/my_request.html:88
+msgid "You have not made any blood requests yet."
+msgstr ""
+
+#: templates/patient/my_request.html:89
+msgid "Submit your first request"
+msgstr ""
+
+#: templates/patient/patient_dashboard.html:40
+#, fuzzy
+#| msgid "Blood Request"
+msgid "Active Blood Request"
+msgstr "طلب دم"
+
+#: templates/patient/patient_dashboard.html:47
+msgid "units"
+msgstr ""
+
+#: templates/patient/patient_dashboard.html:71
+#, fuzzy
+#| msgid "Location Details"
+msgid "View Details"
+msgstr "تفاصيل الموقع"
+
+#: templates/patient/patient_dashboard.html:81
+#, fuzzy
+#| msgid "My Blood Request"
+msgid "No active blood request."
+msgstr "طلباتي للدم"
+
+#: templates/patient/patient_dashboard.html:168
+msgid "Become a Donor"
+msgstr "كن متبرعاً"
+
+#: templates/patient/patient_dashboard.html:169
+msgid ""
+"You can give back to the community by joining as a blood Donor with your "
+"existing account."
+msgstr ""
+
+#: templates/patient/patient_dashboard.html:173
+msgid "Create Donor Profile"
+msgstr "إنشاء ملف متبرع"
+
+#: templates/patient/patientbase.html:8
 msgid "PATIENT"
 msgstr "المريض"
 
-#: .\templates\patient\patientbase.html:111
+#: templates/patient/patientbase.html:125
 msgid "Make Request"
 msgstr "طلب دم"
 
-#: .\templates\patient\patientlogin.html:28
-msgid "Patient Login"
-msgstr "دخول المريض"
+#: templates/patient/patientbase.html:130
+msgid "Request History"
+msgstr "سجل الطلبات"
 
-#: .\templates\patient\patientsignup.html:28
-msgid "Patient Signup"
-msgstr "تسجيل المريض"
+#~ msgid "Donor"
+#~ msgstr "المتبرع"
+
+#~ msgid "DONATE BLOOD"
+#~ msgstr "التبرع بالدم"
+
+#~ msgid "Unit (in ml)"
+#~ msgstr "الكمية (بالمل)"
+
+#~ msgid "DONATE"
+#~ msgstr "تبرع"
+
+#~ msgid "My Donation History"
+#~ msgstr "سجل تبرعاتي"
+
+#~ msgid "Donor Age"
+#~ msgstr "عمر المتبرع"
+
+#~ msgid "Date"
+#~ msgstr "التاريخ"

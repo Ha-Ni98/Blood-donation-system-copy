@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
 
     <style>
     .row{ padding: 5px; }
@@ -110,6 +112,7 @@
 </head>
 
 <body>
+{% include "blood/toast.html" %}
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger">
         <a style="color:white;" class="navbar-brand" href="/">
@@ -132,13 +135,10 @@
 <div class="wrapper">
     <div class="sidebar">
         <ul>
-            <li><a style="text-decoration:none;" href="/"><i class="fas fa-home"></i>{% trans "Home" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-donor"><i class="fas fa-user"></i>{% trans "Donor" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-patient"><i class="fas fa-user-injured"></i>{% trans "Patient" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-donation"><i class="fas fa-hand-holding-medical"></i>{% trans "Donations" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-request"><i class="fas fa-sync-alt"></i>{% trans "Blood Requests" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-request-history"><i class="fas fa-history"></i>{% trans "Request History" %}</a></li>
-            <li><a style="text-decoration:none;" href="/admin-blood"><i class="fas fa-hand-holding-water"></i>{% trans "Blood Stock" %}</a></li>
+            <li><a style="text-decoration:none;" href="{% url 'admin-dashboard' %}"><i class="fas fa-sync-alt"></i>{% trans "Requests Dashboard" %}</a></li>
+            <li><a style="text-decoration:none;" href="/admin-user-management"><i class="fas fa-users"></i>{% trans "User Management" %}</a></li>
+            <li><a style="text-decoration:none;" href="/admin-donor-eligibility"><i class="fas fa-heartbeat"></i>{% trans "Donor Eligibility" %}</a></li>
+            <li><a style="text-decoration:none;" href="{% url 'admin-blood' %}"><i class="fas fa-hand-holding-water"></i>{% trans "Blood Stock" %}</a></li>
         </ul>
     </div>
 

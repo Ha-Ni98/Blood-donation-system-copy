@@ -1,6 +1,7 @@
 {% load i18n %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
 
     <style>
     .row{
@@ -153,6 +155,7 @@ body{
     </style>
 </head>
 <body>
+{% include "blood/toast.html" %}
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger">
         <a style="color:white;" class="navbar-brand" href="/">
@@ -162,6 +165,16 @@ body{
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white position-relative" href="/donor/notifications">
+                        <i class="fas fa-bell"></i>
+                        {% if unread_notifications_count > 0 %}
+                            <span class="badge badge-warning position-absolute" style="top:0; right:0; transform: translate(25%, -25%); font-size: 0.65em;">
+                                {{ unread_notifications_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" style="color: white;" href="/logout">
                         {% trans "Logout" %} &nbsp; <i class="fas fa-sign-out-alt"></i>
@@ -177,10 +190,9 @@ body{
 
         <ul>
             <li><a style="text-decoration:none;" href="/"><i class="fas fa-home"></i> {% trans "Home" %}</a></li>
-            <li><a style="text-decoration:none;" href="/donor/donate-blood"><i class="fas fa-hand-holding-medical"></i> {% trans "Donate Blood" %}</a></li>
+            <li><a style="text-decoration:none;" href="/donor/submit-donation"><i class="fas fa-hand-holding-medical"></i> {% trans "Submit Donation" %}</a></li>
             <li><a style="text-decoration:none;" href="/donor/donation-history"><i class="fas fa-history"></i> {% trans "Donation History" %}</a></li>
-            <li><a style="text-decoration:none;" href="/donor/make-request"><i class="fas fa-sync-alt"></i> {% trans "Blood Request" %}</a></li>
-            <li><a style="text-decoration:none;" href="/donor/request-history"><i class="fas fa-history"></i> {% trans "Request History" %}</a></li>
+            <li><a style="text-decoration:none;" href="/donor/notifications"><i class="fas fa-bell"></i> {% trans "Notifications" %}</a></li>
         </ul>
 
     </div>

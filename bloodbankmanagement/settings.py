@@ -58,6 +58,11 @@ MIDDLEWARE = [
 CSRF_COOKIE_SECURE=False
 ROOT_URLCONF = 'bloodbankmanagement.urls'
 
+AUTHENTICATION_BACKENDS = [
+    'blood.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -69,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blood.context_processors.unread_notifications',
             ],
         },
     },
