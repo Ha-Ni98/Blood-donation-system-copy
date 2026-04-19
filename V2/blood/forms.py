@@ -2,14 +2,8 @@ from django import forms
 from . import models
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-
-
-class BloodForm(forms.ModelForm):
-    class Meta:
-        model=models.Stock
-        fields=['bloodgroup','unit']
-
-# RequestForm removed — legacy BloodRequest fields no longer exist.
+from django.utils.translation import gettext_lazy as _
+from .validators import validate_nin, validate_phone_number
 
 class BloodRequestForm(forms.ModelForm):
     # Confirmation checkbox — not a model field, required by Spec §4.1
@@ -50,53 +44,80 @@ class BloodRequestForm(forms.ModelForm):
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].label = 'Email'
+        self.fields['username'].label = _('Email')
 
-class SignupUserForm(forms.ModelForm):
-    username = forms.EmailField(
-        label='Email',
-        error_messages={
-            'invalid': 'Enter a valid email address (e.g. user@domain.com).',
-        }
+
+class RegisterStep1Form(forms.Form):
+    email = forms.EmailField(
+        label=_('Email'),
+        error_messages={'invalid': _('Enter a valid email address.')}
     )
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(), label=_('Password'))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), label=_('Confirm Password'))
+    first_name = forms.CharField(max_length=100, label=_('First Name'))
+    last_name = forms.CharField(max_length=100, label=_('Last Name'))
+    phone_number = forms.CharField(max_length=20, label=_('Phone Number'), validators=[validate_phone_number])
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label=_('Date of Birth'))
+    gender = forms.ChoiceField(
+        choices=[('', '---------'), ('male', _('Male')), ('female', _('Female'))],
+        label=_('Gender')
+    )
+    nin = forms.CharField(max_length=18, label=_('National Identity Number (NIN)'), validators=[validate_nin])
+    wilaya = forms.ModelChoiceField(queryset=models.Wilaya.objects.all(), label=_('Wilaya'))
+    commune = forms.ModelChoiceField(queryset=models.Commune.objects.all(), label=_('Commune'))
 
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].label = 'Email'
-
-    def clean_username(self):
-        email = self.cleaned_data.get('username')
-        if email and User.objects.filter(username=email).exists():
-            raise forms.ValidationError(
-                'A user with this email already exists.'
-            )
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError(_('A user with this email already exists.'))
         return email
+
+    def clean_nin(self):
+        nin = self.cleaned_data.get('nin')
+        if models.AppUser.objects.filter(nin=nin).exists():
+            raise forms.ValidationError(_('This NIN is already registered.'))
+        return nin
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        confirm_password = cleaned_data.get("confirm_password")
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        if password and confirm_password and password != confirm_password:
+            self.add_error('confirm_password', _('Password and Confirm Password do not match.'))
+        return cleaned_data
 
-        if password != confirm_password:
-            raise forms.ValidationError(
-                "Password and Confirm Password does not match"
-            )
 
-class SignupAppUserForm(forms.ModelForm):
-    terms = forms.BooleanField(required=True, label="I agree to the terms and conditions")
+class RegisterStep2Form(forms.Form):
+    blood_type = forms.ModelChoiceField(queryset=models.BloodType.objects.all(), label=_('Blood Type'))
+    donated_before = forms.BooleanField(required=False, label=_('Have you donated blood before?'))
+    last_donation_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False,
+        label=_('Last Donation Date')
+    )
+    received_transfusion = forms.BooleanField(required=False, label=_('Have you received a blood transfusion?'))
+    last_transfusion_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False,
+        label=_('Last Transfusion Date')
+    )
 
-    class Meta:
-        model = models.AppUser
-        fields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'nin', 'blood_type', 'blood_sign', 'wilaya', 'commune']
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-        }
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('donated_before') and not cleaned_data.get('last_donation_date'):
+            self.add_error('last_donation_date', _('Please provide the date of your last donation.'))
+        if cleaned_data.get('received_transfusion') and not cleaned_data.get('last_transfusion_date'):
+            self.add_error('last_transfusion_date', _('Please provide the date of your last transfusion.'))
+        return cleaned_data
+
+
+class RegisterStep3Form(forms.Form):
+    profil_type = forms.ChoiceField(
+        choices=[('Patient', _('Patient')), ('Donor', _('Donor'))],
+        widget=forms.RadioSelect,
+        label=_('Profile Type')
+    )
+
 
 class PatientProfileForm(forms.ModelForm):
     class Meta:

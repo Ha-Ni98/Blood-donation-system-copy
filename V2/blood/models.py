@@ -6,6 +6,7 @@ from .validators import validate_nin, validate_phone_number
 
 
 # --- Shared choice constants ---
+# Used by BloodRequest only. AppUser uses BloodType FK.
 BLOOD_TYPE_CHOICES = [
     ('A', 'A'),
     ('B', 'B'),
@@ -35,23 +36,58 @@ class Commune(models.Model):
         return f"{self.name} ({self.wilaya.name})"
 
 
+class BloodType(models.Model):
+    BLOOD_TYPE_CHOICES = [
+        ('A', 'A'),
+        ('B', 'B'),
+        ('AB', 'AB'),
+        ('O', 'O'),
+    ]
+    BLOOD_SIGN_CHOICES = [
+        ('+', '+'),
+        ('-', '-'),
+    ]
+    blood_type = models.CharField(max_length=2, choices=BLOOD_TYPE_CHOICES)
+    blood_sign = models.CharField(max_length=1, choices=BLOOD_SIGN_CHOICES)
+
+    class Meta:
+        unique_together = ('blood_type', 'blood_sign')
+
+    def __str__(self):
+        return f"{self.blood_type}{self.blood_sign}"
+
+
+class BloodStock(models.Model):
+    blood_type = models.ForeignKey(BloodType, on_delete=models.PROTECT)
+    units_available = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.blood_type}: {self.units_available} units"
+
+
 class AppUser(models.Model):
     GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
+        ('male', 'Male'),
+        ('female', 'Female'),
     ]
-    BLOOD_TYPE_CHOICES = BLOOD_TYPE_CHOICES
-    BLOOD_SIGN_CHOICES = BLOOD_SIGN_CHOICES
+    PROFIL_TYPE_CHOICES = [
+        ('Patient', 'Patient'),
+        ('Donor', 'Donor'),
+    ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='app_user')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     date_of_birth = models.DateField()
     phone_number = models.CharField(max_length=20, validators=[validate_phone_number])
     nin = models.CharField(max_length=18, unique=True, validators=[validate_nin])
-    blood_type = models.CharField(max_length=2, choices=BLOOD_TYPE_CHOICES)
-    blood_sign = models.CharField(max_length=1, choices=BLOOD_SIGN_CHOICES)
+    blood_type = models.ForeignKey(BloodType, on_delete=models.PROTECT)
+    profil_type = models.CharField(max_length=10, choices=PROFIL_TYPE_CHOICES)
+    last_donation_date = models.DateField(blank=True, null=True)
+    last_transfusion_date = models.DateField(blank=True, null=True)
     wilaya = models.ForeignKey(Wilaya, on_delete=models.PROTECT)
     commune = models.ForeignKey(Commune, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -66,7 +102,7 @@ class AppUser(models.Model):
     @property
     def get_full_blood_group(self):
         """Returns the full blood group string (e.g., A+)"""
-        return f"{self.blood_type}{self.blood_sign}"
+        return str(self.blood_type)
 
     @property
     def masked_nin(self):
@@ -112,14 +148,6 @@ class DonorProfile(models.Model):
 
     def __str__(self):
         return f"Donor Profile: {self.app_user}"
-
-
-class Stock(models.Model):
-    bloodgroup = models.CharField(max_length=10)
-    unit = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return self.bloodgroup
 
 
 # --- BloodRequest status constants ---

@@ -1,84 +1,40 @@
-from django.shortcuts import render,redirect,reverse
-from . import forms,models
-from django.db.models import Sum,Q
-from django.contrib.auth.models import Group
+from django.shortcuts import render, redirect, reverse
+from . import forms, models
+from django.db.models import Sum, Q
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .decorators import admin_required, terminal_status_guard
 from django.conf import settings
 from datetime import date, timedelta
 from django.core.mail import send_mail
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
-from . import forms, models
+from django.utils.translation import gettext_lazy as _
 
 def home_view(request):
-    x=models.Stock.objects.all()
-    print(x)
-    if len(x)==0:
-        blood1=models.Stock()
-        blood1.bloodgroup="A+"
-        blood1.save()
-
-        blood2=models.Stock()
-        blood2.bloodgroup="A-"
-        blood2.save()
-
-        blood3=models.Stock()
-        blood3.bloodgroup="B+"
-        blood3.save()        
-
-        blood4=models.Stock()
-        blood4.bloodgroup="B-"
-        blood4.save()
-
-        blood5=models.Stock()
-        blood5.bloodgroup="AB+"
-        blood5.save()
-
-        blood6=models.Stock()
-        blood6.bloodgroup="AB-"
-        blood6.save()
-
-        blood7=models.Stock()
-        blood7.bloodgroup="O+"
-        blood7.save()
-
-        blood8=models.Stock()
-        blood8.bloodgroup="O-"
-        blood8.save()
-
     if request.user.is_authenticated:
-        return HttpResponseRedirect('afterlogin')  
-    return render(request,'blood/index.html')
+        return HttpResponseRedirect('afterlogin')
+    return render(request, 'blood/index.html')
 
 def afterlogin_view(request):
     if hasattr(request.user, 'app_user'):
         app_user = request.user.app_user
-        latest_donor = app_user.donor_profiles.order_by('-created_at').first()
-        latest_patient = app_user.patient_profiles.order_by('-created_at').first()
-        
-        if latest_donor and latest_patient:
-            if latest_donor.created_at >= latest_patient.created_at:
-                return redirect('donor-dashboard')
-            else:
-                return redirect('patient-dashboard')
-        elif latest_donor:
+        if app_user.profil_type == 'Donor':
             return redirect('donor-dashboard')
-        elif latest_patient:
+        elif app_user.profil_type == 'Patient':
             return redirect('patient-dashboard')
         else:
-            return redirect('admin-dashboard')
+            return redirect('home')
     else:
         return redirect('admin-dashboard')
 
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('afterlogin')
-        
+
     if request.method == 'POST':
         form = forms.LoginForm(request, data=request.POST)
         if form.is_valid():
@@ -87,12 +43,12 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Welcome back!')
+                messages.success(request, _('Welcome back!'))
                 return redirect('afterlogin')
             else:
-                messages.error(request, 'Invalid email or password.')
+                messages.error(request, _('Invalid email or password.'))
         else:
-            messages.error(request, 'Invalid email or password.')
+            messages.error(request, _('Invalid email or password.'))
     else:
         form = forms.LoginForm()
     return render(request, 'blood/login.html', {'form': form})
@@ -101,176 +57,106 @@ def signup_view(request):
     if request.user.is_authenticated:
         return redirect('afterlogin')
 
-    user_form = forms.SignupUserForm()
-    app_user_form = forms.SignupAppUserForm()
+    # Handle "go back" navigation (GET with go_to_step)
+    go_to_step = request.GET.get('go_to_step')
+    if go_to_step and request.method == 'GET':
+        step = int(go_to_step)
+        if step == 1 and 'reg_step1' in request.session:
+            data = request.session['reg_step1'].copy()
+            data['wilaya'] = data.get('wilaya_id')
+            data['commune'] = data.get('commune_id')
+            form1 = forms.RegisterStep1Form(initial=data)
+            return render(request, 'blood/signup.html', {'step': 1, 'form1': form1})
+        elif step == 2 and 'reg_step2' in request.session:
+            data = request.session['reg_step2'].copy()
+            data['blood_type'] = data.get('blood_type_id')
+            # Deserialize date strings for form initial data
+            if data.get('last_donation_date'):
+                data['last_donation_date'] = date.fromisoformat(data['last_donation_date'])
+            if data.get('last_transfusion_date'):
+                data['last_transfusion_date'] = date.fromisoformat(data['last_transfusion_date'])
+            form2 = forms.RegisterStep2Form(initial=data)
+            return render(request, 'blood/signup.html', {'step': 2, 'form2': form2})
 
     if request.method == 'POST':
-        user_form = forms.SignupUserForm(request.POST)
-        app_user_form = forms.SignupAppUserForm(request.POST)
+        step = int(request.POST.get('step', 1))
 
-        if user_form.is_valid() and app_user_form.is_valid():
-            request.session['pending_registration'] = {
-                'user': user_form.cleaned_data,
-                'app_user': app_user_form.cleaned_data
-            }
-            # Add wilaya/commune IDs for reconstruction logic
-            request.session['pending_registration']['app_user']['wilaya_id'] = app_user_form.cleaned_data['wilaya'].id
-            request.session['pending_registration']['app_user']['commune_id'] = app_user_form.cleaned_data['commune'].id
+        if step == 1:
+            form1 = forms.RegisterStep1Form(request.POST)
+            if form1.is_valid():
+                data = form1.cleaned_data.copy()
+                data['date_of_birth'] = data['date_of_birth'].isoformat()
+                data['wilaya_id'] = data['wilaya'].id
+                data['commune_id'] = data['commune'].id
+                del data['wilaya']
+                del data['commune']
+                request.session['reg_step1'] = data
+                return render(request, 'blood/signup.html', {'step': 2, 'form2': forms.RegisterStep2Form()})
+            return render(request, 'blood/signup.html', {'step': 1, 'form1': form1})
 
-            # Serialize date_of_birth (date object is not JSON-serializable)
-            dob = request.session['pending_registration']['app_user'].get('date_of_birth')
-            if dob:
-                request.session['pending_registration']['app_user']['date_of_birth'] = dob.isoformat()
+        elif step == 2:
+            form2 = forms.RegisterStep2Form(request.POST)
+            if form2.is_valid():
+                data = form2.cleaned_data.copy()
+                data['blood_type_id'] = data['blood_type'].id
+                del data['blood_type']
+                # Serialize date objects for session storage
+                if data.get('last_donation_date'):
+                    data['last_donation_date'] = data['last_donation_date'].isoformat()
+                if data.get('last_transfusion_date'):
+                    data['last_transfusion_date'] = data['last_transfusion_date'].isoformat()
+                request.session['reg_step2'] = data
+                return render(request, 'blood/signup.html', {'step': 3, 'form3': forms.RegisterStep3Form()})
+            return render(request, 'blood/signup.html', {'step': 2, 'form2': form2})
 
-            # Remove unserializable Model instances
-            del request.session['pending_registration']['app_user']['wilaya']
-            del request.session['pending_registration']['app_user']['commune']
+        elif step == 3:
+            form3 = forms.RegisterStep3Form(request.POST)
+            if form3.is_valid():
+                step1 = request.session.get('reg_step1')
+                step2 = request.session.get('reg_step2')
+                if not step1 or not step2:
+                    return redirect('signup')
+                try:
+                    with transaction.atomic():
+                        user = User.objects.create_user(
+                            username=step1['email'],
+                            email=step1['email'],
+                            password=step1['password']
+                        )
+                        models.AppUser.objects.create(
+                            user=user,
+                            first_name=step1['first_name'],
+                            last_name=step1['last_name'],
+                            gender=step1['gender'],
+                            date_of_birth=date.fromisoformat(step1['date_of_birth']),
+                            phone_number=step1['phone_number'],
+                            nin=step1['nin'],
+                            blood_type=models.BloodType.objects.get(id=step2['blood_type_id']),
+                            last_donation_date=step2.get('last_donation_date') or None,
+                            last_transfusion_date=step2.get('last_transfusion_date') or None,
+                            profil_type=form3.cleaned_data['profil_type'],
+                            wilaya=models.Wilaya.objects.get(id=step1['wilaya_id']),
+                            commune=models.Commune.objects.get(id=step1['commune_id']),
+                        )
+                    request.session.pop('reg_step1', None)
+                    request.session.pop('reg_step2', None)
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    messages.success(request, _('Account created successfully.'))
+                    return redirect('afterlogin')
+                except Exception:
+                    messages.error(request, _('Registration failed. Please try again.'))
+                    return redirect('signup')
+            return render(request, 'blood/signup.html', {'step': 3, 'form3': form3})
+    else:
+        form1 = forms.RegisterStep1Form()
 
-            return redirect('choose-profile')
+    return render(request, 'blood/signup.html', {'step': 1, 'form1': form1})
 
-    return render(request, 'blood/signup.html', {
-        'user_form': user_form,
-        'app_user_form': app_user_form
-    })
 
 def communes_api(request):
     wilaya_id = request.GET.get('wilaya_id')
     communes = models.Commune.objects.filter(wilaya_id=wilaya_id).order_by('name')
     return JsonResponse(list(communes.values('id', 'name')), safe=False)
-
-def choose_profile_view(request):
-    # If not logged in and no pending registration, redirect to home
-    if not request.user.is_authenticated and 'pending_registration' not in request.session:
-        return redirect('home')
-    return render(request, 'blood/choose_profile.html')
-
-def create_patient_profile_view(request):
-    if request.method == 'POST':
-        form = forms.PatientProfileForm(request.POST)
-        if form.is_valid():
-            if 'pending_registration' in request.session:
-                # Flow: New User Registration
-                session_data = request.session['pending_registration']
-                
-                try:
-                    with transaction.atomic():
-                        # Create User
-                        user = User.objects.create_user(
-                            username=session_data['user']['username'],
-                            password=session_data['user']['password']
-                        )
-                        
-                        # Reconstruct Wilaya and Commune
-                        wilaya = models.Wilaya.objects.get(id=session_data['app_user']['wilaya_id'])
-                        commune = models.Commune.objects.get(id=session_data['app_user']['commune_id'])
-                        
-                        # Create AppUser
-                        app_user_data = session_data['app_user'].copy()
-                        del app_user_data['wilaya_id']
-                        del app_user_data['commune_id']
-                        app_user_data.pop('terms', None)
-
-                        # Deserialize date_of_birth from ISO string
-                        if isinstance(app_user_data.get('date_of_birth'), str):
-                            app_user_data['date_of_birth'] = date.fromisoformat(app_user_data['date_of_birth'])
-
-                        app_user = models.AppUser.objects.create(
-                            user=user,
-                            wilaya=wilaya,
-                            commune=commune,
-                            **app_user_data
-                        )
-                        
-                        # Create PatientProfile
-                        patient_profile = form.save(commit=False)
-                        patient_profile.app_user = app_user
-                        patient_profile.save()
-                        
-                        # Set Groups
-                        my_patient_group = Group.objects.get_or_create(name='PATIENT')
-                        my_patient_group[0].user_set.add(user)
-                        
-                    # Clean session and login
-                    if 'pending_registration' in request.session:
-                        del request.session['pending_registration']
-                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                    messages.success(request, 'Account created successfully.')
-                    messages.success(request, 'Patient Profile created successfully.')
-                    return redirect('patient-dashboard')
-                        
-                except Exception as e:
-                    messages.error(request, f'An error occurred: {str(e)}')
-            else:
-                messages.error(request, 'No pending registration found.')
-                return redirect('signup')
-    else:
-        form = forms.PatientProfileForm()
-        
-    return render(request, 'blood/create_patient_profile.html', {'form': form})
-
-def create_donor_profile_view(request):
-    if request.method == 'POST':
-        form = forms.DonorProfileForm(request.POST)
-        if form.is_valid():
-            if 'pending_registration' in request.session:
-                # Flow: New User Registration
-                session_data = request.session['pending_registration']
-                
-                try:
-                    with transaction.atomic():
-                        # Create User
-                        user = User.objects.create_user(
-                            username=session_data['user']['username'],
-                            password=session_data['user']['password']
-                        )
-                        
-                        # Reconstruct Wilaya and Commune
-                        wilaya = models.Wilaya.objects.get(id=session_data['app_user']['wilaya_id'])
-                        commune = models.Commune.objects.get(id=session_data['app_user']['commune_id'])
-                        
-                        # Create AppUser
-                        app_user_data = session_data['app_user'].copy()
-                        del app_user_data['wilaya_id']
-                        del app_user_data['commune_id']
-                        app_user_data.pop('terms', None)
-
-                        # Deserialize date_of_birth from ISO string
-                        if isinstance(app_user_data.get('date_of_birth'), str):
-                            app_user_data['date_of_birth'] = date.fromisoformat(app_user_data['date_of_birth'])
-
-                        app_user = models.AppUser.objects.create(
-                            user=user,
-                            wilaya=wilaya,
-                            commune=commune,
-                            **app_user_data
-                        )
-                        
-                        # Create DonorProfile
-                        donor_profile = form.save(commit=False)
-                        donor_profile.app_user = app_user
-                        donor_profile.save()
-                        
-                        # Set Groups
-                        my_donor_group = Group.objects.get_or_create(name='DONOR')
-                        my_donor_group[0].user_set.add(user)
-                        
-                    # Clean session and login
-                    if 'pending_registration' in request.session:
-                        del request.session['pending_registration']
-                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                    messages.success(request, 'Account created successfully.')
-                    messages.success(request, 'Donor Profile created successfully.')
-                    return redirect('donor-dashboard')
-                        
-                except Exception as e:
-                    messages.error(request, f'An error occurred: {str(e)}')
-            else:
-                messages.error(request, 'No pending registration found.')
-                return redirect('signup')
-    else:
-        form = forms.DonorProfileForm()
-        
-    return render(request, 'blood/create_donor_profile.html', {'form': form})
 
 @login_required(login_url='adminlogin')
 def create_donor_profile_from_patient_view(request):

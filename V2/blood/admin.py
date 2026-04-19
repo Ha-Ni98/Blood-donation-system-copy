@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Wilaya, Commune, AppUser, PatientProfile, DonorProfile,
+    Wilaya, Commune, BloodType, BloodStock, AppUser, PatientProfile, DonorProfile,
     BloodRequest, Notification, TransfusionSafetyPeriod, DonationRequest,
 )
 
@@ -20,11 +20,21 @@ class CommuneAdmin(admin.ModelAdmin):
     list_filter = ('wilaya',)
 
 
+@admin.register(BloodType)
+class BloodTypeAdmin(admin.ModelAdmin):
+    list_display = ('blood_type', 'blood_sign')
+
+
+@admin.register(BloodStock)
+class BloodStockAdmin(admin.ModelAdmin):
+    list_display = ('blood_type', 'units_available', 'updated_at')
+
+
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'masked_nin', 'blood_type', 'blood_sign')
+    list_display = ('user', 'first_name', 'last_name', 'masked_nin', 'blood_type', 'profil_type')
     search_fields = ('user__email', 'first_name', 'last_name', 'phone_number')
-    list_filter = ('blood_type', 'blood_sign', 'gender', 'wilaya')
+    list_filter = ('blood_type', 'profil_type', 'gender', 'wilaya')
 
     exclude = ('nin',)
     readonly_fields = ('masked_nin', 'created_at')
