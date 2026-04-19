@@ -1,0 +1,84 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+{% load i18n %}
+
+<br><br>
+<div class="container">
+    <h4 class="mb-3">{% trans "Blood Request History" %}</h4>
+
+    <div class="table-responsive">
+        <table class="table table-light table-hover table-bordered table-striped">
+            <thead class="bg-danger text-white">
+                <tr>
+                    <th>{% trans "Patient" %}</th>
+                    <th>{% trans "Blood Type" %}</th>
+                    <th>{% trans "Units" %}</th>
+                    <th>{% trans "Urgency" %}</th>
+                    <th>{% trans "Required Date" %}</th>
+                    <th>{% trans "Reason" %}</th>
+                    <th>{% trans "Submitted" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Action" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in requests %}
+                <tr>
+                    <td>{{ t.patient.app_user.first_name }} {{ t.patient.app_user.last_name }}</td>
+                    <td><strong>{{ t.blood_type }}{{ t.blood_sign }}</strong></td>
+                    <td>{{ t.units_needed }}</td>
+                    <td>
+                        {% if t.urgency == 'critical' %}
+                            <span class="badge badge-danger">{% trans "Critical" %}</span>
+                        {% elif t.urgency == 'urgent' %}
+                            <span class="badge badge-warning">{% trans "Urgent" %}</span>
+                        {% else %}
+                            <span class="badge badge-info">{% trans "Normal" %}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.required_date }}</td>
+                    <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+                        title="{{ t.reason }}">{{ t.reason }}</td>
+                    <td>{{ t.created_at|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if t.status == 'approved' %}
+                            <span class="badge badge-success">{% trans "Approved" %}</span>
+                        {% elif t.status == 'completed' %}
+                            <span class="badge badge-primary">{% trans "Completed" %}</span>
+                        {% elif t.status == 'rejected' %}
+                            <span class="badge badge-danger">{% trans "Rejected" %}</span>
+                        {% elif t.status == 'cancelled_by_user' %}
+                            <span class="badge badge-secondary">{% trans "Cancelled by Patient" %}</span>
+                        {% elif t.status == 'cancelled_by_admin' %}
+                            <span class="badge badge-dark">{% trans "Cancelled by Admin" %}</span>
+                        {% elif t.status == 'expired' %}
+                            <span class="badge badge-light border">{% trans "Expired" %}</span>
+                        {% else %}
+                            <span class="badge badge-warning">{{ t.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td style="white-space:nowrap;">
+                        {% if t.status == 'approved' %}
+                            <a href="{% url 'complete-blood-request' t.id %}"
+                               class="btn btn-primary btn-sm badge-pill"
+                               onclick="return confirm('Mark this request as completed?')">
+                                {% trans "Complete" %}
+                            </a>
+                            <a href="{% url 'admin-cancel-blood-request' t.id %}"
+                               class="btn btn-secondary btn-sm badge-pill"
+                               onclick="return confirm('Cancel this request?')">
+                                {% trans "Cancel" %}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

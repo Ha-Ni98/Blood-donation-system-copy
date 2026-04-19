@@ -1,0 +1,77 @@
+{% extends 'blood/adminbase.html' %}
+{% block content %}
+{% load i18n %}
+
+<br><br>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>{% trans "Pending Blood Requests" %}</h4>
+    </div>
+
+    {% if requests %}
+    <div class="table-responsive">
+        <table class="table table-light table-hover table-bordered table-striped">
+            <thead class="bg-danger text-white">
+                <tr>
+                    <th>{% trans "Patient" %}</th>
+                    <th>{% trans "Blood Type" %}</th>
+                    <th>{% trans "Units" %}</th>
+                    <th>{% trans "Urgency" %}</th>
+                    <th>{% trans "Required Date" %}</th>
+                    <th>{% trans "Reason" %}</th>
+                    <th>{% trans "Submitted" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th class="text-right">{% trans "Action" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in requests %}
+                <tr>
+                    <td>{{ t.patient.app_user.first_name }} {{ t.patient.app_user.last_name }}</td>
+                    <td><strong>{{ t.blood_type }}{{ t.blood_sign }}</strong></td>
+                    <td>{{ t.units_needed }}</td>
+                    <td>
+                        {% if t.urgency == 'critical' %}
+                            <span class="badge badge-danger">{% trans "Critical" %}</span>
+                        {% elif t.urgency == 'urgent' %}
+                            <span class="badge badge-warning">{% trans "Urgent" %}</span>
+                        {% else %}
+                            <span class="badge badge-info">{% trans "Normal" %}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.required_date }}</td>
+                    <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+                        title="{{ t.reason }}">{{ t.reason }}</td>
+                    <td>{{ t.created_at|date:"d/m/Y" }}</td>
+                    <td><span class="badge badge-warning">{% trans "Pending" %}</span></td>
+                    <td class="text-right" style="white-space:nowrap;">
+                        <a href="{% url 'update-approve-status' t.id %}"
+                           class="btn btn-success btn-sm badge-pill" style="width:90px;">
+                            {% trans "Approve" %}
+                        </a>
+                        <a href="{% url 'update-reject-status' t.id %}"
+                           class="btn btn-danger btn-sm badge-pill" style="width:80px;">
+                            {% trans "Reject" %}
+                        </a>
+                        <a href="{% url 'admin-cancel-blood-request' t.id %}"
+                           class="btn btn-secondary btn-sm badge-pill"
+                           onclick="return confirm('Cancel this request?')">
+                            {% trans "Cancel" %}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="text-center text-muted py-4">
+        <i class="fas fa-inbox fa-3x mb-2"></i>
+        <p>{% trans "No pending blood requests." %}</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

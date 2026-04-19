@@ -1,0 +1,53 @@
+{% load i18n %}
+{# Cancel Request Confirmation Modal — Bootstrap 4 #}
+{# Included in my_request.html via {% include %} #}
+
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog"
+     aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="cancelModalLabel">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    {% trans "Cancel Blood Request" %}
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {% trans "Are you sure you want to cancel your blood request for" %}
+                    <strong id="modalBloodType"></strong>?
+                </p>
+                <p class="text-muted small">
+                    {% trans "This action cannot be undone. If the request was already approved and linked to a donor, they will be notified." %}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    {% trans "Go Back" %}
+                </button>
+                <form id="cancelForm" method="POST" action="" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        {% trans "Yes, Cancel Request" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Populate modal with request-specific data when opened
+    $('#cancelModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var requestId = button.data('request-id');
+        var bloodType = button.data('blood-type');
+
+        var modal = $(this);
+        modal.find('#modalBloodType').text(bloodType);
+        modal.find('#cancelForm').attr('action', '/patient/cancel-request/' + requestId);
+    });
+</script>

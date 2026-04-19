@@ -1,0 +1,208 @@
+{% extends 'donor/donorbase.html' %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+    <style>
+        .radio-inline { margin-right: 15px; }
+        .radio-inline input { margin-right: 5px; }
+    </style>
+</head>
+
+<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+    <div class="wrapper wrapper--w790">
+        <div style="margin-left: 70px;" class="card card-5">
+            <div class="card-heading">
+                <h2 class="title">{% trans "Submit Donation Request" %}</h2>
+            </div>
+
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+
+                    {# ── Read-only auto-filled donor info ── #}
+                    <h5 class="mb-3" style="color:#555;">{% trans "Your Information" %}</h5>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Full Name" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ full_name }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Blood Group" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ blood_group }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Date of Birth & Age" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ date_of_birth }} - Age: {{ age }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name">{% trans "Last Donation Date" %}</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input type="text" class="input--style-5" value="{{ last_donation_date|default:'--' }}" readonly disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Health Screening ── #}
+                    <h5 class="mt-4 mb-3" style="color:#555;">{% trans "Health Screening" %}</h5>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.donated_last_3_months.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.donated_last_3_months %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.donated_last_3_months.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.transfusion_last_6_months.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.transfusion_last_6_months %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.transfusion_last_6_months.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.surgery_last_6_months.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.surgery_last_6_months %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.surgery_last_6_months.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.has_fever.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.has_fever %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.has_fever.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.on_medication.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.on_medication %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.on_medication.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.has_anemia.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.has_anemia %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.has_anemia.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if is_female %}
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.is_pregnant.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.is_pregnant %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.is_pregnant.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.is_breastfeeding.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {% for radio in form.is_breastfeeding %}
+                                <label class="radio-inline">{{ radio.tag }} {{ radio.choice_label }}</label>
+                                {% endfor %}
+                                <div class="text-danger mt-1 w-100">{{ form.is_breastfeeding.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# ── Confirmation checkboxes ── #}
+                    <div class="form-row p-t-20 mt-4">
+                        <div class="input-group">
+                            <label class="checkbox-container m-b-20 w-100">
+                                {% render_field form.confirmed_accurate %}
+                                <span class="checkmark"></span>
+                                {{ form.confirmed_accurate.label }}
+                            </label>
+                            <label class="checkbox-container m-b-20 w-100">
+                                {% render_field form.confirmed_understands %}
+                                <span class="checkmark"></span>
+                                {{ form.confirmed_understands.label }}
+                            </label>
+                            <div class="text-danger w-100">
+                                {{ form.confirmed_accurate.errors|striptags }}<br>
+                                {{ form.confirmed_understands.errors|striptags }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <button class="btn btn--radius-2 btn-danger" type="submit">
+                            {% trans "Submit Donation Request" %}
+                        </button>
+                    </div>
+
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

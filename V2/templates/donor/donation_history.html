@@ -1,0 +1,98 @@
+{% extends 'donor/donorbase.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<br><br>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>{% trans "Donation History" %}</h4>
+        <a href="/donor/submit-donation" class="btn btn-danger btn-sm" style="border-radius:20px;">
+            <i class="fas fa-plus"></i> {% trans "Submit Donation" %}
+        </a>
+    </div>
+
+    {% if donations %}
+    <div class="table-responsive">
+        <table class="table table-light table-hover table-bordered table-striped">
+            <thead class="bg-danger text-white">
+                <tr>
+                    <th>{% trans "Blood Group" %}</th>
+                    <th>{% trans "Submitted" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in donations %}
+                <tr>
+                    <td><strong>{{ app_user.blood_type }}{{ app_user.blood_sign }}</strong></td>
+                    <td>{{ req.created_at|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if req.status == 'pending' %}
+                            <span class="badge badge-warning">{% trans "Pending" %}</span>
+                        {% elif req.status == 'approved' %}
+                            <span class="badge badge-success">{% trans "Approved" %}</span>
+                        {% elif req.status == 'completed' %}
+                            <span class="badge badge-primary">{% trans "Completed" %}</span>
+                        {% elif req.status == 'rejected' %}
+                            <span class="badge badge-danger">{% trans "Rejected" %}</span>
+                        {% elif req.status == 'cancelled_by_user' %}
+                            <span class="badge badge-secondary">{% trans "Cancelled" %}</span>
+                        {% elif req.status == 'cancelled_by_admin' %}
+                            <span class="badge badge-dark">{% trans "Cancelled by Admin" %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if req.status == 'pending' %}
+                            {# Trigger cancel confirmation modal #}
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#cancelDonationModal{{ req.id }}">
+                                {% trans "Cancel" %}
+                            </button>
+
+                            {# ── Cancel Donation Modal ── #}
+                            <div class="modal fade" id="cancelDonationModal{{ req.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger text-white">
+                                            <h5 class="modal-title">{% trans "Cancel Donation Request" %}</h5>
+                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <p>{% trans "Are you sure you want to cancel your donation request? This action cannot be undone." %}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
+                                            <form method="POST" action="{% url 'cancel-donation' req.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">{% trans "Yes, Cancel Request" %}</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-5">
+        <i class="fas fa-hand-holding-heart fa-3x mb-3"></i>
+        <p>{% trans "You have no donation history." %}</p>
+        <a href="/donor/submit-donation" class="btn btn-danger">{% trans "Submit your first donation" %}</a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock content %}
