@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from blood import models as bmodels
 from blood import forms as bforms
+from blood import services
 from blood.models import ACTIVE_STATUSES
 
 # Patient signup has been moved to the unified signup flow in blood/views.py
@@ -155,28 +156,36 @@ def cancel_request_view(request, pk):
         messages.error(request, _('This request cannot be cancelled.'))
         return redirect('my-request')
 
-    # Cascade: if Approved and linked DonationRequest exists — Spec §4.4
-    if blood_request.status == 'approved':
+    # Always restore stock for approved requests before cancelling
+    if blood_request.status == bmodels.STATUS_APPROVED:
+        services.cancel_blood_request_by_user(blood_request)
+
+        # Cascade: cancel linked DonationRequest if it exists and is active
         try:
             donation_req = blood_request.donation_requests.first()
-            if donation_req:
-                donation_req.status = 'cancelled_by_admin'
+            if donation_req and donation_req.status in (bmodels.STATUS_APPROVED, bmodels.STATUS_PENDING):
+                donation_req.status = bmodels.STATUS_CANCELLED_BY_USER
                 donation_req.save()
-                # Notify the donor
-                bmodels.Notification.objects.create(
-                    recipient=donation_req.user,
-                    title=_('Donation Request Cancelled'),
-                    message=_(
-                        'The blood request you were matched with has been cancelled by the patient. '
-                        'Your donation request has been cancelled.'
-                    ),
-                )
         except Exception:
             pass  # No linked DonationRequest — nothing to cascade
 
-    blood_request.status = 'cancelled_by_user'
+        bmodels.Notification.objects.create(
+            recipient=blood_request.user,
+            title=_('Blood Request Cancelled'),
+            message=_('Your blood request has been cancelled.'),
+        )
+        messages.success(request, _('Your blood request has been cancelled.'))
+        return redirect('my-request')
+
+    # Pending requests: just set status
+    blood_request.status = bmodels.STATUS_CANCELLED_BY_USER
     blood_request.save()
 
+    bmodels.Notification.objects.create(
+        recipient=blood_request.user,
+        title=_('Blood Request Cancelled'),
+        message=_('Your blood request has been cancelled.'),
+    )
     messages.success(request, _('Your request has been cancelled.'))
     return redirect('my-request')
 

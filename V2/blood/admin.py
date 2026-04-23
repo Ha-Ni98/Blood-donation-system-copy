@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import (
     Wilaya, Commune, BloodType, BloodStock, AppUser,
-    BloodRequest, Notification, DonationRequest,
+    BloodRequest, BloodAttribution, Notification, DonationRequest,
 )
 
 
@@ -46,6 +46,11 @@ class BloodRequestAdmin(admin.ModelAdmin):
     search_fields = ('user__first_name', 'user__last_name', 'user__user__email')
     list_filter = ('status', 'urgency', 'blood_type', 'wilaya')
     readonly_fields = ('created_at', 'updated_at', 'expires_at')
+
+
+@admin.register(BloodAttribution)
+class BloodAttributionAdmin(admin.ModelAdmin):
+    list_display = ('blood_request', 'blood_type', 'units_attributed', 'created_at')
 
 
 @admin.register(Notification)

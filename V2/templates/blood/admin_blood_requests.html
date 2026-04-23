@@ -1,0 +1,367 @@
+{% extends 'blood/adminbase.html' %}
+{% load i18n widget_tweaks %}
+
+{% block content %}
+<br><br>
+<div class="container-fluid px-4">
+    <h3 class="mb-4">{% trans "Blood Requests" %}</h3>
+
+    <!-- Filter Form Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-filter"></i> {% trans "Filter" %}
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row align-items-end">
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Status" %}</label>
+                    {% render_field filter_form.status class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Blood Type" %}</label>
+                    {% render_field filter_form.blood_type class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Urgency" %}</label>
+                    {% render_field filter_form.urgency class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Wilaya" %}</label>
+                    {% render_field filter_form.wilaya class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">{% trans "Commune" %}</label>
+                    {% render_field filter_form.commune class="form-control form-control-sm" %}
+                </div>
+                <div class="col-md-2 mb-3">
+                    <button type="submit" name="btn_filter" class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-search"></i> {% trans "Apply Filters" %}
+                    </button>
+                    <a href="?" class="btn btn-secondary btn-sm w-100 mt-1">{% trans "Reset" %}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-light table-hover table-bordered table-striped">
+            <thead class="bg-danger text-white">
+                <tr>
+                    <th>{% trans "Patient Name" %}</th>
+                    <th>{% trans "Phone" %}</th>
+                    <th>{% trans "Blood Type" %}</th>
+                    <th>{% trans "Units Required" %}</th>
+                    <th>{% trans "Urgency" %}</th>
+                    <th>{% trans "Required Date" %}</th>
+                    <th>{% trans "Reason" %}</th>
+                    <th>{% trans "Wilaya" %}</th>
+                    <th>{% trans "Commune" %}</th>
+                    <th>{% trans "Recent Surgery" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th class="text-right">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in blood_requests %}
+                <tr>
+                    <td>{{ req.user.first_name }} {{ req.user.last_name }}</td>
+                    <td>{{ req.user.phone_number }}</td>
+                    <td><strong>{{ req.blood_type }}</strong></td>
+                    <td>{{ req.units_needed }}</td>
+                    <td>
+                        {% if req.urgency == 'critical' %}
+                            <span class="badge badge-danger">{% trans "Critical" %}</span>
+                        {% elif req.urgency == 'urgent' %}
+                            <span class="badge badge-warning">{% trans "Urgent" %}</span>
+                        {% else %}
+                            <span class="badge badge-info">{% trans "Normal" %}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ req.required_date|date:"d/m/Y" }}</td>
+                    <td>{{ req.reason|truncatechars:40 }}</td>
+                    <td>{{ req.wilaya.name }}</td>
+                    <td>{{ req.commune.name }}</td>
+                    <td>
+                        {% if req.recent_surgery %}
+                            <span class="badge badge-danger">{% trans "Yes" %}</span>
+                        {% else %}
+                            <span class="badge badge-secondary">{% trans "No" %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if req.status == 'pending' %}
+                            <span class="badge badge-warning">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'approved' %}
+                            <span class="badge badge-success">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'completed' %}
+                            <span class="badge badge-primary">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'rejected' %}
+                            <span class="badge badge-danger">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'cancelled_by_user' %}
+                            <span class="badge badge-secondary">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'cancelled_by_admin' %}
+                            <span class="badge badge-dark">{{ req.get_status_display }}</span>
+                        {% elif req.status == 'expired' %}
+                            <span class="badge badge-light border">{{ req.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-right" style="white-space:nowrap;">
+                        {% if req.status in active_statuses %}
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                {% trans "Actions" %}
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if req.status == 'pending' %}
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#approveModal" data-request-id="{{ req.id }}" data-blood-type="{{ req.blood_type }}">{% trans "Approve" %}</a>
+                                    <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#rejectModal" data-request-id="{{ req.id }}">{% trans "Reject" %}</a>
+                                {% elif req.status == 'approved' %}
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#completeModal" data-request-id="{{ req.id }}">{% trans "Complete" %}</a>
+                                    <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#rejectModal" data-request-id="{{ req.id }}">{% trans "Reject" %}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="11">
+                        <div class="alert alert-info py-4 text-center mb-0">
+                            <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
+                            <p class="mb-0">{% trans "No blood requests found." %}</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Approve Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form id="approveForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="approve-request-id" name="request_id">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">{% trans "Approve Blood Request" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="approve-loading" class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                    <div id="approve-content" style="display:none;">
+                        <p>{% trans "Select compatible blood type and units to attribute:" %}</p>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>{% trans "Blood Type" %}</th>
+                                        <th>{% trans "Available Units" %}</th>
+                                        <th>{% trans "Units to Attribute" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="approve-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="approve-error" class="alert alert-danger" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-success">{% trans "Confirm Approval" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Complete Modal -->
+<div class="modal fade" id="completeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form id="completeForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="complete-request-id" name="request_id">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">{% trans "Complete Blood Request" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="complete-loading" class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                    <div id="complete-content" style="display:none;">
+                        <p>{% trans "Edit attributed units:" %}</p>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>{% trans "Blood Type" %}</th>
+                                        <th>{% trans "Attributed Units" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="complete-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="complete-error" class="alert alert-danger" style="display:none;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Confirm Completion" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="rejectForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="reject-request-id" name="request_id">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">{% trans "Reject Blood Request" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "Are you sure you want to reject this blood request?" %}</p>
+                    <div id="reject-error" class="alert alert-danger" style="display:none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-danger">{% trans "Confirm Rejection" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+$.ajaxSetup({ headers: { 'X-CSRFToken': '{{ csrf_token }}' } });
+
+$('#approveModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var requestId = button.data('request-id');
+    $('#approve-request-id').val(requestId);
+    $('#approve-loading').show();
+    $('#approve-content').hide();
+    $('#approve-error').hide().text('');
+    $('#approve-table-body').empty();
+
+    var url = "{% url 'admin-blood-request-approve' 0 %}".replace('0', requestId);
+    $.get(url, function (data) {
+        $('#approve-loading').hide();
+        if (data.success) {
+            $('#approve-content').show();
+            data.compatible_types.forEach(function (item) {
+                var row = '<tr>' +
+                    '<td><strong>' + item.name + '</strong></td>' +
+                    '<td>' + item.units_available + '</td>' +
+                    '<td>' +
+                    '<input type="hidden" name="blood_type_id" value="' + item.id + '">' +
+                    '<input type="number" name="units_attributed" min="0" max="' + item.units_available + '" value="0" class="form-control form-control-sm d-inline-block w-auto" style="width:80px;">' +
+                    '</td>' +
+                    '</tr>';
+                $('#approve-table-body').append(row);
+            });
+        } else {
+            $('#approve-error').text(data.error).show();
+        }
+    }).fail(function () {
+        $('#approve-loading').hide();
+        $('#approve-error').text("{% trans 'Failed to load compatible blood types.' %}").show();
+    });
+});
+
+$('#completeModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var requestId = button.data('request-id');
+    $('#complete-request-id').val(requestId);
+    $('#complete-loading').show();
+    $('#complete-content').hide();
+    $('#complete-error').hide().text('');
+    $('#complete-table-body').empty();
+
+    var url = "{% url 'admin-blood-request-complete' 0 %}".replace('0', requestId);
+    $.get(url, function (data) {
+        $('#complete-loading').hide();
+        if (data.success) {
+            $('#complete-content').show();
+            data.attributions.forEach(function (item) {
+                var row = '<tr>' +
+                    '<td><strong>' + item.blood_type_name + '</strong></td>' +
+                    '<td>' +
+                    '<input type="hidden" name="blood_type_id" value="' + item.blood_type_id + '">' +
+                    '<input type="number" name="units_attributed" value="' + item.units_attributed + '" min="0" class="form-control form-control-sm d-inline-block w-auto" style="width:80px;">' +
+                    '</td>' +
+                    '</tr>'
+                $('#complete-table-body').append(row);
+            });
+        } else {
+            $('#complete-error').text(data.error).show();
+        }
+    }).fail(function () {
+        $('#complete-loading').hide();
+        $('#complete-error').text("{% trans 'Failed to load attribution data.' %}").show();
+    });
+});
+
+$('#rejectModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var requestId = button.data('request-id');
+    $('#reject-request-id').val(requestId);
+    $('#reject-error').hide().text('');
+});
+
+function handleFormSubmit(formId, modalId) {
+    $(formId).on('submit', function (e) {
+        e.preventDefault();
+        var requestId = $(this).find('input[name="request_id"]').val();
+        var actionUrl;
+        if (formId === '#approveForm') {
+            actionUrl = "{% url 'admin-blood-request-approve' 0 %}".replace('0', requestId);
+        } else if (formId === '#completeForm') {
+            actionUrl = "{% url 'admin-blood-request-complete' 0 %}".replace('0', requestId);
+        } else if (formId === '#rejectForm') {
+            actionUrl = "{% url 'admin-blood-request-reject' 0 %}".replace('0', requestId);
+        }
+        $.ajax({
+            url: actionUrl,
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data.success) {
+                    $(modalId).modal('hide');
+                    window.location.reload();
+                } else {
+                    $(modalId).find('.alert-danger').text(data.error).show();
+                }
+            },
+            error: function (xhr) {
+                var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+                $(modalId).find('.alert-danger').text(error).show();
+            }
+        });
+    });
+}
+
+handleFormSubmit('#approveForm', '#approveModal');
+handleFormSubmit('#completeForm', '#completeModal');
+handleFormSubmit('#rejectForm', '#rejectModal');
+</script>
+{% endblock extra_js %}

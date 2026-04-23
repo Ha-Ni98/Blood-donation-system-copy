@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-19 20:21+0100\n"
+"POT-Creation-Date: 2026-04-23 03:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: blood/forms.py:47 blood/forms.py:52 templates/blood/login.html:35
+#: blood/forms.py:12 donor/forms.py:58
+#: templates/patient/blood_request_form.html:146
+msgid "I confirm the accuracy of this information"
+msgstr ""
+
+#: blood/forms.py:13 donor/forms.py:59
+msgid "You must confirm the accuracy of this information."
+msgstr ""
+
+#: blood/forms.py:30
+msgid "Units needed must be at least 1."
+msgstr ""
+
+#: blood/forms.py:39 blood/forms.py:144
+msgid "Selected commune does not belong to the chosen wilaya."
+msgstr ""
+
+#: blood/forms.py:47 blood/forms.py:52 blood/forms.py:165
+#: templates/blood/admin_user_management.html:20
+#: templates/blood/admin_user_management.html:106 templates/blood/login.html:35
 #: templates/blood/signup.html:52
 msgid "Email"
 msgstr "Email"
@@ -27,9 +46,11 @@ msgstr "Email"
 msgid "Enter a valid email address."
 msgstr "Entrez une adresse email valide."
 
-#: blood/forms.py:55 templates/blood/adminlogin.html:38
-#: templates/blood/login.html:44 templates/blood/signup.html:61
-#: templates/blood/update_donor.html:53 templates/blood/update_patient.html:53
+#: blood/forms.py:55 blood/forms.py:169
+#: templates/blood/admin_user_management.html:110
+#: templates/blood/adminlogin.html:38 templates/blood/login.html:44
+#: templates/blood/signup.html:61 templates/blood/update_donor.html:53
+#: templates/blood/update_patient.html:53
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -47,11 +68,16 @@ msgstr "Prénom"
 msgid "Last Name"
 msgstr "Nom"
 
-#: blood/forms.py:59 templates/blood/signup.html:123
+#: blood/forms.py:59 blood/forms.py:175
+#: templates/blood/admin_user_management.html:115
+#: templates/blood/signup.html:123
 msgid "Phone Number"
 msgstr "Numéro de téléphone"
 
-#: blood/forms.py:60 templates/blood/signup.html:105
+#: blood/forms.py:60 blood/forms.py:181
+#: templates/blood/admin_user_management.html:22
+#: templates/blood/admin_user_management.html:119
+#: templates/blood/signup.html:105
 msgid "Date of Birth"
 msgstr "Date de naissance"
 
@@ -73,24 +99,30 @@ msgstr "Numéro d'Identification National (NIN)"
 
 #: blood/forms.py:66 templates/blood/admin_approve_blood_request.html:16
 #: templates/blood/admin_approve_donation_request.html:33
+#: templates/blood/admin_blood_requests.html:29
+#: templates/blood/admin_blood_requests.html:56
+#: templates/blood/admin_donation_requests.html:25
+#: templates/blood/admin_donation_requests.html:48
 #: templates/blood/admin_donor_eligibility.html:21
 #: templates/blood/admin_requests_dashboard.html:34
 #: templates/blood/admin_requests_dashboard.html:62
-#: templates/blood/admin_user_management.html:22
 #: templates/blood/signup.html:134 templates/donor/donor_dashboard.html:19
-#: templates/patient/blood_request_form.html:128
+#: templates/patient/blood_request_form.html:121
 #: templates/patient/patient_dashboard.html:19
 msgid "Wilaya"
 msgstr "Wilaya"
 
-#: blood/forms.py:67 templates/blood/signup.html:142
-#: templates/donor/donor_dashboard.html:21
-#: templates/patient/blood_request_form.html:138
+#: blood/forms.py:67 templates/blood/admin_blood_requests.html:33
+#: templates/blood/admin_blood_requests.html:57
+#: templates/blood/admin_donation_requests.html:29
+#: templates/blood/admin_donation_requests.html:49
+#: templates/blood/signup.html:142 templates/donor/donor_dashboard.html:21
+#: templates/patient/blood_request_form.html:131
 #: templates/patient/patient_dashboard.html:21
 msgid "Commune"
 msgstr "Commune"
 
-#: blood/forms.py:72
+#: blood/forms.py:72 blood/forms.py:191
 msgid "A user with this email already exists."
 msgstr "Un utilisateur avec cet email existe déjà."
 
@@ -106,23 +138,30 @@ msgstr "Le mot de passe et la confirmation ne correspondent pas."
 #: templates/blood/admin_approve_blood_request.html:33
 #: templates/blood/admin_approve_donation_request.html:14
 #: templates/blood/admin_approve_donation_request.html:31
+#: templates/blood/admin_blood.html:21
+#: templates/blood/admin_blood_requests.html:21
+#: templates/blood/admin_blood_requests.html:51
+#: templates/blood/admin_blood_requests.html:163
+#: templates/blood/admin_blood_requests.html:205
+#: templates/blood/admin_dashboard.html:67
+#: templates/blood/admin_donation_requests.html:21
+#: templates/blood/admin_donation_requests.html:47
 #: templates/blood/admin_donor_eligibility.html:20
 #: templates/blood/admin_request.html:17
 #: templates/blood/admin_request_history.html:14
 #: templates/blood/admin_requests_dashboard.html:22
 #: templates/blood/admin_requests_dashboard.html:58
 #: templates/blood/admin_requests_dashboard.html:144
-#: templates/blood/admin_user_management.html:21 templates/blood/index.html:269
-#: templates/blood/signup.html:165 templates/patient/my_request.html:20
+#: templates/blood/index.html:269 templates/blood/signup.html:165
+#: templates/patient/my_request.html:20
 msgid "Blood Type"
 msgstr "Groupe sanguin"
 
-#: blood/forms.py:92 templates/blood/create_donor_profile.html:77
-#: templates/blood/signup.html:175
+#: blood/forms.py:92 templates/blood/signup.html:175
 msgid "Have you donated blood before?"
 msgstr "Avez-vous déjà donné du sang?"
 
-#: blood/forms.py:96 templates/donor/donation_request_form.html:58
+#: blood/forms.py:96
 msgid "Last Donation Date"
 msgstr "Date du dernier don"
 
@@ -155,29 +194,404 @@ msgstr "Donneur"
 msgid "Profile Type"
 msgstr "Type de profil"
 
+#: blood/forms.py:124
+msgid "All Statuses"
+msgstr ""
+
+#: blood/forms.py:127
+msgid "All Urgencies"
+msgstr ""
+
+#: blood/forms.py:130
+#, fuzzy
+#| msgid "Blood Type"
+msgid "All Types"
+msgstr "Groupe sanguin"
+
+#: blood/forms.py:133
+#, fuzzy
+#| msgid "Wilaya"
+msgid "All Wilayas"
+msgstr "Wilaya"
+
+#: blood/forms.py:136
+#, fuzzy
+#| msgid "Commune"
+msgid "All Communes"
+msgstr "Commune"
+
+#: blood/forms.py:160 blood/views.py:269
+msgid "Stock cannot be negative."
+msgstr ""
+
+#: blood/forms.py:170 templates/blood/admin_user_management.html:112
+msgid "Leave blank to keep current password."
+msgstr ""
+
+#: blood/services.py:37 blood/views.py:419 blood/views.py:555
+#: blood/views.py:615 blood/views.py:765
+msgid "Only pending requests can be approved."
+msgstr ""
+
+#: blood/services.py:39
+msgid "Units to attribute must be greater than 0."
+msgstr ""
+
+#: blood/services.py:43
+msgid "Selected blood type is not compatible with the requested blood type."
+msgstr ""
+
+#: blood/services.py:47 blood/services.py:107
+msgid "Insufficient stock for this blood type."
+msgstr ""
+
+#: blood/services.py:67 blood/views.py:464 blood/views.py:788
+msgid "Only approved requests can be completed."
+msgstr ""
+
+#: blood/services.py:86
+msgid "Units attributed cannot be negative."
+msgstr ""
+
+#: blood/services.py:90
+msgid "No stock record found for the selected blood type."
+msgstr ""
+
+#: blood/services.py:97
+msgid "Insufficient stock to increase attribution."
+msgstr ""
+
+#: blood/services.py:131
+msgid "Only pending or approved requests can be rejected."
+msgstr ""
+
 #: blood/validators.py:12
 msgid "NIN must be exactly 18 digits long."
 msgstr "Le NIN doit contenir exactement 18 chiffres."
 
 #: blood/validators.py:27
 msgid "Enter a valid Algerian phone number (e.g. 0551234567 or +213551234567)."
-msgstr "Entrez un numéro de téléphone algérien valide (ex: 0551234567 ou +213551234567)."
+msgstr ""
+"Entrez un numéro de téléphone algérien valide (ex: 0551234567 ou "
+"+213551234567)."
 
-#: blood/views.py:46
+#: blood/views.py:47
 msgid "Welcome back!"
 msgstr "Bon retour!"
 
-#: blood/views.py:49 blood/views.py:51
+#: blood/views.py:50 blood/views.py:52
 msgid "Invalid email or password."
 msgstr "Email ou mot de passe invalide."
 
-#: blood/views.py:134
+#: blood/views.py:145
 msgid "Account created successfully."
 msgstr "Compte créé avec succès."
 
-#: blood/views.py:137
+#: blood/views.py:148
 msgid "Registration failed. Please try again."
 msgstr "Échec de l'inscription. Veuillez réessayer."
+
+#: blood/views.py:178
+msgid "You cannot switch to Donor because you have an active blood request."
+msgstr ""
+
+#: blood/views.py:189
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Donor profile created successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:210
+msgid ""
+"You cannot switch to Patient because you have an active donation request."
+msgstr ""
+
+#: blood/views.py:221
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Patient profile created successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:275
+msgid "Invalid stock data."
+msgstr ""
+
+#: blood/views.py:278
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Blood stock updated successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:302
+msgid "You cannot deactivate your own account."
+msgstr ""
+
+#: blood/views.py:306
+msgid "activated"
+msgstr ""
+
+#: blood/views.py:306
+msgid "deactivated"
+msgstr ""
+
+#: blood/views.py:307
+#, python-format
+msgid "User %(username)s has been %(status)s."
+msgstr ""
+
+#: blood/views.py:309
+msgid "User not found."
+msgstr ""
+
+#: blood/views.py:331 blood/views.py:703
+msgid "Only approved requests can be marked as completed."
+msgstr ""
+
+#: blood/views.py:340 blood/views.py:492
+msgid "Blood Request Completed"
+msgstr ""
+
+#: blood/views.py:341
+msgid "Your blood request status has been updated to Completed."
+msgstr ""
+
+#: blood/views.py:344 blood/views.py:719
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request has been completed successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:364 blood/views.py:748 blood/views.py:842
+#: patient/views.py:168
+msgid "Donation Request Cancelled"
+msgstr ""
+
+#: blood/views.py:365
+msgid ""
+"The patient's blood request was cancelled by the admin. Your donation "
+"request has been cancelled."
+msgstr ""
+
+#: blood/views.py:373 blood/views.py:514
+msgid "Blood Request Cancelled"
+msgstr ""
+
+#: blood/views.py:374
+msgid "Your blood request status has been updated to Cancelled."
+msgstr ""
+
+#: blood/views.py:377 blood/views.py:752
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request has been cancelled successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:435
+msgid "Missing required parameters."
+msgstr ""
+
+#: blood/views.py:439
+msgid "Invalid units value."
+msgstr ""
+
+#: blood/views.py:444 blood/views.py:592 blood/views.py:660
+msgid "Blood Request Approved"
+msgstr ""
+
+#: blood/views.py:445
+msgid "Your blood request has been approved."
+msgstr ""
+
+#: blood/views.py:447
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request approved successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:452 blood/views.py:500 blood/views.py:507 blood/views.py:761
+#: blood/views.py:784 blood/views.py:821 blood/views.py:886 blood/views.py:893
+#: donor/views.py:169
+msgid "Invalid request method."
+msgstr ""
+
+#: blood/views.py:478
+msgid "Mismatched attribution data."
+msgstr ""
+
+#: blood/views.py:487
+msgid "Invalid attribution data."
+msgstr ""
+
+#: blood/views.py:493
+msgid "Your blood request has been completed."
+msgstr ""
+
+#: blood/views.py:495
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request completed successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:515
+msgid "Your blood request has been cancelled by admin."
+msgstr ""
+
+#: blood/views.py:517
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request rejected successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:567
+msgid "Please select a blood request."
+msgstr ""
+
+#: blood/views.py:585 blood/views.py:650 blood/views.py:772
+msgid "Donation Request Approved"
+msgstr ""
+
+#: blood/views.py:586
+msgid "Your donation request status has been updated to Approved."
+msgstr ""
+
+#: blood/views.py:593
+msgid "Your blood request status has been updated to Approved."
+msgstr ""
+
+#: blood/views.py:596 blood/views.py:664
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request has been approved successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:600
+msgid "The selected blood request is no longer available."
+msgstr ""
+
+#: blood/views.py:627
+msgid "Please select at least one donor."
+msgstr ""
+
+#: blood/views.py:638
+msgid "One or more selected donations are no longer available."
+msgstr ""
+
+#: blood/views.py:651
+msgid ""
+"Your donation request has been matched and Approved for a Blood Request."
+msgstr ""
+
+#: blood/views.py:661
+msgid ""
+"Your blood request status has been updated to Approved and matched with "
+"donor(s)."
+msgstr ""
+
+#: blood/views.py:668
+msgid "An error occurred while approving the request."
+msgstr ""
+
+#: blood/views.py:683
+msgid "Only pending requests can be rejected."
+msgstr ""
+
+#: blood/views.py:691
+msgid "Donation Request Rejected"
+msgstr ""
+
+#: blood/views.py:692
+msgid "Your donation request status has been updated to Rejected."
+msgstr ""
+
+#: blood/views.py:694
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Request has been rejected successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:716
+#, fuzzy
+#| msgid "Last Donation Date"
+msgid "Donation Completed"
+msgstr "Date du dernier don"
+
+#: blood/views.py:717
+msgid "Your donation request status has been updated to Completed."
+msgstr ""
+
+#: blood/views.py:740
+msgid "Donor Request Cancelled"
+msgstr ""
+
+#: blood/views.py:741
+msgid ""
+"A donor's request was cancelled by the admin. Your blood request is now "
+"pending again."
+msgstr ""
+
+#: blood/views.py:749
+msgid "Your donation request status has been updated to Cancelled by Admin."
+msgstr ""
+
+#: blood/views.py:773
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Your donation request has been approved."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:775
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Donation request approved successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:809
+#, fuzzy
+#| msgid "Last Donation Date"
+msgid "Donation Request Completed"
+msgstr "Date du dernier don"
+
+#: blood/views.py:810
+msgid "Your donation request has been completed. Thank you for your donation!"
+msgstr ""
+
+#: blood/views.py:812
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Donation request completed successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:825 donor/views.py:167
+msgid "Only pending or approved requests can be cancelled."
+msgstr ""
+
+#: blood/views.py:843
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Your donation request has been cancelled by admin."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:845
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "Donation request cancelled successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:881
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "User updated successfully."
+msgstr "Compte créé avec succès."
+
+#: blood/views.py:899
+msgid "You cannot delete your own account."
+msgstr ""
+
+#: blood/views.py:904
+#, fuzzy
+#| msgid "Account created successfully."
+msgid "User deleted successfully."
+msgstr "Compte créé avec succès."
 
 #: bloodbankmanagement/settings.py:122
 msgid "English"
@@ -191,199 +605,156 @@ msgstr "Français"
 msgid "Arabic"
 msgstr "Arabe"
 
-#: donor/forms.py:14
+#: donor/forms.py:17 templates/blood/admin_blood_requests.html:84
+#: templates/blood/admin_donation_requests.html:65
 msgid "Yes"
 msgstr ""
 
-#: donor/forms.py:15
+#: donor/forms.py:18 templates/blood/admin_blood_requests.html:86
+#: templates/blood/admin_donation_requests.html:67
 msgid "No"
 msgstr ""
 
-#: donor/forms.py:20
+#: donor/forms.py:24
 msgid "Donated blood in the last 3 months?"
 msgstr ""
 
-#: donor/forms.py:24
+#: donor/forms.py:28
 msgid "Received a blood transfusion in the last 6 months?"
 msgstr ""
 
-#: donor/forms.py:28
+#: donor/forms.py:32
 msgid "Had surgery in the last 6 months?"
 msgstr ""
 
-#: donor/forms.py:32
+#: donor/forms.py:36
 msgid "Currently have fever, infection, or flu?"
 msgstr ""
 
-#: donor/forms.py:36
+#: donor/forms.py:40
 msgid "Currently taking medication?"
 msgstr ""
 
-#: donor/forms.py:40
+#: donor/forms.py:44
 msgid "Suffer from anemia?"
 msgstr ""
 
-#: donor/forms.py:45
+#: donor/forms.py:49
 msgid "Are you pregnant?"
 msgstr ""
 
-#: donor/forms.py:49
+#: donor/forms.py:53
 msgid "Are you breastfeeding?"
 msgstr ""
 
-#: donor/forms.py:54 templates/patient/blood_request_form.html:153
-msgid "I confirm the accuracy of this information"
-msgstr ""
-
-#: donor/forms.py:55
-msgid "You must confirm the accuracy of this information."
-msgstr ""
-
-#: donor/forms.py:59
+#: donor/forms.py:63
 msgid "I understand that providing false information may disqualify me"
 msgstr ""
 
-#: donor/forms.py:60
+#: donor/forms.py:64
 msgid "You must acknowledge this before submitting."
 msgstr ""
 
-#: donor/forms.py:90
+#: donor/forms.py:100
 msgid "You must confirm both checkboxes at the bottom."
 msgstr ""
 
-#: donor/views.py:32
-msgid "Marked ineligible by administrator."
+#: donor/views.py:20
+msgid "You must be at least 18 years old to donate."
 msgstr ""
 
-#: donor/views.py:35
-msgid "You are under 18 years old."
-msgstr ""
-
-#: donor/views.py:38
-msgid "You have a chronic disease."
-msgstr ""
-
-#: donor/views.py:41
-msgid "You have a history of anemia."
-msgstr ""
-
-#: donor/views.py:47
+#: donor/views.py:26
 #, python-brace-format
-msgid "Last donation was {0} days ago. Please wait {1} more days."
+msgid "Last donation was recent. Please wait {0} more days."
 msgstr ""
 
-#: donor/views.py:54
-msgid "Recent required safety period."
+#: donor/views.py:32
+#, python-brace-format
+msgid "Recent transfusion. Please wait {0} more days."
 msgstr ""
 
-#: donor/views.py:63
-msgid "Active blood request as a patient."
-msgstr ""
-
-#: donor/views.py:98
-msgid "You are currently not eligible to donate blood."
+#: donor/views.py:43 donor/views.py:87 donor/views.py:151 donor/views.py:178
+#: donor/views.py:194
+msgid "You do not have a donor profile."
 msgstr ""
 
 #: donor/views.py:102
-msgid "You cannot donate because you are under 18 years old."
-msgstr ""
-
-#: donor/views.py:106
-msgid "You cannot donate because you have a chronic disease."
-msgstr ""
-
-#: donor/views.py:110
-msgid "You cannot donate because you have anemia."
-msgstr ""
-
-#: donor/views.py:116
-msgid ""
-"You cannot donate because your last donation was less than 3 months ago."
-msgstr ""
-
-#: donor/views.py:126
-msgid "You cannot donate because you have an active blood request."
-msgstr ""
-
-#: donor/views.py:134
 msgid "You already have an active donation request."
 msgstr ""
 
-#: donor/views.py:142
-msgid ""
-"You cannot donate because you received a transfusion less than 6 months ago."
+#: donor/views.py:111
+msgid "You cannot donate because you have an active blood request."
 msgstr ""
 
-#: donor/views.py:151
-msgid "you received a transfusion in the last 6 months"
+#: donor/views.py:119
+msgid "Sorry, you cannot perform a donation request."
 msgstr ""
 
-#: donor/views.py:153
-msgid "you had surgery in the last 6 months"
-msgstr ""
-
-#: donor/views.py:155
-msgid "you have anemia"
+#: donor/views.py:129
+msgid "You have successfully performed a donation request."
 msgstr ""
 
 #: donor/views.py:157
-msgid "you are pregnant or breastfeeding"
-msgstr ""
-
-#: donor/views.py:159
-msgid "you donated in the last 3 months"
-msgstr ""
-
-#: donor/views.py:162
-#, python-brace-format
-msgid "Your donation request cannot be submitted because {0}."
-msgstr ""
-
-#: donor/views.py:177
-msgid "Your donation request has been submitted."
-msgstr ""
-
-#: donor/views.py:199 donor/views.py:242
-msgid "Donor profile not found."
-msgstr ""
-
-#: donor/views.py:205
 msgid "Donation request not found or unauthorized."
 msgstr ""
 
-#: donor/views.py:225
-msgid "Donation Cancelled"
-msgstr ""
-
-#: donor/views.py:226
-msgid ""
-"A donor cancelled their donation. Your blood request is now pending again."
-msgstr ""
-
-#: donor/views.py:230
+#: donor/views.py:165
 msgid "Your donation request has been cancelled."
 msgstr ""
 
-#: donor/views.py:232
-msgid "Only pending or approved requests can be cancelled."
+#: patient/views.py:18 patient/views.py:62 patient/views.py:120
+#: patient/views.py:144 patient/views.py:193
+msgid "You do not have a patient profile."
 msgstr ""
 
-#: donor/views.py:234
-msgid "Invalid request method."
+#: patient/views.py:70
+#, fuzzy
+#| msgid "Already have an account?"
+msgid "You already have an active blood request."
+msgstr "Vous avez déjà un compte?"
+
+#: patient/views.py:81
+msgid "You cannot request blood because you have an active donation request."
+msgstr ""
+
+#: patient/views.py:99
+msgid "Your blood request has been submitted."
+msgstr ""
+
+#: patient/views.py:150
+msgid "Blood request not found."
+msgstr ""
+
+#: patient/views.py:155
+msgid "This request cannot be cancelled."
+msgstr ""
+
+#: patient/views.py:170
+msgid ""
+"The blood request you were matched with has been cancelled by the patient. "
+"Your donation request has been cancelled."
+msgstr ""
+
+#: patient/views.py:180
+msgid "Your request has been cancelled."
 msgstr ""
 
 #: templates/blood/admin_approve_blood_request.html:9
+#: templates/blood/admin_blood_requests.html:150
 msgid "Approve Blood Request"
 msgstr ""
 
 #: templates/blood/admin_approve_blood_request.html:12
 #: templates/blood/admin_approve_donation_request.html:30
+#: templates/blood/admin_blood_requests.html:50
 #: templates/blood/admin_requests_dashboard.html:57
 msgid "Patient Name"
 msgstr ""
 
 #: templates/blood/admin_approve_blood_request.html:15
 #: templates/blood/admin_approve_donation_request.html:32
+#: templates/blood/admin_blood_requests.html:25
+#: templates/blood/admin_blood_requests.html:53
 #: templates/blood/admin_request.html:19
 #: templates/blood/admin_request_history.html:16
 #: templates/blood/admin_requests_dashboard.html:30
@@ -397,8 +768,10 @@ msgstr ""
 #: templates/blood/admin_approve_blood_request.html:34
 #: templates/blood/admin_approve_donation_request.html:15
 #: templates/blood/admin_approve_donation_request.html:34
+#: templates/blood/admin_donation_requests.html:51
 #: templates/blood/admin_requests_dashboard.html:63
 #: templates/blood/admin_requests_dashboard.html:145
+#: templates/blood/admin_user_management.html:25
 msgid "Created At"
 msgstr ""
 
@@ -415,25 +788,40 @@ msgstr ""
 #: templates/blood/admin_approve_blood_request.html:32
 #: templates/blood/admin_approve_donation_request.html:12
 #: templates/blood/admin_donation.html:25
+#: templates/blood/admin_donation_requests.html:46
 #: templates/blood/admin_requests_dashboard.html:143
 msgid "Donor Name"
 msgstr ""
 
 #: templates/blood/admin_approve_blood_request.html:54
 #: templates/blood/admin_approve_donation_request.html:64
+#: templates/blood/admin_blood_requests.html:176
+#: templates/blood/admin_blood_requests.html:217
+#: templates/blood/admin_blood_requests.html:241
+#: templates/blood/admin_donation_requests.html:95
+#: templates/blood/admin_donation_requests.html:98
+#: templates/blood/admin_donation_requests.html:138
+#: templates/blood/admin_donation_requests.html:162
+#: templates/blood/admin_donation_requests.html:186
 #: templates/blood/admin_request.html:60
 #: templates/blood/admin_request_history.html:71
 #: templates/blood/admin_requests_dashboard.html:108
 #: templates/blood/admin_requests_dashboard.html:111
 #: templates/blood/admin_requests_dashboard.html:176
 #: templates/blood/admin_requests_dashboard.html:179
+#: templates/blood/admin_user_management.html:125
+#: templates/blood/admin_user_management.html:149
+#: templates/blood/create_donor_profile.html:40
+#: templates/blood/create_patient_profile.html:40
 #: templates/donor/donation_history.html:53
-#: templates/patient/my_request.html:74
+#: templates/patient/my_request.html:73
 msgid "Cancel"
 msgstr ""
 
 #: templates/blood/admin_approve_blood_request.html:55
 #: templates/blood/admin_approve_donation_request.html:65
+#: templates/blood/admin_blood_requests.html:177
+#: templates/blood/admin_donation_requests.html:139
 msgid "Confirm Approval"
 msgstr ""
 
@@ -451,6 +839,7 @@ msgid "Return to Dashboard"
 msgstr ""
 
 #: templates/blood/admin_approve_donation_request.html:9
+#: templates/blood/admin_donation_requests.html:130
 msgid "Approve Donation Request"
 msgstr ""
 
@@ -459,6 +848,7 @@ msgid "Select Blood Request"
 msgstr ""
 
 #: templates/blood/admin_approve_donation_request.html:48
+#: templates/blood/admin_blood_requests.html:71
 #: templates/blood/admin_request.html:36
 #: templates/blood/admin_request_history.html:33
 #: templates/blood/admin_requests_dashboard.html:78
@@ -468,6 +858,7 @@ msgid "Critical"
 msgstr ""
 
 #: templates/blood/admin_approve_donation_request.html:50
+#: templates/blood/admin_blood_requests.html:73
 #: templates/blood/admin_request.html:38
 #: templates/blood/admin_request_history.html:35
 #: templates/blood/admin_requests_dashboard.html:80
@@ -477,6 +868,7 @@ msgid "Urgent"
 msgstr ""
 
 #: templates/blood/admin_approve_donation_request.html:52
+#: templates/blood/admin_blood_requests.html:75
 #: templates/blood/admin_request.html:40
 #: templates/blood/admin_request_history.html:37
 #: templates/blood/admin_requests_dashboard.html:82
@@ -493,38 +885,236 @@ msgstr ""
 msgid "There are no pending blood requests matching"
 msgstr ""
 
-#: templates/blood/admin_blood.html:129
-msgid "Update Blood Unit"
+#: templates/blood/admin_blood.html:7
+msgid "Blood Stock Management"
 msgstr ""
 
-#: templates/blood/admin_blood.html:137
-msgid "Choose Blood Group"
+#: templates/blood/admin_blood.html:11 templates/blood/admin_dashboard.html:59
+#: templates/blood/adminbase.html:143
+msgid "Blood Stock"
 msgstr ""
 
-#: templates/blood/admin_blood.html:150 templates/blood/admin_donation.html:29
-msgid "Unit"
+#: templates/blood/admin_blood.html:22 templates/blood/admin_dashboard.html:68
+msgid "Units Available"
 msgstr ""
 
-#: templates/blood/admin_blood.html:153 templates/blood/update_donor.html:111
-#: templates/blood/update_patient.html:138
-msgid "Update"
+#: templates/blood/admin_blood.html:43
+#: templates/blood/admin_user_management.html:126
+msgid "Save Changes"
 msgstr ""
 
-#: templates/blood/admin_dashboard.html:119
+#: templates/blood/admin_blood.html:48
+msgid "No blood stock data available."
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:7
+#: templates/blood/admin_requests_dashboard.html:50
+#: templates/blood/adminbase.html:139
+msgid "Blood Requests"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:12
+#: templates/blood/admin_donation_requests.html:12
+#: templates/blood/admin_requests_dashboard.html:12
+msgid "Filter"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:17
+#: templates/blood/admin_blood_requests.html:59
+#: templates/blood/admin_donation.html:31
+#: templates/blood/admin_donation_requests.html:17
+#: templates/blood/admin_donation_requests.html:52
+#: templates/blood/admin_request.html:23
+#: templates/blood/admin_request_history.html:20
+#: templates/blood/admin_requests_dashboard.html:18
+#: templates/blood/admin_requests_dashboard.html:64
+#: templates/blood/admin_requests_dashboard.html:146
+#: templates/blood/admin_user_management.html:26
+#: templates/donor/donation_history.html:22
+#: templates/donor/donor_dashboard.html:44 templates/patient/my_request.html:26
+msgid "Status"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:38
+#: templates/blood/admin_donation_requests.html:34
+#: templates/blood/admin_requests_dashboard.html:39
+#: templates/blood/admin_requests_dashboard.html:134
+msgid "Apply Filters"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:40
+#: templates/blood/admin_donation_requests.html:36
+#: templates/blood/admin_requests_dashboard.html:41
+msgid "Reset"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:52
+msgid "Units Required"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:54
+#: templates/blood/admin_request.html:20
+#: templates/blood/admin_request_history.html:17
+#: templates/blood/admin_requests_dashboard.html:59
+#: templates/patient/blood_request_form.html:87
+#: templates/patient/my_request.html:23
+#: templates/patient/patient_dashboard.html:60
+msgid "Required Date"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:55
+#: templates/blood/admin_request.html:21
+#: templates/blood/admin_request_history.html:18
+#: templates/patient/my_request.html:24
+msgid "Reason"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:58
+#: templates/patient/blood_request_form.html:107
+msgid "Recent Surgery"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:60
+#: templates/blood/admin_blood_requests.html:110
+#: templates/blood/admin_donation_requests.html:53
+#: templates/blood/admin_donation_requests.html:90
+#: templates/blood/admin_requests_dashboard.html:65
+#: templates/blood/admin_requests_dashboard.html:147
+#: templates/blood/admin_user_management.html:27
+#: templates/blood/admin_user_management.html:50
+msgid "Actions"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:114
+#: templates/blood/admin_donation_requests.html:94
+#: templates/blood/admin_request.html:51
+#: templates/blood/admin_requests_dashboard.html:106
+#: templates/blood/admin_requests_dashboard.html:174
+msgid "Approve"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:115
+#: templates/blood/admin_blood_requests.html:118
+#: templates/blood/admin_request.html:55
+#: templates/blood/admin_requests_dashboard.html:107
+#: templates/blood/admin_requests_dashboard.html:175
+msgid "Reject"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:117
+#: templates/blood/admin_donation_requests.html:97
+#: templates/blood/admin_request_history.html:66
+#: templates/blood/admin_requests_dashboard.html:110
+#: templates/blood/admin_requests_dashboard.html:178
+msgid "Complete"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:132
+#: templates/blood/admin_requests_dashboard.html:122
+msgid "No blood requests found."
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:158
+msgid "Select compatible blood type and units to attribute:"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:164
+msgid "Available Units"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:165
+msgid "Units to Attribute"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:192
+msgid "Complete Blood Request"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:200
+msgid "Edit attributed units:"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:206
+msgid "Attributed Units"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:218
+#: templates/blood/admin_donation_requests.html:163
+msgid "Confirm Completion"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:233
+msgid "Reject Blood Request"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:237
+msgid "Are you sure you want to reject this blood request?"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:242
+msgid "Confirm Rejection"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:272
+#: templates/blood/admin_request.html:18
+#: templates/blood/admin_request_history.html:15
+#: templates/patient/my_request.html:21
+msgid "Units"
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:282
+msgid "Failed to load compatible blood types."
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:315
+msgid "Failed to load attribution data."
+msgstr ""
+
+#: templates/blood/admin_blood_requests.html:351
+#: templates/blood/admin_donation_requests.html:236
+#: templates/blood/admin_user_management.html:200
+#: templates/blood/admin_user_management.html:205
+#: templates/blood/admin_user_management.html:228
+msgid "An error occurred."
+msgstr ""
+
+#: templates/blood/admin_dashboard.html:6 templates/blood/navbar.html:41
+msgid "Admin Dashboard"
+msgstr ""
+
+#: templates/blood/admin_dashboard.html:17
 msgid "Total Donors"
 msgstr ""
 
-#: templates/blood/admin_dashboard.html:133
-#: templates/patient/patient_dashboard.html:96
-msgid "Total Requests"
+#: templates/blood/admin_dashboard.html:28
+#, fuzzy
+#| msgid "Patient"
+msgid "Total Patients"
+msgstr "Patient"
+
+#: templates/blood/admin_dashboard.html:39
+msgid "Completed Donations"
 msgstr ""
 
-#: templates/blood/admin_dashboard.html:147
-msgid "Approved Requests"
+#: templates/blood/admin_dashboard.html:50
+msgid "Completed Blood Requests"
 msgstr ""
 
-#: templates/blood/admin_dashboard.html:161
-msgid "Total Blood Unit (in ml)"
+#: templates/blood/admin_dashboard.html:83
+msgid "No stock data available."
+msgstr ""
+
+#: templates/blood/admin_dashboard.html:94 templates/blood/admin_request.html:8
+msgid "Pending Blood Requests"
+msgstr ""
+
+#: templates/blood/admin_dashboard.html:99
+#: templates/blood/admin_dashboard.html:112
+msgid "See Details"
+msgstr ""
+
+#: templates/blood/admin_dashboard.html:107
+msgid "Pending Donation Requests"
 msgstr ""
 
 #: templates/blood/admin_donation.html:20
@@ -550,26 +1140,18 @@ msgstr ""
 msgid "Blood Group"
 msgstr ""
 
-#: templates/blood/admin_donation.html:30
-msgid "Request Date"
+#: templates/blood/admin_donation.html:29
+msgid "Unit"
 msgstr ""
 
-#: templates/blood/admin_donation.html:31 templates/blood/admin_request.html:23
-#: templates/blood/admin_request_history.html:20
-#: templates/blood/admin_requests_dashboard.html:18
-#: templates/blood/admin_requests_dashboard.html:64
-#: templates/blood/admin_requests_dashboard.html:146
-#: templates/blood/admin_user_management.html:24
-#: templates/donor/donation_history.html:22
-#: templates/donor/donor_dashboard.html:44 templates/patient/my_request.html:26
-msgid "Status"
+#: templates/blood/admin_donation.html:30
+msgid "Request Date"
 msgstr ""
 
 #: templates/blood/admin_donation.html:32 templates/blood/admin_donor.html:19
 #: templates/blood/admin_donor_eligibility.html:24
 #: templates/blood/admin_patient.html:20 templates/blood/admin_request.html:24
 #: templates/blood/admin_request_history.html:21
-#: templates/blood/admin_user_management.html:25
 #: templates/donor/donation_history.html:23
 #: templates/patient/my_request.html:27
 msgid "Action"
@@ -622,6 +1204,51 @@ msgstr ""
 msgid "0 Unit Added To Stock"
 msgstr ""
 
+#: templates/blood/admin_donation_requests.html:7
+#: templates/blood/admin_requests_dashboard.html:129
+#: templates/blood/adminbase.html:140
+msgid "Donation Requests"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:50
+msgid "Had Surgery"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:112
+#: templates/blood/admin_requests_dashboard.html:192
+msgid "No donation requests found."
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:134
+msgid "Are you sure you want to approve this donation request?"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:154
+msgid "Complete Donation Request"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:158
+msgid ""
+"Are you sure you want to mark this donation as completed? Stock will be "
+"updated."
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:178
+#: templates/donor/donation_history.html:61
+#: templates/donor/donor_dashboard.html:198
+msgid "Cancel Donation Request"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:182
+msgid "Are you sure you want to cancel this donation request?"
+msgstr ""
+
+#: templates/blood/admin_donation_requests.html:187
+#, fuzzy
+#| msgid "Profile Information"
+msgid "Confirm Cancellation"
+msgstr "Informations du profil"
+
 #: templates/blood/admin_donor.html:9
 msgid "DONOR DETAILS"
 msgstr ""
@@ -629,7 +1256,6 @@ msgstr ""
 #: templates/blood/admin_donor.html:14
 #: templates/blood/admin_donor_eligibility.html:19
 #: templates/blood/admin_patient.html:14
-#: templates/blood/admin_user_management.html:20
 msgid "Name"
 msgstr ""
 
@@ -662,7 +1288,7 @@ msgid "DELETE"
 msgstr ""
 
 #: templates/blood/admin_donor_eligibility.html:7
-#: templates/blood/adminbase.html:140
+#: templates/blood/adminbase.html:142
 msgid "Donor Eligibility"
 msgstr ""
 
@@ -718,48 +1344,11 @@ msgstr ""
 msgid "Date of Birth / Age"
 msgstr ""
 
-#: templates/blood/admin_request.html:8
-msgid "Pending Blood Requests"
-msgstr ""
-
-#: templates/blood/admin_request.html:18
-#: templates/blood/admin_request_history.html:15
-#: templates/patient/my_request.html:21
-msgid "Units"
-msgstr ""
-
-#: templates/blood/admin_request.html:20
-#: templates/blood/admin_request_history.html:17
-#: templates/blood/admin_requests_dashboard.html:59
-#: templates/patient/blood_request_form.html:94
-#: templates/patient/my_request.html:23
-#: templates/patient/patient_dashboard.html:60
-msgid "Required Date"
-msgstr ""
-
-#: templates/blood/admin_request.html:21
-#: templates/blood/admin_request_history.html:18
-#: templates/patient/my_request.html:24
-msgid "Reason"
-msgstr ""
-
 #: templates/blood/admin_request.html:22
 #: templates/blood/admin_request_history.html:19
 #: templates/donor/donation_history.html:21
 #: templates/patient/my_request.html:25
 msgid "Submitted"
-msgstr ""
-
-#: templates/blood/admin_request.html:51
-#: templates/blood/admin_requests_dashboard.html:106
-#: templates/blood/admin_requests_dashboard.html:174
-msgid "Approve"
-msgstr ""
-
-#: templates/blood/admin_request.html:55
-#: templates/blood/admin_requests_dashboard.html:107
-#: templates/blood/admin_requests_dashboard.html:175
-msgid "Reject"
 msgstr ""
 
 #: templates/blood/admin_request.html:72
@@ -794,36 +1383,12 @@ msgstr ""
 msgid "Expired"
 msgstr ""
 
-#: templates/blood/admin_request_history.html:66
-#: templates/blood/admin_requests_dashboard.html:110
-#: templates/blood/admin_requests_dashboard.html:178
-msgid "Complete"
-msgstr ""
-
 #: templates/blood/admin_requests_dashboard.html:7
-#: templates/blood/adminbase.html:138
 msgid "Requests Dashboard"
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:12
-msgid "Filter"
 msgstr ""
 
 #: templates/blood/admin_requests_dashboard.html:26
 msgid "Blood Sign"
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:39
-#: templates/blood/admin_requests_dashboard.html:134
-msgid "Apply Filters"
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:41
-msgid "Reset"
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:50
-msgid "Blood Requests"
 msgstr ""
 
 #: templates/blood/admin_requests_dashboard.html:56
@@ -835,29 +1400,12 @@ msgstr ""
 msgid "Units Needed"
 msgstr ""
 
-#: templates/blood/admin_requests_dashboard.html:65
-#: templates/blood/admin_requests_dashboard.html:147
-msgid "Actions"
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:122
-msgid "No blood requests found."
-msgstr ""
-
-#: templates/blood/admin_requests_dashboard.html:129
-msgid "Donation Requests"
-msgstr ""
-
 #: templates/blood/admin_requests_dashboard.html:132
 msgid "Filter Donations:"
 msgstr ""
 
-#: templates/blood/admin_requests_dashboard.html:192
-msgid "No donation requests found."
-msgstr ""
-
 #: templates/blood/admin_user_management.html:7
-#: templates/blood/adminbase.html:139
+#: templates/blood/adminbase.html:141
 msgid "User Management"
 msgstr ""
 
@@ -866,35 +1414,72 @@ msgid "Registered Users"
 msgstr ""
 
 #: templates/blood/admin_user_management.html:19
-msgid "NIN"
+#: templates/donor/donation_request_form.html:31
+#: templates/patient/blood_request_form.html:27
+msgid "Full Name"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:21
+msgid "Phone"
 msgstr ""
 
 #: templates/blood/admin_user_management.html:23
-msgid "Date Joined"
+msgid "NIN"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:38
+#: templates/blood/admin_user_management.html:24
+msgid "Role"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:42
 msgid "Active"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:40
+#: templates/blood/admin_user_management.html:44
 msgid "Inactive"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:44
-msgid "Are you sure you want to change this user\\'s status?"
+#: templates/blood/admin_user_management.html:54
+msgid "Edit"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:49
+#: templates/blood/admin_user_management.html:58
+#: templates/blood/admin_user_management.html:150
+msgid "Delete"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:62
+msgid "Are you sure you want to change this user status?"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:67
 msgid "Deactivate"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:53
+#: templates/blood/admin_user_management.html:71
 msgid "Activate"
 msgstr ""
 
-#: templates/blood/admin_user_management.html:66
+#: templates/blood/admin_user_management.html:86
 msgid "No users found in the system."
+msgstr ""
+
+#: templates/blood/admin_user_management.html:101
+msgid "Edit User"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:141
+msgid "Delete User"
+msgstr ""
+
+#: templates/blood/admin_user_management.html:145
+msgid ""
+"Are you sure you want to delete this user? All related data will be "
+"permanently removed."
+msgstr ""
+
+#: templates/blood/admin_user_management.html:176
+msgid "Failed to load user data."
 msgstr ""
 
 #: templates/blood/adminbase.html:8
@@ -911,8 +1496,8 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: templates/blood/adminbase.html:141
-msgid "Blood Stock"
+#: templates/blood/adminbase.html:138 templates/blood/navbar.html:47
+msgid "Dashboard"
 msgstr ""
 
 #: templates/blood/adminlogin.html:21
@@ -939,7 +1524,8 @@ msgstr "Je suis un donneur"
 
 #: templates/blood/choose_profile.html:30 templates/blood/signup.html:229
 msgid "Register as a donor to give blood and save lives."
-msgstr "Inscrivez-vous en tant que donneur pour donner du sang et sauver des vies."
+msgstr ""
+"Inscrivez-vous en tant que donneur pour donner du sang et sauver des vies."
 
 #: templates/blood/choose_profile.html:39 templates/blood/signup.html:238
 msgid "I am a Patient"
@@ -953,68 +1539,56 @@ msgstr "Inscrivez-vous en tant que patient pour demander du sang."
 msgid "Select Patient"
 msgstr ""
 
-#: templates/blood/create_donor_profile.html:22
-msgid "Donor Profile"
+#: templates/blood/create_donor_profile.html:21
+#: templates/patient/patient_dashboard.html:168
+msgid "Become a Donor"
 msgstr ""
 
-#: templates/blood/create_donor_profile.html:28
-msgid "Eligibility Information"
-msgstr ""
+#: templates/blood/create_donor_profile.html:27
+#: templates/blood/create_patient_profile.html:27
+#, fuzzy
+#| msgid "Profile Information"
+msgid "Confirm Profile Creation"
+msgstr "Informations du profil"
 
 #: templates/blood/create_donor_profile.html:29
-msgid "Required for a safe and accurate blood donation process."
+msgid ""
+"You are about to create a Donor profile. This will allow you to submit blood "
+"donation requests."
 msgstr ""
 
-#: templates/blood/create_donor_profile.html:32
-#: templates/blood/create_patient_profile.html:33
-msgid "Do you have any chronic diseases?"
+#: templates/blood/create_donor_profile.html:35
+msgid ""
+"Your existing account information will be used. You can switch back to "
+"Patient profile anytime (if you have no active donation requests)."
 msgstr ""
 
-#: templates/blood/create_donor_profile.html:43
-msgid "Are you on regular medication?"
+#: templates/blood/create_donor_profile.html:42
+msgid "Confirm: Become a Donor"
 msgstr ""
 
-#: templates/blood/create_donor_profile.html:54
-msgid "Do you have anemia?"
-msgstr ""
-
-#: templates/blood/create_donor_profile.html:65
-msgid "Have you received a blood transfusion before?"
-msgstr ""
-
-#: templates/blood/create_donor_profile.html:85 templates/blood/signup.html:184
-msgid "When was your last donation?"
-msgstr "Quand avez-vous donné pour la dernière fois?"
-
-#: templates/blood/create_donor_profile.html:93
-#: templates/blood/create_patient_profile.html:78
-msgid "Submit & Finalize"
-msgstr ""
-
-#: templates/blood/create_patient_profile.html:22
-msgid "Patient Profile"
-msgstr ""
-
-#: templates/blood/create_patient_profile.html:28
-msgid "Medical Information"
+#: templates/blood/create_patient_profile.html:21
+#: templates/donor/donor_dashboard.html:178
+msgid "Become a Patient"
 msgstr ""
 
 #: templates/blood/create_patient_profile.html:29
-msgid "Required for a safe and accurate blood request process."
+msgid ""
+"You are about to create a Patient profile. This will allow you to submit "
+"blood requests."
 msgstr ""
 
-#: templates/blood/create_patient_profile.html:41
-#: templates/blood/create_patient_profile.html:58
-msgid "Please specify"
+#: templates/blood/create_patient_profile.html:35
+msgid ""
+"Your existing account information will be used. You can switch back to Donor "
+"profile anytime (if you have no active blood requests)."
 msgstr ""
 
-#: templates/blood/create_patient_profile.html:50
-msgid "Do you have any allergies?"
-msgstr ""
-
-#: templates/blood/create_patient_profile.html:67
-msgid "Have you had previous surgeries?"
-msgstr ""
+#: templates/blood/create_patient_profile.html:42
+#, fuzzy
+#| msgid "I am a Patient"
+msgid "Confirm: Become a Patient"
+msgstr "Je suis un patient"
 
 #: templates/blood/footer.html:26
 msgid "Blood Bank Management System © 2026"
@@ -1109,14 +1683,6 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: templates/blood/navbar.html:41
-msgid "Admin Dashboard"
-msgstr ""
-
-#: templates/blood/navbar.html:47
-msgid "Dashboard"
-msgstr ""
-
 #: templates/blood/navbar.html:64 templates/blood/signup.html:35
 msgid "Register"
 msgstr "S'inscrire"
@@ -1140,6 +1706,10 @@ msgstr "Étape suivante"
 #: templates/blood/signup.html:162
 msgid "Profile Information"
 msgstr "Informations du profil"
+
+#: templates/blood/signup.html:184
+msgid "When was your last donation?"
+msgstr "Quand avez-vous donné pour la dernière fois?"
 
 #: templates/blood/signup.html:201
 msgid "When was your last transfusion?"
@@ -1167,6 +1737,11 @@ msgstr ""
 
 #: templates/blood/update_donor.html:67 templates/blood/update_patient.html:76
 msgid "Choose option"
+msgstr ""
+
+#: templates/blood/update_donor.html:111
+#: templates/blood/update_patient.html:138
+msgid "Update"
 msgstr ""
 
 #: templates/blood/update_patient.html:18
@@ -1197,11 +1772,6 @@ msgstr ""
 msgid "Cancelled"
 msgstr ""
 
-#: templates/donor/donation_history.html:61
-#: templates/donor/donor_dashboard.html:198
-msgid "Cancel Donation Request"
-msgstr ""
-
 #: templates/donor/donation_history.html:67
 #: templates/donor/donor_dashboard.html:204
 msgid ""
@@ -1216,7 +1786,7 @@ msgstr ""
 
 #: templates/donor/donation_history.html:73
 #: templates/donor/donor_dashboard.html:210
-#: templates/patient/cancel_request_modal.html:34
+#: templates/patient/cancel_request_modal.html:36
 msgid "Yes, Cancel Request"
 msgstr ""
 
@@ -1229,7 +1799,7 @@ msgid "Submit your first donation"
 msgstr ""
 
 #: templates/donor/donation_request_form.html:20
-#: templates/donor/donation_request_form.html:197
+#: templates/donor/donation_request_form.html:212
 msgid "Submit Donation Request"
 msgstr ""
 
@@ -1238,17 +1808,18 @@ msgstr ""
 msgid "Your Information"
 msgstr ""
 
-#: templates/donor/donation_request_form.html:31
-#: templates/patient/blood_request_form.html:27
-msgid "Full Name"
-msgstr ""
-
 #: templates/donor/donation_request_form.html:49
 #: templates/patient/blood_request_form.html:45
 msgid "Date of Birth & Age"
 msgstr ""
 
-#: templates/donor/donation_request_form.html:67
+#: templates/donor/donation_request_form.html:58
+#, fuzzy
+#| msgid "Last Donation Date"
+msgid "Donation Location"
+msgstr "Date du dernier don"
+
+#: templates/donor/donation_request_form.html:81
 msgid "Health Screening"
 msgstr ""
 
@@ -1298,10 +1869,6 @@ msgstr ""
 msgid "Total Donations"
 msgstr ""
 
-#: templates/donor/donor_dashboard.html:178
-msgid "Become a Patient"
-msgstr ""
-
 #: templates/donor/donor_dashboard.html:179
 msgid ""
 "Need blood? You can request it right from your existing account by applying "
@@ -1318,6 +1885,7 @@ msgstr ""
 
 #: templates/donor/donorbase.html:195 templates/donor/notifications.html:10
 #: templates/patient/notifications.html:10
+#: templates/patient/patientbase.html:135
 msgid "Notifications"
 msgstr ""
 
@@ -1327,7 +1895,7 @@ msgid "You have no notifications."
 msgstr ""
 
 #: templates/patient/blood_request_form.html:16
-#: templates/patient/blood_request_form.html:170
+#: templates/patient/blood_request_form.html:163
 msgid "Submit Blood Request"
 msgstr ""
 
@@ -1344,45 +1912,41 @@ msgstr ""
 msgid "Blood Type Needed"
 msgstr ""
 
-#: templates/patient/blood_request_form.html:74
+#: templates/patient/blood_request_form.html:67
 msgid "Number of Units"
 msgstr ""
 
-#: templates/patient/blood_request_form.html:84
+#: templates/patient/blood_request_form.html:77
 msgid "Urgency Level"
 msgstr ""
 
-#: templates/patient/blood_request_form.html:104
+#: templates/patient/blood_request_form.html:97
 msgid "Reason for Request"
 msgstr ""
 
-#: templates/patient/blood_request_form.html:114
-msgid "Recent Surgery"
-msgstr ""
-
-#: templates/patient/blood_request_form.html:118
+#: templates/patient/blood_request_form.html:111
 msgid "Check if you had surgery in the last 6 months"
 msgstr ""
 
-#: templates/patient/blood_request_form.html:125
+#: templates/patient/blood_request_form.html:118
 msgid "Location"
 msgstr ""
 
-#: templates/patient/cancel_request_modal.html:12
+#: templates/patient/cancel_request_modal.html:14
 msgid "Cancel Blood Request"
 msgstr ""
 
-#: templates/patient/cancel_request_modal.html:20
+#: templates/patient/cancel_request_modal.html:22
 msgid "Are you sure you want to cancel your blood request for"
 msgstr ""
 
-#: templates/patient/cancel_request_modal.html:24
+#: templates/patient/cancel_request_modal.html:26
 msgid ""
 "This action cannot be undone. If the request was already approved and linked "
 "to a donor, they will be notified."
 msgstr ""
 
-#: templates/patient/cancel_request_modal.html:29
+#: templates/patient/cancel_request_modal.html:31
 msgid "Go Back"
 msgstr ""
 
@@ -1395,11 +1959,11 @@ msgstr ""
 msgid "New Request"
 msgstr ""
 
-#: templates/patient/my_request.html:88
+#: templates/patient/my_request.html:87
 msgid "You have not made any blood requests yet."
 msgstr ""
 
-#: templates/patient/my_request.html:89
+#: templates/patient/my_request.html:88
 msgid "Submit your first request"
 msgstr ""
 
@@ -1419,8 +1983,8 @@ msgstr ""
 msgid "No active blood request."
 msgstr ""
 
-#: templates/patient/patient_dashboard.html:168
-msgid "Become a Donor"
+#: templates/patient/patient_dashboard.html:96
+msgid "Total Requests"
 msgstr ""
 
 #: templates/patient/patient_dashboard.html:169

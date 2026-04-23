@@ -5,7 +5,7 @@
 <br><br>
 <div class="container-fluid px-4">
     <h3 class="mb-4">{% trans "User Management" %}</h3>
-    
+
     <div class="card mb-4">
         <div class="card-header bg-danger text-white">
             <i class="fas fa-users"></i> {% trans "Registered Users" %}
@@ -16,44 +16,64 @@
                 <table class="table table-light table-hover table-bordered table-striped" id="usersTable">
                     <thead class="bg-primary text-white">
                         <tr>
+                            <th>{% trans "Full Name" %}</th>
+                            <th>{% trans "Email" %}</th>
+                            <th>{% trans "Phone" %}</th>
+                            <th>{% trans "Date of Birth" %}</th>
                             <th>{% trans "NIN" %}</th>
-                            <th>{% trans "Name" %}</th>
-                            <th>{% trans "Blood Type" %}</th>
-                            <th>{% trans "Wilaya" %}</th>
-                            <th>{% trans "Date Joined" %}</th>
+                            <th>{% trans "Role" %}</th>
+                            <th>{% trans "Created At" %}</th>
                             <th>{% trans "Status" %}</th>
-                            <th class="text-right">{% trans "Action" %}</th>
+                            <th class="text-right">{% trans "Actions" %}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for app_user in users %}
                         <tr>
-                            <td>{{ app_user.masked_nin }}</td>
                             <td>{{ app_user.first_name }} {{ app_user.last_name }}</td>
-                            <td><strong>{{ app_user.blood_type }}{{ app_user.blood_sign }}</strong></td>
-                            <td>{{ app_user.wilaya.name }}</td>
+                            <td>{{ app_user.user.email }}</td>
+                            <td>{{ app_user.phone_number }}</td>
+                            <td>{{ app_user.date_of_birth|date:"d/m/Y" }}</td>
+                            <td>{{ app_user.masked_nin }}</td>
+                            <td>{{ app_user.get_profil_type_display }}</td>
                             <td>{{ app_user.created_at|date:"d/m/Y" }}</td>
                             <td>
                                 {% if app_user.user.is_active %}
-                                    <span class="badge badge-success px-3 py-2">{% trans "Active" %}</span>
+                                    <span class="badge badge-success px-2 py-1">{% trans "Active" %}</span>
                                 {% else %}
-                                    <span class="badge badge-danger px-3 py-2">{% trans "Inactive" %}</span>
+                                    <span class="badge badge-danger px-2 py-1">{% trans "Inactive" %}</span>
                                 {% endif %}
                             </td>
-                            <td class="text-right">
-                                <form method="POST" class="d-inline" onsubmit="return confirm('{% trans "Are you sure you want to change this user\'s status?" %}');">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="user_id" value="{{ app_user.user.id }}">
-                                    {% if app_user.user.is_active %}
-                                        <button type="submit" name="action" value="deactivate" class="btn btn-warning btn-sm" {% if app_user.user == request.user %}disabled{% endif %}>
-                                            <i class="fas fa-ban"></i> {% trans "Deactivate" %}
-                                        </button>
-                                    {% else %}
-                                        <button type="submit" name="action" value="activate" class="btn btn-success btn-sm">
-                                            <i class="fas fa-check"></i> {% trans "Activate" %}
-                                        </button>
-                                    {% endif %}
-                                </form>
+                            <td class="text-right" style="white-space:nowrap;">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        {% trans "Actions" %}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editUserModal" data-user-id="{{ app_user.id }}">
+                                            <i class="fas fa-edit"></i> {% trans "Edit" %}
+                                        </a>
+                                        {% if app_user.user != request.user %}
+                                        <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#deleteUserModal" data-user-id="{{ app_user.id }}">
+                                            <i class="fas fa-trash"></i> {% trans "Delete" %}
+                                        </a>
+                                        {% endif %}
+                                        <div class="dropdown-divider"></div>
+                                        <form method="POST" class="px-3 py-1" onsubmit="return confirm('{% trans "Are you sure you want to change this user status?" %}');">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id" value="{{ app_user.user.id }}">
+                                            {% if app_user.user.is_active %}
+                                                <button type="submit" name="action" value="deactivate" class="btn btn-warning btn-sm w-100" {% if app_user.user == request.user %}disabled{% endif %}>
+                                                    <i class="fas fa-ban"></i> {% trans "Deactivate" %}
+                                                </button>
+                                            {% else %}
+                                                <button type="submit" name="action" value="activate" class="btn btn-success btn-sm w-100">
+                                                    <i class="fas fa-check"></i> {% trans "Activate" %}
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
@@ -69,4 +89,149 @@
         </div>
     </div>
 </div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editUserForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="edit-user-id" name="user_id">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">{% trans "Edit User" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{% trans "Email" %}</label>
+                        <input type="email" name="email" id="edit-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>{% trans "Password" %}</label>
+                        <input type="password" name="password" id="edit-password" class="form-control">
+                        <small class="form-text text-muted">{% trans "Leave blank to keep current password." %}</small>
+                    </div>
+                    <div class="form-group">
+                        <label>{% trans "Phone Number" %}</label>
+                        <input type="text" name="phone_number" id="edit-phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>{% trans "Date of Birth" %}</label>
+                        <input type="date" name="date_of_birth" id="edit-dob" class="form-control" required>
+                    </div>
+                    <div id="edit-error" class="alert alert-danger" style="display:none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteUserForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="delete-user-id" name="user_id">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">{% trans "Delete User" %}</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "Are you sure you want to delete this user? All related data will be permanently removed." %}</p>
+                    <div id="delete-error" class="alert alert-danger" style="display:none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+$.ajaxSetup({ headers: { 'X-CSRFToken': '{{ csrf_token }}' } });
+
+$('#editUserModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var userId = button.data('user-id');
+    $('#edit-user-id').val(userId);
+    $('#edit-error').hide().text('');
+
+    // Load user data
+    var url = "{% url 'admin-user-edit' 0 %}".replace('0', userId);
+    $.get(url, function (data) {
+        if (data.success) {
+            $('#edit-email').val(data.email);
+            $('#edit-phone').val(data.phone_number);
+            $('#edit-dob').val(data.date_of_birth);
+            $('#edit-password').val('');
+        }
+    }).fail(function () {
+        $('#edit-error').text("{% trans 'Failed to load user data.' %}").show();
+    });
+});
+
+$('#deleteUserModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var userId = button.data('user-id');
+    $('#delete-user-id').val(userId);
+    $('#delete-error').hide().text('');
+});
+
+$('#editUserForm').on('submit', function (e) {
+    e.preventDefault();
+    var userId = $('#edit-user-id').val();
+    var url = "{% url 'admin-user-edit' 0 %}".replace('0', userId);
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function (data) {
+            if (data.success) {
+                $('#editUserModal').modal('hide');
+                window.location.reload();
+            } else {
+                var errors = data.errors ? JSON.stringify(data.errors) : '{% trans "An error occurred." %}';
+                $('#edit-error').text(errors).show();
+            }
+        },
+        error: function (xhr) {
+            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+            $('#edit-error').text(error).show();
+        }
+    });
+});
+
+$('#deleteUserForm').on('submit', function (e) {
+    e.preventDefault();
+    var userId = $('#delete-user-id').val();
+    var url = "{% url 'admin-user-delete' 0 %}".replace('0', userId);
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function (data) {
+            if (data.success) {
+                $('#deleteUserModal').modal('hide');
+                window.location.reload();
+            } else {
+                $('#delete-error').text(data.error).show();
+            }
+        },
+        error: function (xhr) {
+            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+            $('#delete-error').text(error).show();
+        }
+    });
+});
+</script>
+{% endblock extra_js %}

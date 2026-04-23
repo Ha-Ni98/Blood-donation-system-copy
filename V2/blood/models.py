@@ -199,6 +199,22 @@ class BloodRequest(models.Model):
         return f"BloodRequest #{self.pk} - {self.get_status_display()}"
 
 
+class BloodAttribution(models.Model):
+    blood_request = models.ForeignKey(
+        BloodRequest, on_delete=models.CASCADE, related_name='attributions'
+    )
+    blood_type = models.ForeignKey(BloodType, on_delete=models.PROTECT)
+    units_attributed = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('blood_request', 'blood_type')
+
+    def __str__(self):
+        return f"Attribution #{self.pk} — {self.blood_type} x{self.units_attributed} for Request #{self.blood_request_id}"
+
+
 # ---------------------------------------------------------------------------
 # Notification
 # ---------------------------------------------------------------------------

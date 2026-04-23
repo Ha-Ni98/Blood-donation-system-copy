@@ -121,24 +121,72 @@ class RegisterStep3Form(forms.Form):
 
 class AdminBloodRequestFilterForm(forms.Form):
     status = forms.ChoiceField(
-        choices=[('', 'All Statuses')] + models.BLOOD_REQUEST_STATUS_CHOICES, required=False
+        choices=[('', _('All Statuses'))] + models.BLOOD_REQUEST_STATUS_CHOICES, required=False
     )
     urgency = forms.ChoiceField(
-        choices=[('', 'All Urgencies')] + models.URGENCY_CHOICES, required=False
+        choices=[('', _('All Urgencies'))] + models.URGENCY_CHOICES, required=False
     )
-    blood_type = forms.ChoiceField(
-        choices=[('', 'All Types')] + models.BLOOD_TYPE_CHOICES, required=False
-    )
-    blood_sign = forms.ChoiceField(
-        choices=[('', 'All Signs')] + models.BLOOD_SIGN_CHOICES, required=False
+    blood_type = forms.ModelChoiceField(
+        queryset=models.BloodType.objects.all(), empty_label=_('All Types'), required=False
     )
     wilaya = forms.ModelChoiceField(
-        queryset=models.Wilaya.objects.all(), empty_label='All Wilayas', required=False
+        queryset=models.Wilaya.objects.all(), empty_label=_('All Wilayas'), required=False
+    )
+    commune = forms.ModelChoiceField(
+        queryset=models.Commune.objects.all(), empty_label=_('All Communes'), required=False
     )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        wilaya = cleaned_data.get('wilaya')
+        commune = cleaned_data.get('commune')
+        if wilaya and commune and commune.wilaya != wilaya:
+            self.add_error('commune', _('Selected commune does not belong to the chosen wilaya.'))
+        return cleaned_data
 
-class AdminDonationRequestFilterForm(forms.Form):
-    status = forms.ChoiceField(
-        choices=[('', 'All Statuses')] + models.DONATION_REQUEST_STATUS_CHOICES, required=False
+
+class BloodStockEditForm(forms.ModelForm):
+    class Meta:
+        model = models.BloodStock
+        fields = ['blood_type', 'units_available']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['blood_type'].disabled = True
+
+    def clean_units_available(self):
+        value = self.cleaned_data.get('units_available')
+        if value is not None and value < 0:
+            raise forms.ValidationError(_('Stock cannot be negative.'))
+        return value
+
+
+class AdminUserEditForm(forms.Form):
+    email = forms.EmailField(required=True, label=_('Email'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        required=False,
+        label=_('Password'),
+        help_text=_('Leave blank to keep current password.')
+    )
+    phone_number = forms.CharField(
+        max_length=20,
+        required=True,
+        label=_('Phone Number'),
+        validators=[validate_phone_number]
+    )
+    date_of_birth = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True,
+        label=_('Date of Birth')
     )
 
+    def __init__(self, *args, **kwargs):
+        self.user_id = kwargs.pop('user_id', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if self.user_id and User.objects.filter(username=email).exclude(pk=self.user_id).exists():
+            raise forms.ValidationError(_('A user with this email already exists.'))
+        return email

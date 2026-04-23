@@ -2,169 +2,118 @@
 {% load i18n %}
 {% block content %}
 <br><br>
-<div class="container">
+<div class="container-fluid px-4">
+    <h3 class="mb-4">{% trans "Admin Dashboard" %}</h3>
 
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-users fa-2x text-primary"></i>
+                    </div>
+                    <h4>{{ total_donors }}</h4>
+                    <div>{% trans "Total Donors" %}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-user-injured fa-2x text-info"></i>
+                    </div>
+                    <h4>{{ total_patients }}</h4>
+                    <div>{% trans "Total Patients" %}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-check-circle fa-2x text-success"></i>
+                    </div>
+                    <h4>{{ total_completed_donations }}</h4>
+                    <div>{% trans "Completed Donations" %}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-heart fa-2x text-danger"></i>
+                    </div>
+                    <h4>{{ total_completed_blood_requests }}</h4>
+                    <div>{% trans "Completed Blood Requests" %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blood Stock Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-hand-holding-water"></i> {% trans "Blood Stock" %}
+        </div>
+        <div class="card-body">
+            {% if blood_stocks %}
+            <div class="table-responsive">
+                <table class="table table-light table-hover table-bordered table-striped">
+                    <thead class="bg-danger text-white">
+                        <tr>
+                            <th>{% trans "Blood Type" %}</th>
+                            <th>{% trans "Units Available" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in blood_stocks %}
+                        <tr>
+                            <td><strong>{{ stock.blood_type }}</strong></td>
+                            <td>{{ stock.units_available }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info text-center">
+                {% trans "No stock data available." %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Pending Requests Cards -->
     <div class="row">
-        <div class="col-sm-3">
-          <div class="card bg-light">
-            <div class="card-body">
-                <div class="blood">
-                    <h2>A+ <i class="fas fa-tint"></i></h2>
-                </div><br><br>
-                <div>
-                    {{A1.unit}}
-                </div>                            
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>B+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{B1.unit}}
-                    </div>                            
+        <div class="col-md-6">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-clock"></i> {% trans "Pending Blood Requests" %}
                 </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>O+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{O1.unit}}
-                    </div>                            
+                <div class="card-body text-center">
+                    <h2 class="mb-3">{{ pending_blood_requests_count }}</h2>
+                    <a href="{% url 'admin-blood-requests' %}?status=pending" class="btn btn-outline-warning">
+                        {% trans "See Details" %}
+                    </a>
                 </div>
-              </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>AB+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{AB1.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-      </div>
-  
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="card bg-light">
-            <div class="card-body">
-                <div class="blood">
-                    <h2>A- <i class="fas fa-tint"></i></h2>
-                </div><br><br>
-                <div>
-                  {{A2.unit}}
-                </div>                            
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>B- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{B2.unit}}
-                    </div>                            
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>O- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{O2.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>AB- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{AB2.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-      </div>
-
-<hr>
-
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="card bg-light">
-          <div class="card-body">
-              <div class="blood">
-                  <i class="fas fa-users"></i>
-              </div><br>
-              <div>
-                  {% trans "Total Donors" %} <br>
-                  {{totaldonors}}
-              </div>                            
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="fas fa-spinner"></i>
-                  </div><br>
-                  <div>
-                      {% trans "Total Requests" %} <br>
-                     {{totalrequest}}
-                  </div>                            
-              </div>
-            </div>
-      </div>
-
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="far fa-check-circle"></i>
-                  </div><br>
-                  <div>
-                      {% trans "Approved Requests" %} <br>
-                      {{totalapprovedrequest}}
-                  </div>                            
-              </div>
             </div>
         </div>
-
-        <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="fas fa-tint xyz"></i>
-                  </div><br>
-                  <div>
-                      {% trans "Total Blood Unit (in ml)" %} <br>
-                      {{totalbloodunit}}
-                  </div>                            
-              </div>
+        <div class="col-md-6">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-clock"></i> {% trans "Pending Donation Requests" %}
+                </div>
+                <div class="card-body text-center">
+                    <h2 class="mb-3">{{ pending_donation_requests_count }}</h2>
+                    <a href="{% url 'admin-donation-requests' %}?status=pending" class="btn btn-outline-warning">
+                        {% trans "See Details" %}
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}

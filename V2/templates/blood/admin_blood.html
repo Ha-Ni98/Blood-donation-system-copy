@@ -1,159 +1,55 @@
 {% extends 'blood/adminbase.html' %}
-{% block content %}
-{% load widget_tweaks %}
 {% load i18n %}
 
-<style>
-  .xyz{
-    display: table;
-    margin-right: auto;
-    margin-left: auto;
-  }
-</style>
-
+{% block content %}
 <br><br>
-<div class="container">
+<div class="container-fluid px-4">
+    <h3 class="mb-4">{% trans "Blood Stock Management" %}</h3>
 
-  <div class="row">
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>A+ <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{A1.unit}}
-          </div>
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-hand-holding-water"></i> {% trans "Blood Stock" %}
         </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
         <div class="card-body">
-          <div class="blood">
-            <h2>B+ <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{B1.unit}}
-          </div>
+            <form method="POST">
+                {% csrf_token %}
+                {% if stocks %}
+                <div class="table-responsive">
+                    <table class="table table-light table-hover table-bordered table-striped">
+                        <thead class="bg-danger text-white">
+                            <tr>
+                                <th>{% trans "Blood Type" %}</th>
+                                <th>{% trans "Units Available" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stock in stocks %}
+                            <tr>
+                                <td>
+                                    <strong>{{ stock.blood_type }}</strong>
+                                    <input type="hidden" name="stock_id" value="{{ stock.id }}">
+                                </td>
+                                <td>
+                                    <input type="number" name="units_available" value="{{ stock.units_available }}"
+                                           min="0" class="form-control form-control-sm w-auto d-inline-block"
+                                           style="width:100px;" required>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> {% trans "Save Changes" %}
+                </button>
+                {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
+                    <p class="mb-0">{% trans "No blood stock data available." %}</p>
+                </div>
+                {% endif %}
+            </form>
         </div>
-      </div>
     </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>O+ <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{O1.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>AB+ <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{AB1.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="row">
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>A- <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{A2.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>B- <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{B2.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>O- <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{O2.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="blood">
-            <h2>AB- <i class="fas fa-tint"></i></h2>
-          </div><br><br>
-          <div>
-            {{AB2.unit}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <hr>
-  <br>
-
-  <h3 class="text-center">{% trans "Update Blood Unit" %}</h3><br>
-
-  <div class="xyz">
-    <form class="form-inline" method="POST">
-      {% csrf_token %}
-
-      <div class="form-group mx-sm-3 mb-6">
-        <select name="bloodgroup" class="form-control">
-          <option disabled="disabled" selected="selected">{% trans "Choose Blood Group" %}</option>
-          <option>O+</option>
-          <option>O-</option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-        </select>
-      </div>
-
-      <div class="form-group mx-sm-3 mb-6">
-        <input type="number" class="form-control" name="unit" placeholder="{% trans 'Unit' %}">
-      </div>
-
-      <button type="submit" class="btn btn-primary mb-2">{% trans "Update" %}</button>
-    </form>
-  </div>
-
 </div>
-
 {% endblock content %}
