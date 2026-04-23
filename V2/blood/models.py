@@ -122,34 +122,6 @@ class AppUser(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class PatientProfile(models.Model):
-    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='patient_profiles')
-    chronic_disease = models.BooleanField(default=False)
-    chronic_disease_details = models.CharField(max_length=255, blank=True, null=True)
-    allergies = models.BooleanField(default=False)
-    allergies_details = models.CharField(max_length=255, blank=True, null=True)
-    previous_surgeries = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Patient Profile: {self.app_user}"
-
-
-class DonorProfile(models.Model):
-    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='donor_profiles')
-    chronic_disease = models.BooleanField(default=False)
-    regular_medication = models.BooleanField(default=False)
-    anemia = models.BooleanField(default=False)
-    received_transfusion = models.BooleanField(default=False)
-    donated_before = models.BooleanField(default=False)
-    last_donation_date = models.DateField(blank=True, null=True)
-    is_eligible = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Donor Profile: {self.app_user}"
-
-
 # --- BloodRequest status constants ---
 STATUS_PENDING = 'pending'
 STATUS_APPROVED = 'approved'
@@ -187,11 +159,10 @@ URGENCY_CHOICES = [
 
 
 class BloodRequest(models.Model):
-    patient = models.ForeignKey(
-        'PatientProfile', on_delete=models.CASCADE, related_name='blood_requests'
+    user = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name='blood_requests'
     )
-    blood_type = models.CharField(max_length=2, choices=BLOOD_TYPE_CHOICES)
-    blood_sign = models.CharField(max_length=1, choices=BLOOD_SIGN_CHOICES)
+    blood_type = models.ForeignKey(BloodType, on_delete=models.PROTECT)
     units_needed = models.PositiveIntegerField()
     urgency = models.CharField(max_length=10, choices=URGENCY_CHOICES, default='normal')
     required_date = models.DateField()
@@ -259,37 +230,7 @@ class Notification(models.Model):
 
 
 # ---------------------------------------------------------------------------
-# TransfusionSafetyPeriod
-# ---------------------------------------------------------------------------
-
-class TransfusionSafetyPeriod(models.Model):
-    """
-    Created when a BloodRequest is marked Completed and the patient also has
-    a DonorProfile. Blocks that donor from donating for 6 months (Spec §7.2).
-    """
-    # OneToOne: one donor can only have one active safety period at a time
-    donor = models.OneToOneField(
-        DonorProfile, on_delete=models.CASCADE, related_name='transfusion_safety_period'
-    )
-    blood_request = models.ForeignKey(
-        BloodRequest, on_delete=models.CASCADE, related_name='safety_periods'
-    )
-    started_at = models.DateTimeField()
-    # Computed on save: started_at + 6 months
-    ends_at = models.DateTimeField(blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if not self.ends_at and self.started_at:
-            # 6 months approximated as 183 days (Spec §7.2)
-            self.ends_at = self.started_at + timedelta(days=183)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"SafetyPeriod: {self.donor} until {self.ends_at}"
-
-
-# ---------------------------------------------------------------------------
-# DonationRequest (stub — donor-facing views built in Phase C)
+# DonationRequest
 # ---------------------------------------------------------------------------
 
 DONATION_REQUEST_STATUS_CHOICES = [
@@ -307,37 +248,20 @@ DONATION_TERMINAL_STATUSES = frozenset([
 
 class DonationRequest(models.Model):
     """
-    A donor's offer to donate blood, optionally linked to a BloodRequest.
-    The donor-facing form and views for creating DonationRequests are Phase C scope.
-    Only the model is created here so that BloodRequest.save() can reference it
-    (via the OneToOne) and admin can link them.
+    A donor's offer to donate blood.
     """
-    donor = models.ForeignKey(
-        DonorProfile, on_delete=models.CASCADE, related_name='donation_requests'
-    )
-    # Nullable — admin links this to a BloodRequest (Phase C/D admin action)
-    blood_request = models.ForeignKey(
-        BloodRequest,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='donation_requests',
+    user = models.ForeignKey(
+        AppUser, on_delete=models.CASCADE, related_name='donation_requests'
     )
 
-    # --- Health screening fields (Spec §9.1) ---
-    donated_last_3_months = models.BooleanField(default=False)
-    transfusion_last_6_months = models.BooleanField(default=False)
-    surgery_last_6_months = models.BooleanField(default=False)
-    has_fever = models.BooleanField(default=False)
-    on_medication = models.BooleanField(default=False)
-    has_anemia = models.BooleanField(default=False)
-    # Female-only fields — nullable for male donors
-    is_pregnant = models.BooleanField(null=True, blank=True)
-    is_breastfeeding = models.BooleanField(null=True, blank=True)
+    had_surgery = models.BooleanField(default=False)
 
-    # --- Confirmation checkboxes (Spec §9.2) ---
-    confirmed_accurate = models.BooleanField(default=False)
-    confirmed_understands = models.BooleanField(default=False)
+    wilaya = models.ForeignKey(
+        Wilaya, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    commune = models.ForeignKey(
+        Commune, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     status = models.CharField(
         max_length=20,
@@ -348,4 +272,4 @@ class DonationRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"DonationRequest #{self.pk} by {self.donor} — {self.get_status_display()}"
+        return f"DonationRequest #{self.pk} by {self.user} — {self.get_status_display()}"

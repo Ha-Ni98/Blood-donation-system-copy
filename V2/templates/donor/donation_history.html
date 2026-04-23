@@ -26,7 +26,7 @@
             <tbody>
                 {% for req in donations %}
                 <tr>
-                    <td><strong>{{ app_user.blood_type }}{{ app_user.blood_sign }}</strong></td>
+                    <td><strong>{{ app_user.blood_type }}</strong></td>
                     <td>{{ req.created_at|date:"d/m/Y" }}</td>
                     <td>
                         {% if req.status == 'pending' %}

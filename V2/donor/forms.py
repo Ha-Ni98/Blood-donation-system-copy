@@ -7,14 +7,18 @@ from django.core.exceptions import ValidationError
 # Registration is now handled by unified forms in blood/forms.py using AppUser and DonorProfile.
 
 class DonationRequestForm(forms.ModelForm):
-    # We redefine boolean fields to have custom labels and enforce that confirmations are True.
-    # We use CheckboxInput or Select based on UI preference. We'll use RadioSelect with choices for yes/no.
+    """
+    Health screening form. All questions are form-only fields.
+    If any answer is 'Yes', the request is rejected with a notification.
+    Only had_surgery, wilaya, and commune are saved to the model.
+    """
     
     BOOL_CHOICES = [
         (True, _('Yes')),
         (False, _('No'))
     ]
 
+    # Health screening questions (form-only, not saved to model)
     donated_last_3_months = forms.TypedChoiceField(
         choices=BOOL_CHOICES, widget=forms.RadioSelect, coerce=lambda x: x == 'True',
         label=_("Donated blood in the last 3 months?")
@@ -62,17 +66,23 @@ class DonationRequestForm(forms.ModelForm):
 
     class Meta:
         model = DonationRequest
-        fields = [
-            'donated_last_3_months', 'transfusion_last_6_months', 'surgery_last_6_months',
-            'has_fever', 'on_medication', 'has_anemia',
-            'is_pregnant', 'is_breastfeeding',
-            'confirmed_accurate', 'confirmed_understands'
-        ]
+        fields = ['wilaya', 'commune', 'had_surgery']
+        widgets = {
+            'wilaya': forms.Select(attrs={'class': 'form-control'}),
+            'commune': forms.Select(attrs={'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         self.gender = kwargs.pop('gender', None)
         super().__init__(*args, **kwargs)
-        if self.gender != 'F':
+        # Make wilaya/commune required
+        self.fields['wilaya'].required = True
+        self.fields['commune'].required = True
+        # Remove empty option for wilaya/commune
+        self.fields['wilaya'].empty_label = None
+        self.fields['commune'].empty_label = None
+        
+        if self.gender and self.gender.lower() != 'female':
             self.fields.pop('is_pregnant', None)
             self.fields.pop('is_breastfeeding', None)
         else:
@@ -81,12 +91,29 @@ class DonationRequestForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if self.gender != 'F':
-            cleaned_data['is_pregnant'] = None
-            cleaned_data['is_breastfeeding'] = None
+        if self.gender and self.gender.lower() != 'female':
+            cleaned_data['is_pregnant'] = False
+            cleaned_data['is_breastfeeding'] = False
         
         # Enforce both checkboxes
         if not cleaned_data.get('confirmed_accurate') or not cleaned_data.get('confirmed_understands'):
             raise ValidationError(_("You must confirm both checkboxes at the bottom."))
             
         return cleaned_data
+
+    def is_eligible(self):
+        """Returns True if donor is eligible, False otherwise."""
+        cleaned_data = self.cleaned_data
+        
+        # Surgery question does NOT block - we save it but don't reject
+        blocking_conditions = [
+            cleaned_data.get('donated_last_3_months'),
+            cleaned_data.get('transfusion_last_6_months'),
+            cleaned_data.get('has_fever'),
+            cleaned_data.get('on_medication'),
+            cleaned_data.get('has_anemia'),
+            cleaned_data.get('is_pregnant'),
+            cleaned_data.get('is_breastfeeding'),
+        ]
+        
+        return not any(blocking_conditions)

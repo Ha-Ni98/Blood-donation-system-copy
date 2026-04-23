@@ -30,7 +30,7 @@
             <tbody>
                 {% for req in blood_request %}
                 <tr>
-                    <td><strong>{{ req.blood_type }}{{ req.blood_sign }}</strong></td>
+                    <td><strong>{{ req.blood_type }}</strong></td>
                     <td>{{ req.units_needed }}</td>
                     <td>
                         {% if req.urgency == 'critical' %}
@@ -68,9 +68,8 @@
                             <button type="button"
                                     class="btn btn-outline-danger btn-sm"
                                     data-toggle="modal"
-                                    data-target="#cancelModal"
-                                    data-request-id="{{ req.pk }}"
-                                    data-blood-type="{{ req.blood_type }}{{ req.blood_sign }}">
+                                    data-target="#cancelModal{{ req.pk }}"
+                                    data-blood-type="{{ req.blood_type }}">
                                 {% trans "Cancel" %}
                             </button>
                         {% else %}

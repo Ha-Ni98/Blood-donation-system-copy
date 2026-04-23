@@ -40,7 +40,7 @@
                         <div class="name">{% trans "Blood Group" %}</div>
                         <div class="value">
                             <div class="input-group">
-                                <input type="text" class="input--style-5" value="{{ blood_group }}" readonly disabled>
+                                <input type="text" class="input--style-5" value="{{ blood_type }}" readonly disabled>
                             </div>
                         </div>
                     </div>
@@ -54,11 +54,25 @@
                         </div>
                     </div>
 
+                    {# ── Location ── #}
+                    <h5 class="mt-4 mb-3" style="color:#555;">{% trans "Donation Location" %}</h5>
+
                     <div class="form-row">
-                        <div class="name">{% trans "Last Donation Date" %}</div>
-                        <div class="value">
+                        <div class="name" style="width: 50%;">{{ form.wilaya.label }}</div>
+                        <div class="value" style="width: 50%;">
                             <div class="input-group">
-                                <input type="text" class="input--style-5" value="{{ last_donation_date|default:'--' }}" readonly disabled>
+                                {{ form.wilaya }}
+                                <div class="text-danger mt-1 w-100">{{ form.wilaya.errors }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="name" style="width: 50%;">{{ form.commune.label }}</div>
+                        <div class="value" style="width: 50%;">
+                            <div class="input-group">
+                                {{ form.commune }}
+                                <div class="text-danger mt-1 w-100">{{ form.commune.errors }}</div>
                             </div>
                         </div>
                     </div>
@@ -139,6 +153,7 @@
                     </div>
 
                     {% if is_female %}
+                    
                     <div class="form-row">
                         <div class="name" style="width: 50%;">{{ form.is_pregnant.label }}</div>
                         <div class="value" style="width: 50%;">
@@ -204,5 +219,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        var wilayaDropdown = $('#id_wilaya');
+        var communeDropdown = $('#id_commune');
+
+        wilayaDropdown.change(function() {
+            var wilayaId = $(this).val();
+            communeDropdown.empty();
+            if (wilayaId) {
+                $.ajax({
+                    url: "{% url 'api-communes' %}",
+                    data: { 'wilaya_id': wilayaId },
+                    success: function(data) {
+                        communeDropdown.append('<option value="">---------</option>');
+                        $.each(data, function(key, value) {
+                            communeDropdown.append(
+                                '<option value="' + value.id + '">' + value.name + '</option>'
+                            );
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 {% endblock content %}

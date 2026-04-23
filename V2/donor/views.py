@@ -9,61 +9,54 @@ from . import forms
 
 # Donor signup has been moved to the unified signup flow in blood/views.py
 
+def calculate_donor_eligibility(app_user):
+    """
+    Calculate donor eligibility based on AppUser fields.
+    Returns: (is_eligible: bool, reason: str or None, next_date: date or None)
+    """
+    today = timezone.now().date()
+    
+    if app_user.age < 18:
+        return False, _("You must be at least 18 years old to donate."), None
+    
+    if app_user.last_donation_date:
+        donation_eligible_date = app_user.last_donation_date + timedelta(days=90)
+        if today < donation_eligible_date:
+            days_left = (donation_eligible_date - today).days
+            return False, _("Last donation was recent. Please wait {0} more days.").format(days_left), donation_eligible_date
+    
+    if app_user.last_transfusion_date:
+        transfusion_eligible_date = app_user.last_transfusion_date + timedelta(days=180)
+        if today < transfusion_eligible_date:
+            days_left = (transfusion_eligible_date - today).days
+            return False, _("Recent transfusion. Please wait {0} more days.").format(days_left), transfusion_eligible_date
+    
+    return True, None, None
+
+
 @login_required
 def donor_dashboard_view(request):
-    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
-    if not donor_profile:
-        return redirect('/')
-
-    app_user = donor_profile.app_user
+    app_user = request.user.app_user
+    
+    # Verify user is a donor
+    if app_user.profil_type != 'Donor':
+        messages.error(request, _('You do not have a donor profile.'))
+        return redirect('home')
     
     # Active Request
     active_request = bmodels.DonationRequest.objects.filter(
-        donor=donor_profile, 
+        user=app_user, 
         status__in=['pending', 'approved']
     ).first()
+    
+    # Check if user has patient history (for banner display)
+    has_patient_history = bmodels.BloodRequest.objects.filter(user=app_user).exists()
 
-    # Eligibility logic
-    is_eligible = donor_profile.is_eligible
-    ineligible_reason = None
-    next_eligible_date = None
-
-    if not is_eligible:
-        ineligible_reason = _("Marked ineligible by administrator.")
-    elif app_user.age < 18:
-        is_eligible = False
-        ineligible_reason = _("You are under 18 years old.")
-    elif donor_profile.chronic_disease:
-        is_eligible = False
-        ineligible_reason = _("You have a chronic disease.")
-    elif donor_profile.anemia:
-        is_eligible = False
-        ineligible_reason = _("You have a history of anemia.")
-    elif donor_profile.last_donation_date and donor_profile.last_donation_date > timezone.now().date() - timedelta(days=90):
-        is_eligible = False
-        days_since = (timezone.now().date() - donor_profile.last_donation_date).days
-        days_left = 90 - days_since
-        next_eligible_date = donor_profile.last_donation_date + timedelta(days=90)
-        ineligible_reason = _("Last donation was {0} days ago. Please wait {1} more days.").format(days_since, days_left)
-    else:
-        has_active_tsp = bmodels.TransfusionSafetyPeriod.objects.filter(
-            donor=donor_profile, ends_at__gt=timezone.now()
-        ).exists()
-        if has_active_tsp:
-            is_eligible = False
-            ineligible_reason = _("Recent required safety period.")
-        else:
-            patient_profile = app_user.patient_profiles.order_by('-created_at').first()
-            if patient_profile:
-                has_active_br = bmodels.BloodRequest.objects.filter(
-                    patient=patient_profile, status__in=['pending', 'approved']
-                ).exists()
-                if has_active_br:
-                    is_eligible = False
-                    ineligible_reason = _("Active blood request as a patient.")
+    # Eligibility calculation from AppUser fields
+    is_eligible, ineligible_reason, next_eligible_date = calculate_donor_eligibility(app_user)
 
     # Stat cards
-    all_requests = bmodels.DonationRequest.objects.filter(donor=donor_profile)
+    all_requests = bmodels.DonationRequest.objects.filter(user=app_user)
     stats = {
         'total': all_requests.count(),
         'pending': all_requests.filter(status='pending').count(),
@@ -75,8 +68,9 @@ def donor_dashboard_view(request):
 
     context = {
         'app_user': app_user,
-        'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'blood_type': app_user.blood_type,
         'active_request': active_request,
+        'has_patient_history': has_patient_history,
         'is_eligible': is_eligible,
         'ineligible_reason': ineligible_reason,
         'next_eligible_date': next_eligible_date,
@@ -87,94 +81,52 @@ def donor_dashboard_view(request):
 
 @login_required
 def submit_donation_request_view(request):
-    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
-    if not donor_profile:
-        return redirect('/')
+    app_user = request.user.app_user
+    
+    if app_user.profil_type != 'Donor':
+        messages.error(request, _('You do not have a donor profile.'))
+        return redirect('home')
 
-    app_user = donor_profile.app_user
-
-    # Eligibility Checks
-    if not donor_profile.is_eligible:
-        messages.warning(request, _("You are currently not eligible to donate blood."))
+    # Eligibility Check from AppUser fields
+    is_eligible, ineligible_reason, __ = calculate_donor_eligibility(app_user)
+    if not is_eligible:
+        messages.warning(request, ineligible_reason)
         return redirect('donor-dashboard')
 
-    if app_user.age < 18:
-        messages.warning(request, _("You cannot donate because you are under 18 years old."))
-        return redirect('donor-dashboard')
-
-    if donor_profile.chronic_disease:
-        messages.warning(request, _("You cannot donate because you have a chronic disease."))
-        return redirect('donor-dashboard')
-
-    if donor_profile.anemia:
-        messages.warning(request, _("You cannot donate because you have anemia."))
-        return redirect('donor-dashboard')
-
-    if donor_profile.last_donation_date:
-        ninety_days_ago = timezone.now().date() - timedelta(days=90)
-        if donor_profile.last_donation_date > ninety_days_ago:
-            messages.warning(request, _("You cannot donate because your last donation was less than 3 months ago."))
-            return redirect('donor-dashboard')
-
-    patient_profile = app_user.patient_profiles.order_by('-created_at').first()
-    if patient_profile:
-        has_active_br = bmodels.BloodRequest.objects.filter(
-            patient=patient_profile,
-            status__in=['pending', 'approved']
-        ).exists()
-        if has_active_br:
-            messages.warning(request, _("You cannot donate because you have an active blood request."))
-            return redirect('donor-dashboard')
-
+    # Check for active donation request
     has_active_dr = bmodels.DonationRequest.objects.filter(
-        donor=donor_profile,
+        user=app_user,
         status__in=['pending', 'approved']
     ).exists()
     if has_active_dr:
         messages.warning(request, _("You already have an active donation request."))
         return redirect('donor-dashboard')
 
-    has_active_tsp = bmodels.TransfusionSafetyPeriod.objects.filter(
-        donor=donor_profile,
-        ends_at__gt=timezone.now()
+    # Check for active blood request (cross-profile blocking)
+    has_active_br = bmodels.BloodRequest.objects.filter(
+        user=app_user,
+        status__in=['pending', 'approved']
     ).exists()
-    if has_active_tsp:
-        messages.warning(request, _("You cannot donate because you received a transfusion less than 6 months ago."))
+    if has_active_br:
+        messages.warning(request, _("You cannot donate because you have an active blood request."))
         return redirect('donor-dashboard')
 
     if request.method == 'POST':
         form = forms.DonationRequestForm(request.POST, gender=app_user.gender)
         if form.is_valid():
-            # Point 2: Additional Submission Validation Checks
-            reason = None
-            if form.cleaned_data.get('transfusion_last_6_months'):
-                reason = _("you received a transfusion in the last 6 months")
-            elif form.cleaned_data.get('surgery_last_6_months'):
-                reason = _("you had surgery in the last 6 months")
-            elif form.cleaned_data.get('has_anemia'):
-                reason = _("you have anemia")
-            elif app_user.gender == 'F' and (form.cleaned_data.get('is_pregnant') or form.cleaned_data.get('is_breastfeeding')):
-                reason = _("you are pregnant or breastfeeding")
-            elif form.cleaned_data.get('donated_last_3_months'):
-                reason = _("you donated in the last 3 months")
+            # Check if donor is eligible based on screening
+            if not form.is_eligible():
+                messages.warning(request, _("Sorry, you cannot perform a donation request."))
+                return redirect('donor-dashboard')
 
-            if reason:
-                messages.error(request, _("Your donation request cannot be submitted because {0}.").format(reason))
-                return render(request, 'donor/donation_request_form.html', {
-                    'form': form,
-                    'full_name': f"{app_user.first_name} {app_user.last_name}",
-                    'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
-                    'date_of_birth': app_user.date_of_birth,
-                    'age': app_user.age,
-                    'last_donation_date': donor_profile.last_donation_date,
-                    'is_female': app_user.gender == 'F'
-                })
-
+            # All blocking answers are 'No' - save the donation request
             donation_request = form.save(commit=False)
-            donation_request.donor = donor_profile
+            donation_request.user = app_user
             donation_request.status = 'pending'
+            # had_surgery is saved regardless of answer
+            donation_request.had_surgery = form.cleaned_data.get('surgery_last_6_months', False)
             donation_request.save()
-            messages.success(request, _("Your donation request has been submitted."))
+            messages.success(request, _("You have successfully performed a donation request."))
             return redirect('donor-dashboard')
     else:
         form = forms.DonationRequestForm(gender=app_user.gender)
@@ -182,11 +134,10 @@ def submit_donation_request_view(request):
     context = {
         'form': form,
         'full_name': f"{app_user.first_name} {app_user.last_name}",
-        'blood_group': f"{app_user.blood_type}{app_user.blood_sign}",
+        'blood_type': app_user.blood_type,
         'date_of_birth': app_user.date_of_birth,
         'age': app_user.age,
-        'last_donation_date': donor_profile.last_donation_date,
-        'is_female': app_user.gender == 'F'
+        'is_female': app_user.gender == "female" or app_user.gender == "Female"
     }
     return render(request, 'donor/donation_request_form.html', context)
 
@@ -194,13 +145,14 @@ from django.db import transaction
 
 @login_required
 def cancel_donation_request_view(request, pk):
-    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
-    if not donor_profile:
-        messages.error(request, _("Donor profile not found."))
-        return redirect('donor-dashboard')
+    app_user = request.user.app_user
+    
+    if app_user.profil_type != 'Donor':
+        messages.error(request, _("You do not have a donor profile."))
+        return redirect('home')
 
     try:
-        donation_request = bmodels.DonationRequest.objects.get(id=pk, donor=donor_profile)
+        donation_request = bmodels.DonationRequest.objects.get(id=pk, user=app_user)
     except bmodels.DonationRequest.DoesNotExist:
         messages.error(request, _("Donation request not found or unauthorized."))
         return redirect('donor-dashboard')
@@ -209,23 +161,6 @@ def cancel_donation_request_view(request, pk):
         if donation_request.status in ['pending', 'approved']:
             with transaction.atomic():
                 donation_request.status = 'cancelled_by_user'
-                
-                # Handle cascade if linked to a BloodRequest
-                if donation_request.blood_request:
-                    blood_req = donation_request.blood_request
-                    blood_req.status = 'pending'
-                    blood_req.save()
-                    
-                    # Unlink
-                    donation_request.blood_request = None
-                    
-                    # Notify patient
-                    bmodels.Notification.objects.create(
-                        recipient=blood_req.patient.app_user,
-                        title=_("Donation Cancelled"),
-                        message=_("A donor cancelled their donation. Your blood request is now pending again.")
-                    )
-                    
                 donation_request.save()
                 messages.success(request, _("Your donation request has been cancelled."))
         else:
@@ -237,25 +172,27 @@ def cancel_donation_request_view(request, pk):
 
 @login_required
 def donation_history_view(request):
-    donor_profile = bmodels.DonorProfile.objects.filter(app_user__user=request.user).order_by('-created_at').first()
-    if not donor_profile:
-        messages.error(request, _('Donor profile not found.'))
+    app_user = request.user.app_user
+    
+    if app_user.profil_type != 'Donor':
+        messages.error(request, _('You do not have a donor profile.'))
         return redirect('home')
 
-    donations = bmodels.DonationRequest.objects.filter(donor=donor_profile).order_by('-created_at')
+    donations = bmodels.DonationRequest.objects.filter(user=app_user).order_by('-created_at')
     
     context = {
         'donations': donations,
-        'app_user': donor_profile.app_user
+        'app_user': app_user
     }
     return render(request, 'donor/donation_history.html', context)
 
 @login_required
 def donor_notifications_view(request):
-    try:
-        app_user = bmodels.AppUser.objects.get(user=request.user)
-    except bmodels.AppUser.DoesNotExist:
-        return redirect('/')
+    app_user = request.user.app_user
+    
+    if app_user.profil_type != 'Donor':
+        messages.error(request, _('You do not have a donor profile.'))
+        return redirect('home')
 
     # Mark all unread notifications as read
     bmodels.Notification.objects.filter(recipient=app_user, is_read=False).update(is_read=True)

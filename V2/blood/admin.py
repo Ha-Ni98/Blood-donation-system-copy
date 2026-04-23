@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 from .models import (
-    Wilaya, Commune, BloodType, BloodStock, AppUser, PatientProfile, DonorProfile,
-    BloodRequest, Notification, TransfusionSafetyPeriod, DonationRequest,
+    Wilaya, Commune, BloodType, BloodStock, AppUser,
+    BloodRequest, Notification, DonationRequest,
 )
 
 
@@ -40,27 +40,11 @@ class AppUserAdmin(admin.ModelAdmin):
     readonly_fields = ('masked_nin', 'created_at')
 
 
-@admin.register(PatientProfile)
-class PatientProfileAdmin(admin.ModelAdmin):
-    list_display = ('app_user', 'chronic_disease', 'allergies', 'previous_surgeries', 'created_at')
-    search_fields = ('app_user__user__email', 'app_user__first_name', 'app_user__last_name', 'emergency_contact_name')
-    list_filter = ('chronic_disease', 'allergies', 'previous_surgeries')
-    readonly_fields = ('created_at',)
-
-
-@admin.register(DonorProfile)
-class DonorProfileAdmin(admin.ModelAdmin):
-    list_display = ('app_user', 'is_eligible', 'donated_before', 'last_donation_date', 'created_at')
-    search_fields = ('app_user__user__email', 'app_user__first_name', 'app_user__last_name')
-    list_filter = ('is_eligible', 'donated_before', 'chronic_disease', 'anemia')
-    readonly_fields = ('created_at',)
-
-
 @admin.register(BloodRequest)
 class BloodRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'patient', 'blood_type', 'blood_sign', 'units_needed', 'urgency', 'status', 'created_at', 'expires_at')
-    search_fields = ('patient__app_user__first_name', 'patient__app_user__last_name')
-    list_filter = ('status', 'urgency', 'blood_type', 'blood_sign', 'wilaya')
+    list_display = ('id', 'user', 'blood_type', 'units_needed', 'urgency', 'status', 'created_at', 'expires_at')
+    search_fields = ('user__first_name', 'user__last_name', 'user__user__email')
+    list_filter = ('status', 'urgency', 'blood_type', 'wilaya')
     readonly_fields = ('created_at', 'updated_at', 'expires_at')
 
 
@@ -72,16 +56,9 @@ class NotificationAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'expires_at')
 
 
-@admin.register(TransfusionSafetyPeriod)
-class TransfusionSafetyPeriodAdmin(admin.ModelAdmin):
-    list_display = ('donor', 'blood_request', 'started_at', 'ends_at')
-    search_fields = ('donor__app_user__first_name', 'donor__app_user__last_name')
-    readonly_fields = ('ends_at',)
-
-
 @admin.register(DonationRequest)
 class DonationRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'donor', 'blood_request', 'status', 'created_at')
-    search_fields = ('donor__app_user__first_name', 'donor__app_user__last_name')
+    list_display = ('id', 'user', 'status', 'created_at')
+    search_fields = ('user__first_name', 'user__last_name', 'user__user__email')
     list_filter = ('status',)
     readonly_fields = ('created_at', 'updated_at')

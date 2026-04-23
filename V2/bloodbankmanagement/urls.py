@@ -26,6 +26,8 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
+    # API endpoints that don't need i18n prefix
+    path('api/communes/', views.communes_api, name='api-communes'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -39,7 +41,6 @@ urlpatterns += i18n_patterns(
     path('signup', views.signup_view, name='signup'),
     path('patient/add-donor-profile', views.create_donor_profile_from_patient_view, name='create-donor-profile-from-patient'),
     path('donor/add-patient-profile', views.create_patient_profile_from_donor_view, name='create-patient-profile-from-donor'),
-    path('api/communes/', views.communes_api, name='api-communes'),
     path('logout', LogoutView.as_view(template_name='blood/logout.html'), name='logout'),
 
     path('afterlogin', views.afterlogin_view, name='afterlogin'),

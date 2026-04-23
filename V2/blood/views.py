@@ -7,7 +7,7 @@ from .decorators import admin_required, terminal_status_guard
 from django.conf import settings
 from datetime import date, timedelta
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.db import transaction
@@ -160,71 +160,67 @@ def communes_api(request):
 
 @login_required(login_url='adminlogin')
 def create_donor_profile_from_patient_view(request):
+    """
+    Allow a patient to create a donor profile by updating profil_type.
+    Validates no active blood requests before allowing the switch.
+    """
     app_user = getattr(request.user, 'app_user', None)
     if not app_user:
         return redirect('home')
 
-    patient_profile = app_user.patient_profiles.order_by('-created_at').first()
-    if patient_profile:
-        has_active_br = models.BloodRequest.objects.filter(
-            patient=patient_profile,
-            status__in=['pending', 'approved']
-        ).exists()
-        if has_active_br:
-            messages.warning(request, "You cannot switch to Donor because you have an active blood request.")
-            return redirect('patient-dashboard')
+    # Check for active blood requests (block switch if exists)
+    has_active_br = models.BloodRequest.objects.filter(
+        user=app_user,
+        status__in=['pending', 'approved']
+    ).exists()
+    if has_active_br:
+        messages.warning(request, _('You cannot switch to Donor because you have an active blood request.'))
+        return redirect('patient-dashboard')
 
     if request.method == 'POST':
-        form = forms.DonorProfileForm(request.POST)
-        if form.is_valid():
-            with transaction.atomic():
-                donor_profile = form.save(commit=False)
-                donor_profile.app_user = app_user
-                donor_profile.save()
+        with transaction.atomic():
+            app_user.profil_type = 'Donor'
+            app_user.save()
 
-                donor_group, _ = Group.objects.get_or_create(name='DONOR')
-                donor_group.user_set.add(request.user)
+            donor_group, __ = Group.objects.get_or_create(name='DONOR')
+            donor_group.user_set.add(request.user)
 
-            messages.success(request, "Donor profile created successfully.")
-            return redirect('donor-dashboard')
-    else:
-        form = forms.DonorProfileForm()
+        messages.success(request, _('Donor profile created successfully.'))
+        return redirect('donor-dashboard')
 
-    return render(request, 'blood/create_donor_profile.html', {'form': form})
+    return render(request, 'blood/create_donor_profile.html', {'app_user': app_user})
 
 @login_required(login_url='adminlogin')
 def create_patient_profile_from_donor_view(request):
+    """
+    Allow a donor to create a patient profile by updating profil_type.
+    Validates no active donation requests before allowing the switch.
+    """
     app_user = getattr(request.user, 'app_user', None)
     if not app_user:
         return redirect('home')
 
-    donor_profile = app_user.donor_profiles.order_by('-created_at').first()
-    if donor_profile:
-        has_active_dr = models.DonationRequest.objects.filter(
-            donor=donor_profile,
-            status__in=['pending', 'approved']
-        ).exists()
-        if has_active_dr:
-            messages.warning(request, "You cannot switch to Patient because you have an active donation request.")
-            return redirect('donor-dashboard')
+    # Check for active donation requests (block switch if exists)
+    has_active_dr = models.DonationRequest.objects.filter(
+        user=app_user,
+        status__in=['pending', 'approved']
+    ).exists()
+    if has_active_dr:
+        messages.warning(request, _('You cannot switch to Patient because you have an active donation request.'))
+        return redirect('donor-dashboard')
 
     if request.method == 'POST':
-        form = forms.PatientProfileForm(request.POST)
-        if form.is_valid():
-            with transaction.atomic():
-                patient_profile = form.save(commit=False)
-                patient_profile.app_user = app_user
-                patient_profile.save()
+        with transaction.atomic():
+            app_user.profil_type = 'Patient'
+            app_user.save()
 
-                patient_group, _ = Group.objects.get_or_create(name='PATIENT')
-                patient_group.user_set.add(request.user)
+            patient_group, __ = Group.objects.get_or_create(name='PATIENT')
+            patient_group.user_set.add(request.user)
 
-            messages.success(request, "Patient profile created successfully.")
-            return redirect('patient-dashboard')
-    else:
-        form = forms.PatientProfileForm()
+        messages.success(request, _('Patient profile created successfully.'))
+        return redirect('patient-dashboard')
 
-    return render(request, 'blood/create_patient_profile.html', {'form': form})
+    return render(request, 'blood/create_patient_profile.html', {'app_user': app_user})
 
 @admin_required(login_url='adminlogin')
 def admin_dashboard_view(request):

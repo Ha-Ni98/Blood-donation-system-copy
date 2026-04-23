@@ -14,7 +14,7 @@
                     <div>
                         <h5 class="mb-0">{{ app_user.first_name }} {{ app_user.last_name }}</h5>
                         <small class="text-muted">
-                            {% trans "Blood Group" %}: <strong>{{ blood_group }}</strong>
+                            {% trans "Blood Group" %}: <strong>{{ blood_type }}</strong>
                             &nbsp;|&nbsp;
                             {% trans "Wilaya" %}: <strong>{{ app_user.wilaya.name }}</strong>
                             &nbsp;|&nbsp;
@@ -42,7 +42,7 @@
                         <div>
                             <p class="mb-1">
                                 <strong>{% trans "Blood Needed" %}:</strong>
-                                {{ active_request.blood_type }}{{ active_request.blood_sign }}
+                                {{ active_request.blood_type }}
                                 &nbsp;&mdash;&nbsp;
                                 {{ active_request.units_needed }} {% trans "units" %}
                             </p>
@@ -159,7 +159,7 @@
     </div>
 
     {# ── Register as Donor Banner ── #}
-    {% if not request.user.app_user.donorprofile %}
+    
     <div class="row mt-4">
         <div class="col-12">
             <div class="card bg-danger text-white">
@@ -177,7 +177,7 @@
             </div>
         </div>
     </div>
-    {% endif %}
+
 
 </div>
 {% endblock content %}

@@ -9,14 +9,14 @@ class BloodRequestForm(forms.ModelForm):
     # Confirmation checkbox — not a model field, required by Spec §4.1
     confirmation = forms.BooleanField(
         required=True,
-        label="I confirm the accuracy of this information",
-        error_messages={'required': 'You must confirm the accuracy of this information.'},
+        label=_('I confirm the accuracy of this information'),
+        error_messages={'required': _('You must confirm the accuracy of this information.')},
     )
 
     class Meta:
         model = models.BloodRequest
         fields = [
-            'blood_type', 'blood_sign', 'units_needed', 'urgency',
+            'blood_type', 'units_needed', 'urgency',
             'required_date', 'reason', 'recent_surgery', 'wilaya', 'commune',
         ]
         widgets = {
@@ -27,7 +27,7 @@ class BloodRequestForm(forms.ModelForm):
     def clean_units_needed(self):
         value = self.cleaned_data.get('units_needed')
         if value is not None and value < 1:
-            raise forms.ValidationError("Units needed must be at least 1.")
+            raise forms.ValidationError(_('Units needed must be at least 1.'))
         return value
 
     def clean(self):
@@ -36,7 +36,7 @@ class BloodRequestForm(forms.ModelForm):
         commune = cleaned_data.get('commune')
         # Ensure commune belongs to the chosen wilaya
         if wilaya and commune and commune.wilaya != wilaya:
-            self.add_error('commune', 'Selected commune does not belong to the chosen wilaya.')
+            self.add_error('commune', _('Selected commune does not belong to the chosen wilaya.'))
         return cleaned_data
 
 
@@ -117,42 +117,6 @@ class RegisterStep3Form(forms.Form):
         widget=forms.RadioSelect,
         label=_('Profile Type')
     )
-
-
-class PatientProfileForm(forms.ModelForm):
-    class Meta:
-        model = models.PatientProfile
-        fields = ['chronic_disease', 'chronic_disease_details', 'allergies', 'allergies_details', 'previous_surgeries']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        chronic_disease = cleaned_data.get('chronic_disease')
-        chronic_disease_details = cleaned_data.get('chronic_disease_details')
-        allergies = cleaned_data.get('allergies')
-        allergies_details = cleaned_data.get('allergies_details')
-
-        if chronic_disease and not chronic_disease_details:
-            self.add_error('chronic_disease_details', 'Please provide details of your chronic disease.')
-        
-        if allergies and not allergies_details:
-            self.add_error('allergies_details', 'Please provide details of your allergies.')
-
-        return cleaned_data
-
-class DonorProfileForm(forms.ModelForm):
-    class Meta:
-        model = models.DonorProfile
-        fields = ['chronic_disease', 'regular_medication', 'anemia', 'received_transfusion', 'donated_before', 'last_donation_date']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        donated_before = cleaned_data.get('donated_before')
-        last_donation_date = cleaned_data.get('last_donation_date')
-
-        if donated_before and not last_donation_date:
-            self.add_error('last_donation_date', 'Please provide the date of your last donation.')
-
-        return cleaned_data
 
 
 class AdminBloodRequestFilterForm(forms.Form):
