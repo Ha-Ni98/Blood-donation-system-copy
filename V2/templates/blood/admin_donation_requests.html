@@ -44,6 +44,7 @@
             <thead class="bg-danger text-white">
                 <tr>
                     <th>{% trans "Donor Name" %}</th>
+                    <th>{% trans "Phone Number" %}</th>
                     <th>{% trans "Blood Type" %}</th>
                     <th>{% trans "Wilaya" %}</th>
                     <th>{% trans "Commune" %}</th>
@@ -57,6 +58,7 @@
                 {% for req in donation_requests %}
                 <tr>
                     <td>{{ req.user.first_name }} {{ req.user.last_name }}</td>
+                    <td>{{ req.user.phone_number }}</td>
                     <td><strong>{{ req.user.blood_type }}</strong></td>
                     <td>{{ req.wilaya.name|default:"—" }}</td>
                     <td>{{ req.commune.name|default:"—" }}</td>
@@ -106,7 +108,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="alert alert-info py-4 text-center mb-0">
                             <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
                             <p class="mb-0">{% trans "No donation requests found." %}</p>

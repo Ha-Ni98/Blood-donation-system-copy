@@ -44,7 +44,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if req.status == 'pending' %}
+                        {% if req.status in 'pending,approved' %}
                             {# Trigger cancel confirmation modal #}
                             <button type="button"
                                     class="btn btn-outline-danger btn-sm"

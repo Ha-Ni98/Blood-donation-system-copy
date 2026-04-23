@@ -190,3 +190,26 @@ class AdminUserEditForm(forms.Form):
         if self.user_id and User.objects.filter(username=email).exclude(pk=self.user_id).exists():
             raise forms.ValidationError(_('A user with this email already exists.'))
         return email
+
+
+class AdminDonationRequestFilterForm(forms.Form):
+    status = forms.ChoiceField(
+        choices=[('', _('All Statuses'))] + models.DONATION_REQUEST_STATUS_CHOICES, required=False
+    )
+    blood_type = forms.ModelChoiceField(
+        queryset=models.BloodType.objects.all(), empty_label=_('All Types'), required=False
+    )
+    wilaya = forms.ModelChoiceField(
+        queryset=models.Wilaya.objects.all(), empty_label=_('All Wilayas'), required=False
+    )
+    commune = forms.ModelChoiceField(
+        queryset=models.Commune.objects.all(), empty_label=_('All Communes'), required=False
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        wilaya = cleaned_data.get('wilaya')
+        commune = cleaned_data.get('commune')
+        if wilaya and commune and commune.wilaya != wilaya:
+            self.add_error('commune', _('Selected commune does not belong to the chosen wilaya.'))
+        return cleaned_data
