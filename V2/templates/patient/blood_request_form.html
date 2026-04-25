@@ -138,16 +138,18 @@
                     </div>
 
                     {# ── Confirmation checkbox (Spec §4.1) ── #}
-                    <div class="form-row p-t-20">
-                        <div class="input-group">
-                            <label class="checkbox-container m-b-20">
-                                {% render_field form.confirmation %}
-                                <span class="checkmark"></span>
-                                {% trans "I confirm the accuracy of this information" %}
-                            </label>
-                            <div class="text-danger">{{ form.confirmation.errors }}</div>
+
+                    <div class="form-row">
+                        <label style="display:flex; align-items:center;  margin-right:12px; margin-top:8px ; cursor:pointer; color:#555; font-size:15px;">
+                            {% render_field form.confirmation %}
+                            
+                        </label>
+                        <div class="name" style="width: 80%;">{% trans "I confirm the accuracy of this information" %}</div>
+                        <div class="text-danger">
+                            {{ form.confirmation.errors }}
                         </div>
                     </div>
+
 
                     {# ── Non-field errors (e.g. wilaya/commune mismatch) ── #}
                     {% if form.non_field_errors %}

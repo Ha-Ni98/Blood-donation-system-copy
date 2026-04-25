@@ -180,24 +180,30 @@
                     {% endif %}
 
                     {# ── Confirmation checkboxes ── #}
-                    <div class="form-row p-t-20 mt-4">
-                        <div class="input-group">
-                            <label class="checkbox-container m-b-20 w-100">
-                                {% render_field form.confirmed_accurate %}
-                                <span class="checkmark"></span>
-                                {{ form.confirmed_accurate.label }}
-                            </label>
-                            <label class="checkbox-container m-b-20 w-100">
-                                {% render_field form.confirmed_understands %}
-                                <span class="checkmark"></span>
-                                {{ form.confirmed_understands.label }}
-                            </label>
-                            <div class="text-danger w-100">
-                                {{ form.confirmed_accurate.errors|striptags }}<br>
-                                {{ form.confirmed_understands.errors|striptags }}
-                            </div>
+                    <div class="form-row">
+                        <label style="display:flex; align-items:center;  margin-right:12px; margin-top:8px ; cursor:pointer; color:#555; font-size:15px;">
+                            {% render_field form.confirmed_accurate %}
+                            
+                        </label>
+                        <div class="name" style="width: 80%;">{{ form.confirmed_accurate.label }}</div>
+                        <div class="text-danger">
+                            {{ form.confirmed_accurate.errors|striptags }}<br>
+                            {{ form.confirmed_understands.errors|striptags }}
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <label style="display:flex; align-items:center;  margin-right:12px; margin-top:8px ; cursor:pointer; color:#555; font-size:15px;">
+                            {% render_field form.confirmed_understands %}
+                            
+                        </label>
+                        <div class="name" style="width: 80%;">{{ form.confirmed_understands.label }}</div>
+                        <div class="text-danger">
+                            {{ form.confirmed_accurate.errors|striptags }}<br>
+                            {{ form.confirmed_understands.errors|striptags }}
+                        </div>
+                    </div>
+                    
 
                     {% if form.non_field_errors %}
                     <div class="alert alert-danger">
