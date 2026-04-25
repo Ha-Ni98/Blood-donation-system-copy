@@ -36,7 +36,6 @@
                     <div class="step-indicator text-center mt-3">
                         <span class="badge {% if step == 1 %}badge-danger{% else %}badge-secondary{% endif %}">1</span>
                         <span class="badge {% if step == 2 %}badge-danger{% else %}badge-secondary{% endif %}">2</span>
-                        <span class="badge {% if step == 3 %}badge-danger{% else %}badge-secondary{% endif %}">3</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -129,6 +128,17 @@
                             </div>
                         </div>
 
+                        <h4 class="mt-4 mb-3">{% trans "Medical Information" %}</h4>
+                        <div class="form-row">
+                            <div class="name">{% trans "Blood Type" %}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    {% render_field form1.blood_type class="input--style-5" %}
+                                </div>
+                                <div class="text-danger mt-1">{{ form1.blood_type.errors }}</div>
+                            </div>
+                        </div>
+
                         <h4 class="mt-4 mb-3">{% trans "Location Details" %}</h4>
                         <div class="form-row">
                             <div class="name">{% trans "Wilaya" %}</div>
@@ -159,93 +169,34 @@
                         {% csrf_token %}
                         <input type="hidden" name="step" value="2">
 
-                        <h4 class="mb-3">{% trans "Profile Information" %}</h4>
-
-                        <div class="form-row">
-                            <div class="name">{% trans "Blood Type" %}</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    {% render_field form2.blood_type class="input--style-5" %}
-                                </div>
-                                <div class="text-danger mt-1">{{ form2.blood_type.errors }}</div>
-                            </div>
-                        </div>
-
-                        <div class="form-row border-bottom pb-4 mb-4">
-                            <div class="name">{% trans "Have you donated blood before?" %}</div>
-                            <div class="value">
-                                <div class="input-group align-items-center">
-                                    <label class="switch m-0 mr-3">
-                                        <input type="checkbox" name="donated_before" class="check-trigger" data-target="donation_date_group" {% if form2.donated_before.value %}checked{% endif %}>
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                                <div id="donation_date_group" class="mt-3" style="display: none;">
-                                    <label class="text-muted small">{% trans "When was your last donation?" %}</label>
-                                    {% render_field form2.last_donation_date class="input--style-5" %}
-                                    <div class="text-danger mt-1">{{ form2.last_donation_date.errors }}</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row border-bottom pb-4 mb-4">
-                            <div class="name">{% trans "Have you received a blood transfusion?" %}</div>
-                            <div class="value">
-                                <div class="input-group align-items-center">
-                                    <label class="switch m-0 mr-3">
-                                        <input type="checkbox" name="received_transfusion" class="check-trigger" data-target="transfusion_date_group" {% if form2.received_transfusion.value %}checked{% endif %}>
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                                <div id="transfusion_date_group" class="mt-3" style="display: none;">
-                                    <label class="text-muted small">{% trans "When was your last transfusion?" %}</label>
-                                    {% render_field form2.last_transfusion_date class="input--style-5" %}
-                                    <div class="text-danger mt-1">{{ form2.last_transfusion_date.errors }}</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <a href="?go_to_step=1" class="btn btn--radius-2 btn-secondary">{% trans "Previous" %}</a>
-                            <button class="btn btn--radius-2 btn-danger" type="submit">{% trans "Next Step" %}</button>
-                        </div>
-                    </form>
-                    {% endif %}
-
-                    <!-- STEP 3 -->
-                    {% if step == 3 %}
-                    <form method="POST" id="step3-form">
-                        {% csrf_token %}
-                        <input type="hidden" name="step" value="3">
-
                         <h4 class="mb-3 text-center">{% trans "Choose Your Profile Type" %}</h4>
 
                         <div class="row text-center mb-4">
                             <div class="col-md-6 mb-3">
-                                <div class="card profile-card {% if form3.profil_type.value == 'Donor' %}selected{% endif %}" style="border-radius: 10px; border: 2px solid #dc3545; height: 100%;" onclick="selectProfile('Donor')">
+                                <div class="card profile-card {% if form2.profil_type.value == 'Donor' %}selected{% endif %}" style="border-radius: 10px; border: 2px solid #dc3545; height: 100%;" onclick="selectProfile('Donor')">
                                     <div class="card-body">
                                         <i class="fas fa-hand-holding-water fa-4x text-danger mb-3"></i>
                                         <h4>{% trans "I am a Donor" %}</h4>
                                         <p class="text-muted">{% trans "Register as a donor to give blood and save lives." %}</p>
-                                        <input type="radio" name="profil_type" value="Donor" id="id_donor" style="display: none;" {% if form3.profil_type.value == 'Donor' %}checked{% endif %}>
+                                        <input type="radio" name="profil_type" value="Donor" id="id_donor" style="display: none;" {% if form2.profil_type.value == 'Donor' %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="card profile-card {% if form3.profil_type.value == 'Patient' %}selected{% endif %}" style="border-radius: 10px; border: 2px solid #007bff; height: 100%;" onclick="selectProfile('Patient')">
+                                <div class="card profile-card {% if form2.profil_type.value == 'Patient' %}selected{% endif %}" style="border-radius: 10px; border: 2px solid #007bff; height: 100%;" onclick="selectProfile('Patient')">
                                     <div class="card-body">
                                         <i class="fas fa-procedures fa-4x text-primary mb-3"></i>
                                         <h4>{% trans "I am a Patient" %}</h4>
                                         <p class="text-muted">{% trans "Register as a patient to request blood from our database." %}</p>
-                                        <input type="radio" name="profil_type" value="Patient" id="id_patient" style="display: none;" {% if form3.profil_type.value == 'Patient' %}checked{% endif %}>
+                                        <input type="radio" name="profil_type" value="Patient" id="id_patient" style="display: none;" {% if form2.profil_type.value == 'Patient' %}checked{% endif %}>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-danger text-center mb-3">{{ form3.profil_type.errors }}</div>
+                        <div class="text-danger text-center mb-3">{{ form2.profil_type.errors }}</div>
 
                         <div class="mt-4 text-center">
-                            <a href="?go_to_step=2" class="btn btn--radius-2 btn-secondary">{% trans "Previous" %}</a>
+                            <a href="?go_to_step=1" class="btn btn--radius-2 btn-secondary">{% trans "Previous" %}</a>
                             <button class="btn btn--radius-2 btn-danger" type="submit">{% trans "Submit Registration" %}</button>
                         </div>
                     </form>
@@ -288,19 +239,6 @@
                 }
             });
 
-            // Toggle conditional fields
-            function toggleFields() {
-                $('.check-trigger').each(function() {
-                    var targetId = $(this).data('target');
-                    if ($(this).is(':checked')) {
-                        $('#' + targetId).slideDown();
-                    } else {
-                        $('#' + targetId).slideUp();
-                    }
-                });
-            }
-            $('.check-trigger').change(toggleFields);
-            toggleFields();
         });
 
         // Profile card selection

@@ -129,7 +129,10 @@ def submit_donation_request_view(request):
             messages.success(request, _("You have successfully performed a donation request."))
             return redirect('donor-dashboard')
     else:
-        form = forms.DonationRequestForm(gender=app_user.gender)
+        form = forms.DonationRequestForm(
+            initial={'wilaya': app_user.wilaya, 'commune': app_user.commune},
+            gender=app_user.gender
+        )
 
     context = {
         'form': form,

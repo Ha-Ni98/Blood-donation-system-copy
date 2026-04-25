@@ -66,18 +66,9 @@ def signup_view(request):
             data = request.session['reg_step1'].copy()
             data['wilaya'] = data.get('wilaya_id')
             data['commune'] = data.get('commune_id')
+            data['blood_type'] = data.get('blood_type_id')
             form1 = forms.RegisterStep1Form(initial=data)
             return render(request, 'blood/signup.html', {'step': 1, 'form1': form1})
-        elif step == 2 and 'reg_step2' in request.session:
-            data = request.session['reg_step2'].copy()
-            data['blood_type'] = data.get('blood_type_id')
-            # Deserialize date strings for form initial data
-            if data.get('last_donation_date'):
-                data['last_donation_date'] = date.fromisoformat(data['last_donation_date'])
-            if data.get('last_transfusion_date'):
-                data['last_transfusion_date'] = date.fromisoformat(data['last_transfusion_date'])
-            form2 = forms.RegisterStep2Form(initial=data)
-            return render(request, 'blood/signup.html', {'step': 2, 'form2': form2})
 
     if request.method == 'POST':
         step = int(request.POST.get('step', 1))
@@ -89,8 +80,10 @@ def signup_view(request):
                 data['date_of_birth'] = data['date_of_birth'].isoformat()
                 data['wilaya_id'] = data['wilaya'].id
                 data['commune_id'] = data['commune'].id
+                data['blood_type_id'] = data['blood_type'].id
                 del data['wilaya']
                 del data['commune']
+                del data['blood_type']
                 request.session['reg_step1'] = data
                 return render(request, 'blood/signup.html', {'step': 2, 'form2': forms.RegisterStep2Form()})
             return render(request, 'blood/signup.html', {'step': 1, 'form1': form1})
@@ -98,24 +91,8 @@ def signup_view(request):
         elif step == 2:
             form2 = forms.RegisterStep2Form(request.POST)
             if form2.is_valid():
-                data = form2.cleaned_data.copy()
-                data['blood_type_id'] = data['blood_type'].id
-                del data['blood_type']
-                # Serialize date objects for session storage
-                if data.get('last_donation_date'):
-                    data['last_donation_date'] = data['last_donation_date'].isoformat()
-                if data.get('last_transfusion_date'):
-                    data['last_transfusion_date'] = data['last_transfusion_date'].isoformat()
-                request.session['reg_step2'] = data
-                return render(request, 'blood/signup.html', {'step': 3, 'form3': forms.RegisterStep3Form()})
-            return render(request, 'blood/signup.html', {'step': 2, 'form2': form2})
-
-        elif step == 3:
-            form3 = forms.RegisterStep3Form(request.POST)
-            if form3.is_valid():
                 step1 = request.session.get('reg_step1')
-                step2 = request.session.get('reg_step2')
-                if not step1 or not step2:
+                if not step1:
                     return redirect('signup')
                 try:
                     with transaction.atomic():
@@ -132,22 +109,19 @@ def signup_view(request):
                             date_of_birth=date.fromisoformat(step1['date_of_birth']),
                             phone_number=step1['phone_number'],
                             nin=step1['nin'],
-                            blood_type=models.BloodType.objects.get(id=step2['blood_type_id']),
-                            last_donation_date=step2.get('last_donation_date') or None,
-                            last_transfusion_date=step2.get('last_transfusion_date') or None,
-                            profil_type=form3.cleaned_data['profil_type'],
+                            blood_type=models.BloodType.objects.get(id=step1['blood_type_id']),
+                            profil_type=form2.cleaned_data['profil_type'],
                             wilaya=models.Wilaya.objects.get(id=step1['wilaya_id']),
                             commune=models.Commune.objects.get(id=step1['commune_id']),
                         )
                     request.session.pop('reg_step1', None)
-                    request.session.pop('reg_step2', None)
                     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                     messages.success(request, _('Account created successfully.'))
                     return redirect('afterlogin')
                 except Exception:
                     messages.error(request, _('Registration failed. Please try again.'))
                     return redirect('signup')
-            return render(request, 'blood/signup.html', {'step': 3, 'form3': form3})
+            return render(request, 'blood/signup.html', {'step': 2, 'form2': form2})
     else:
         form1 = forms.RegisterStep1Form()
 
@@ -226,8 +200,7 @@ def create_patient_profile_from_donor_view(request):
 @admin_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     # Aggregate counts
-    total_donors = models.AppUser.objects.filter(profil_type='Donor').count()
-    total_patients = models.AppUser.objects.filter(profil_type='Patient').count()
+    total_users = models.AppUser.objects.count()
     total_completed_donations = models.DonationRequest.objects.filter(status='completed').count()
     total_completed_blood_requests = models.BloodRequest.objects.filter(status='completed').count()
 
@@ -235,14 +208,15 @@ def admin_dashboard_view(request):
     blood_stocks = models.BloodStock.objects.select_related('blood_type').order_by(
         'blood_type__blood_type', 'blood_type__blood_sign'
     )
+    total_stock_units = blood_stocks.aggregate(total=Sum('units_available'))['total'] or 0
 
     # Pending counts
     pending_blood_requests_count = models.BloodRequest.objects.filter(status='pending').count()
     pending_donation_requests_count = models.DonationRequest.objects.filter(status='pending').count()
 
     context = {
-        'total_donors': total_donors,
-        'total_patients': total_patients,
+        'total_users': total_users,
+        'total_stock_units': total_stock_units,
         'total_completed_donations': total_completed_donations,
         'total_completed_blood_requests': total_completed_blood_requests,
         'blood_stocks': blood_stocks,
@@ -856,7 +830,7 @@ def admin_donation_request_cancel_view(request, pk):
 
 @admin_required(login_url='adminlogin')
 def admin_user_edit_view(request, pk):
-    """Get or update user data (email, password, phone, dob)."""
+    """Get or update user data (email, phone, dob)."""
     app_user = models.AppUser.objects.select_related('user').get(pk=pk)
 
     if request.method == 'GET':
@@ -873,12 +847,6 @@ def admin_user_edit_view(request, pk):
             # Update email (and username)
             app_user.user.email = form.cleaned_data['email']
             app_user.user.username = form.cleaned_data['email']
-
-            # Update password if provided
-            password = form.cleaned_data.get('password')
-            if password:
-                app_user.user.set_password(password)
-
             app_user.user.save()
 
             # Update AppUser fields

@@ -21,7 +21,6 @@
                             <th>{% trans "Phone" %}</th>
                             <th>{% trans "Date of Birth" %}</th>
                             <th>{% trans "NIN" %}</th>
-                            <th>{% trans "Role" %}</th>
                             <th>{% trans "Created At" %}</th>
                             <th>{% trans "Status" %}</th>
                             <th class="text-right">{% trans "Actions" %}</th>
@@ -35,7 +34,6 @@
                             <td>{{ app_user.phone_number }}</td>
                             <td>{{ app_user.date_of_birth|date:"d/m/Y" }}</td>
                             <td>{{ app_user.masked_nin }}</td>
-                            <td>{{ app_user.get_profil_type_display }}</td>
                             <td>{{ app_user.created_at|date:"d/m/Y" }}</td>
                             <td>
                                 {% if app_user.user.is_active %}
@@ -107,11 +105,6 @@
                         <input type="email" name="email" id="edit-email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>{% trans "Password" %}</label>
-                        <input type="password" name="password" id="edit-password" class="form-control">
-                        <small class="form-text text-muted">{% trans "Leave blank to keep current password." %}</small>
-                    </div>
-                    <div class="form-group">
                         <label>{% trans "Phone Number" %}</label>
                         <input type="text" name="phone_number" id="edit-phone" class="form-control" required>
                     </div>
@@ -173,7 +166,6 @@ $('#editUserModal').on('show.bs.modal', function (event) {
             $('#edit-email').val(data.email);
             $('#edit-phone').val(data.phone_number);
             $('#edit-dob').val(data.date_of_birth);
-            $('#edit-password').val('');
         }
     }).fail(function () {
         $('#edit-error').text("{% trans 'Failed to load user data.' %}").show();

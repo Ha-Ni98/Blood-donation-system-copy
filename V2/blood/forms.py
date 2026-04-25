@@ -65,6 +65,7 @@ class RegisterStep1Form(forms.Form):
     nin = forms.CharField(max_length=18, label=_('National Identity Number (NIN)'), validators=[validate_nin])
     wilaya = forms.ModelChoiceField(queryset=models.Wilaya.objects.all(), label=_('Wilaya'))
     commune = forms.ModelChoiceField(queryset=models.Commune.objects.all(), label=_('Commune'))
+    blood_type = forms.ModelChoiceField(queryset=models.BloodType.objects.all(), label=_('Blood Type'))
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -88,30 +89,6 @@ class RegisterStep1Form(forms.Form):
 
 
 class RegisterStep2Form(forms.Form):
-    blood_type = forms.ModelChoiceField(queryset=models.BloodType.objects.all(), label=_('Blood Type'))
-    donated_before = forms.BooleanField(required=False, label=_('Have you donated blood before?'))
-    last_donation_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        required=False,
-        label=_('Last Donation Date')
-    )
-    received_transfusion = forms.BooleanField(required=False, label=_('Have you received a blood transfusion?'))
-    last_transfusion_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        required=False,
-        label=_('Last Transfusion Date')
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data.get('donated_before') and not cleaned_data.get('last_donation_date'):
-            self.add_error('last_donation_date', _('Please provide the date of your last donation.'))
-        if cleaned_data.get('received_transfusion') and not cleaned_data.get('last_transfusion_date'):
-            self.add_error('last_transfusion_date', _('Please provide the date of your last transfusion.'))
-        return cleaned_data
-
-
-class RegisterStep3Form(forms.Form):
     profil_type = forms.ChoiceField(
         choices=[('Patient', _('Patient')), ('Donor', _('Donor'))],
         widget=forms.RadioSelect,
@@ -163,12 +140,6 @@ class BloodStockEditForm(forms.ModelForm):
 
 class AdminUserEditForm(forms.Form):
     email = forms.EmailField(required=True, label=_('Email'))
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        required=False,
-        label=_('Password'),
-        help_text=_('Leave blank to keep current password.')
-    )
     phone_number = forms.CharField(
         max_length=20,
         required=True,
