@@ -270,8 +270,6 @@ class DonationRequest(models.Model):
         AppUser, on_delete=models.CASCADE, related_name='donation_requests'
     )
 
-    had_surgery = models.BooleanField(default=False)
-
     wilaya = models.ForeignKey(
         Wilaya, on_delete=models.SET_NULL, null=True, blank=True
     )

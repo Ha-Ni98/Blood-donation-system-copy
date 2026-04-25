@@ -10,7 +10,7 @@ class DonationRequestForm(forms.ModelForm):
     """
     Health screening form. All questions are form-only fields.
     If any answer is 'Yes', the request is rejected with a notification.
-    Only had_surgery, wilaya, and commune are saved to the model.
+    Only wilaya and commune are saved to the model.
     """
     
     BOOL_CHOICES = [
@@ -66,7 +66,7 @@ class DonationRequestForm(forms.ModelForm):
 
     class Meta:
         model = DonationRequest
-        fields = ['wilaya', 'commune', 'had_surgery']
+        fields = ['wilaya', 'commune']
         widgets = {
             'wilaya': forms.Select(attrs={'class': 'form-control'}),
             'commune': forms.Select(attrs={'class': 'form-control'}),
@@ -105,10 +105,10 @@ class DonationRequestForm(forms.ModelForm):
         """Returns True if donor is eligible, False otherwise."""
         cleaned_data = self.cleaned_data
         
-        # Surgery question does NOT block - we save it but don't reject
         blocking_conditions = [
             cleaned_data.get('donated_last_3_months'),
             cleaned_data.get('transfusion_last_6_months'),
+            cleaned_data.get('surgery_last_6_months'),
             cleaned_data.get('has_fever'),
             cleaned_data.get('on_medication'),
             cleaned_data.get('has_anemia'),

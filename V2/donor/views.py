@@ -19,6 +19,9 @@ def calculate_donor_eligibility(app_user):
     if app_user.age < 18:
         return False, _("You must be at least 18 years old to donate."), None
     
+    if app_user.age > 65:
+        return False, _("You must be 65 years old or younger to donate."), None
+    
     if app_user.last_donation_date:
         donation_eligible_date = app_user.last_donation_date + timedelta(days=90)
         if today < donation_eligible_date:
@@ -123,8 +126,6 @@ def submit_donation_request_view(request):
             donation_request = form.save(commit=False)
             donation_request.user = app_user
             donation_request.status = 'pending'
-            # had_surgery is saved regardless of answer
-            donation_request.had_surgery = form.cleaned_data.get('surgery_last_6_months', False)
             donation_request.save()
             messages.success(request, _("You have successfully performed a donation request."))
             return redirect('donor-dashboard')
