@@ -19,6 +19,7 @@
                 <tr>
                     <th>{% trans "Blood Group" %}</th>
                     <th>{% trans "Submitted" %}</th>
+                    <th>{% trans "Donation Date" %}</th>
                     <th>{% trans "Status" %}</th>
                     <th>{% trans "Action" %}</th>
                 </tr>
@@ -28,6 +29,13 @@
                 <tr>
                     <td><strong>{{ app_user.blood_type }}</strong></td>
                     <td>{{ req.created_at|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if req.donation_date %}
+                            {{ req.donation_date|date:"d/m/Y" }}
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
                     <td>
                         {% if req.status == 'pending' %}
                             <span class="badge badge-warning">{% trans "Pending" %}</span>

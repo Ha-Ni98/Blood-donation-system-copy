@@ -251,7 +251,17 @@
 {% endblock content %}
 
 {% block extra_js %}
+{% trans "An error occurred." as error_occurred %}
+{% trans "Failed to load compatible blood types." as failed_load_compatible %}
+{% trans "Failed to load attribution data." as failed_load_attribution %}
 <script>
+// Pass translated strings to JavaScript
+var translations = {
+    compatibleTypes: "{% trans 'Compatible blood types' %}",
+    unitsAvailable: "{% trans 'Units available' %}",
+    compatibleDonors: "{% trans 'Compatible donors' %}"
+};
+
 $.ajaxSetup({ headers: { 'X-CSRFToken': '{{ csrf_token }}' } });
 
 $('#approveModal').on('show.bs.modal', function (event) {
@@ -284,7 +294,7 @@ $('#approveModal').on('show.bs.modal', function (event) {
         }
     }).fail(function () {
         $('#approve-loading').hide();
-        $('#approve-error').text("{% trans 'Failed to load compatible blood types.' %}").show();
+        $('#approve-error').text('{{ failed_load_compatible|escapejs }}').show();
     });
 });
 
@@ -317,7 +327,7 @@ $('#completeModal').on('show.bs.modal', function (event) {
         }
     }).fail(function () {
         $('#complete-loading').hide();
-        $('#complete-error').text("{% trans 'Failed to load attribution data.' %}").show();
+        $('#complete-error').text('{{ failed_load_attribution|escapejs }}').show();
     });
 });
 
@@ -353,7 +363,7 @@ function handleFormSubmit(formId, modalId) {
                 }
             },
             error: function (xhr) {
-                var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+                var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{{ error_occurred|escapejs }}';
                 $(modalId).find('.alert-danger').text(error).show();
             }
         });

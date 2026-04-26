@@ -150,6 +150,8 @@
 {% endblock content %}
 
 {% block extra_js %}
+{% trans "An error occurred." as error_occurred %}
+{% trans "Failed to load user data." as failed_load_user %}
 <script>
 $.ajaxSetup({ headers: { 'X-CSRFToken': '{{ csrf_token }}' } });
 
@@ -168,7 +170,7 @@ $('#editUserModal').on('show.bs.modal', function (event) {
             $('#edit-dob').val(data.date_of_birth);
         }
     }).fail(function () {
-        $('#edit-error').text("{% trans 'Failed to load user data.' %}").show();
+        $('#edit-error').text('{{ failed_load_user|escapejs }}').show();
     });
 });
 
@@ -192,12 +194,12 @@ $('#editUserForm').on('submit', function (e) {
                 $('#editUserModal').modal('hide');
                 window.location.reload();
             } else {
-                var errors = data.errors ? JSON.stringify(data.errors) : '{% trans "An error occurred." %}';
+                var errors = data.errors ? JSON.stringify(data.errors) : '{{ error_occurred|escapejs }}';
                 $('#edit-error').text(errors).show();
             }
         },
         error: function (xhr) {
-            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{{ error_occurred|escapejs }}';
             $('#edit-error').text(error).show();
         }
     });
@@ -220,7 +222,7 @@ $('#deleteUserForm').on('submit', function (e) {
             }
         },
         error: function (xhr) {
-            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+            var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{{ error_occurred|escapejs }}';
             $('#delete-error').text(error).show();
         }
     });

@@ -746,13 +746,19 @@ def admin_donation_request_approve_view(request, pk):
     if donation_req.status != 'pending':
         return JsonResponse({'success': False, 'error': _('Only pending requests can be approved.')}, status=400)
 
+    # Get donation_date from request
+    donation_date = request.POST.get('donation_date')
+    if not donation_date:
+        return JsonResponse({'success': False, 'error': _('Donation date is required.')}, status=400)
+
     donation_req.status = 'approved'
+    donation_req.donation_date = donation_date
     donation_req.save()
 
     models.Notification.objects.create(
         recipient=donation_req.user,
         title=_('Donation Request Approved'),
-        message=_('Your donation request has been approved.'),
+        message=_('Your donation request has been approved. Please donate on %(date)s.') % {'date': donation_date},
     )
     messages.success(request, _('Donation request approved successfully.'))
     return JsonResponse({'success': True})

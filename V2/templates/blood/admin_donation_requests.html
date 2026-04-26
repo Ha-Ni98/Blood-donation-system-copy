@@ -49,6 +49,7 @@
                     <th>{% trans "Wilaya" %}</th>
                     <th>{% trans "Commune" %}</th>
                     <th>{% trans "Created At" %}</th>
+                    <th>{% trans "Donation Date" %}</th>
                     <th>{% trans "Status" %}</th>
                     <th class="text-right">{% trans "Actions" %}</th>
                 </tr>
@@ -62,6 +63,13 @@
                     <td>{{ req.wilaya.name|default:"—" }}</td>
                     <td>{{ req.commune.name|default:"—" }}</td>
                     <td>{{ req.created_at|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if req.donation_date %}
+                            {{ req.donation_date|date:"d/m/Y" }}
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
                     <td>
                         {% if req.status == 'pending' %}
                             <span class="badge badge-warning">{{ req.get_status_display }}</span>
@@ -100,7 +108,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="alert alert-info py-4 text-center mb-0">
                             <i class="fas fa-inbox fa-3x mb-2 text-muted"></i>
                             <p class="mb-0">{% trans "No donation requests found." %}</p>
@@ -125,12 +133,16 @@
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>{% trans "Are you sure you want to approve this donation request?" %}</p>
+                    <p>{% trans "Please select the donation date:" %}</p>
+                    <div class="form-group">
+                        <label for="donation-date">{% trans "Donation Date" %}</label>
+                        <input type="date" id="donation-date" name="donation_date" class="form-control" required>
+                    </div>
                     <div id="approve-error" class="alert alert-danger" style="display:none;"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
-                    <button type="submit" class="btn btn-success">{% trans "Confirm Approval" %}</button>
+                    <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
                 </div>
             </form>
         </div>
@@ -212,8 +224,8 @@ $('#cancelModal').on('show.bs.modal', function (event) {
     $('#cancel-error').hide().text('');
 });
 
-function handleFormSubmit(formId, modalId, urlPattern) {
-    $(formId).on('submit', function (e) {
+function handleFormSubmit(formSelector, modalId, urlPattern) {
+    $(formSelector).on('submit', function (e) {
         e.preventDefault();
         var requestId = $(this).find('input[name="request_id"]').val();
         var actionUrl = urlPattern.replace('0', requestId);
@@ -230,7 +242,7 @@ function handleFormSubmit(formId, modalId, urlPattern) {
                 }
             },
             error: function (xhr) {
-                var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{% trans "An error occurred." %}';
+                var error = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '{{ error_occurred|escapejs }}';
                 $(modalId).find('.alert-danger').text(error).show();
             }
         });
